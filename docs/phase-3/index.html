@@ -164,16 +164,37 @@
         </table>
         <p>The entire CNC fab line fits inside the grow tent. HEPA filter provides positive pressure, keeping particles out. Wear nitrile gloves and a lint-free smock when operating.</p>
 
-        <h2>Cost Trajectory: Zero to CPU-Capable</h2>
+        <h2>Cost Trajectory and the KO-1 Product</h2>
         <table class="inline-table">
           <tr><th>Phase</th><th>What You Add</th><th>Cumulative Cost</th></tr>
           <tr><td>Phase 1</td><td>CNC 3018 + laser + microscope + goggles</td><td>$525</td></tr>
-          <tr><td>Phase 2</td><td>Spin coater + consumables (silver paint, zinc acetate, etc.)</td><td>~$650</td></tr>
-          <tr><td>Phase 2.5</td><td>5x objective + UV LEDs + mask projection + camera</td><td>~$730</td></tr>
-          <tr><td>Phase 3</td><td>Automation (valves, pump, pickup, GPIO) + cleanroom</td><td>~$925</td></tr>
-          <tr><td>Phase 4</td><td>CPU fabrication (consumables only, process is ready)</td><td>~$950</td></tr>
+          <tr><td>Phase 2</td><td>Spin coater station + consumables</td><td>~$650</td></tr>
+          <tr><td>Phase 2.5</td><td>DLP projector (Casio XJ-M140, $210) + reduction optics</td><td>~$900</td></tr>
+          <tr><td>Phase 3</td><td>CNC 4040-PRO ($1,300) + robot arm + automation + HEPA enclosure</td><td>~$3,500</td></tr>
+          <tr><td>Phase 4</td><td>CPU fabrication (consumables only)</td><td>~$3,550</td></tr>
         </table>
-        <p><strong>Under $1,000 CAD from zero to CPU-capable.</strong> The single most expensive item is the CNC 3018 itself ($229).</p>
+
+        <h3>The KO-1: Productized Albu Process</h3>
+        <p>Phase 3&rsquo;s automated fab line becomes the <strong>KOSL KO-1</strong> &mdash; a turnkey desktop semiconductor fabrication system.</p>
+        <table class="inline-table">
+          <tr><th>Tier</th><th>What You Get</th><th>Price</th></tr>
+          <tr><td><strong>KO-1 Complete</strong></td><td>Assembled, tested, calibrated. Full consumables kit. Goggles, resist, wafers, slides, silver paint, chemicals. Everything to fab on day 1.</td><td><strong>$8,999 CAD</strong></td></tr>
+          <tr><td>KO-1 Kit</td><td>All parts shipped. Pre-configured electronics + 3D printed parts. You assemble (~4 hours).</td><td>$3,999 CAD</td></tr>
+          <tr><td>KO-1 Plans</td><td>Open source schematics, BOM, software, process recipes on GitHub.</td><td>Free</td></tr>
+        </table>
+        <p style="font-size:13px;color:var(--gray-500);">Free shipping in Canada. $999 shipping outside Canada.</p>
+
+        <h3>What You Can Make with the KO-1</h3>
+        <table class="inline-table">
+          <tr><th>Circuit</th><th>Transistors</th><th>Application</th></tr>
+          <tr><td>SERV RISC-V CPU (ext. RF)</td><td>~4,500</td><td>Runs GCC-compiled C code. Educational kits.</td></tr>
+          <tr><td>Custom 8-bit CPU</td><td>~2,500</td><td>Your own instruction set architecture.</td></tr>
+          <tr><td>UART + SPI interface IC</td><td>~800</td><td>Custom serial communication chip.</td></tr>
+          <tr><td>Hardware neural network (32 neurons)</td><td>~3,000</td><td>Neuromorphic computing research.</td></tr>
+          <tr><td>PUF security key</td><td>~1,000</td><td>Physically unclonable function for authentication.</td></tr>
+          <tr><td>Custom sensor ASIC</td><td>varies</td><td>Application-specific sensor interface.</td></tr>
+          <tr><td>LED driver array (16ch)</td><td>~500</td><td>Art installations, displays.</td></tr>
+        </table>
 
         <!-- ===== Yield Characterization ===== -->
         <h2 id="yield">Yield Characterization</h2>
