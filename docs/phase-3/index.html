@@ -154,6 +154,58 @@
           <tr><td><strong>Total automation upgrade</strong></td><td><strong>~$166</strong></td><td></td></tr>
         </table>
 
+        <!-- ===== Phase 3 Subphases ===== -->
+        <h2>Phase 3 Subphases</h2>
+        <p>Phase 3 is broken into 10 concrete engineering subphases. Each subphase has a clear deliverable and can be tested independently.</p>
+
+        <table class="inline-table">
+          <tr><th>Subphase</th><th>What</th><th>Deliverable</th><th>Cost</th></tr>
+          <tr><td><strong>3.1</strong></td><td>CNC 4040-PRO setup and characterization</td><td>Machine assembled, positioning accuracy measured at all positions</td><td>$1,300</td></tr>
+          <tr><td><strong>3.2</strong></td><td>Station layout + bed integration</td><td>All station positions defined, mounting brackets printed, stations bolted to bed</td><td>$30</td></tr>
+          <tr><td><strong>3.3</strong></td><td>Vacuum pickup system</td><td>Gantry picks up and places a wafer reliably between any two stations, 50 cycles without failure</td><td>$30</td></tr>
+          <tr><td><strong>3.4</strong></td><td>Automated spin coater station</td><td>Gantry loads wafer, dispenses resist, spins, unloads. Film uniformity within &plusmn;10%.</td><td>$45</td></tr>
+          <tr><td><strong>3.5</strong></td><td>Automated develop station</td><td>Fill, soak, drain, rinse, dry cycle completes without human intervention. Clean development.</td><td>$50</td></tr>
+          <tr><td><strong>3.6</strong></td><td>DLP projector integration</td><td>Projector mounted, focused, reduction optics aligned. Exposes a test pattern onto resist. Features measured.</td><td>$235 (projector + optics)</td></tr>
+          <tr><td><strong>3.7</strong></td><td>Alignment system</td><td>Camera detects alignment marks. Servo micrometers correct position. &lt;3&mu;m alignment demonstrated on a 2-layer test.</td><td>$50</td></tr>
+          <tr><td><strong>3.8</strong></td><td>HEPA enclosure</td><td>Acrylic panels + HEPA fan installed. Particle count measured. ISO 7 confirmed.</td><td>$200</td></tr>
+          <tr><td><strong>3.9</strong></td><td>Python orchestration software</td><td>Full automated layer cycle: coat &rarr; bake &rarr; align &rarr; expose &rarr; develop &rarr; inspect. Runs unattended.</td><td>$0 (software)</td></tr>
+          <tr><td><strong>3.10</strong></td><td>Yield characterization</td><td>50+ identical transistors fabricated. Vth, on/off ratio, mobility statistics. Yield &gt;99% demonstrated.</td><td>$50 (consumables)</td></tr>
+        </table>
+
+        <div class="docs-callout">
+          <strong>Each subphase is independently testable.</strong> If subphase 3.5 (develop station) has issues, you can debug it without touching subphase 3.6 (DLP). Build and test sequentially. Don&rsquo;t integrate everything at once.
+        </div>
+
+        <h3>Subphase 3.3: Vacuum Pickup &mdash; Detail</h3>
+        <p>The gantry-mounted vacuum pickup is the most critical automation component. Every station transfer depends on it.</p>
+        <ul class="docs-list">
+          <li><strong>Hardware:</strong> DC diaphragm vacuum pump ($12) &rarr; silicone tubing &rarr; 3-way solenoid valve ($8) &rarr; suction cup (10mm, $3). Mounted on Z-carriage.</li>
+          <li><strong>Operation:</strong> Gantry lowers Z to pickup height &rarr; solenoid routes vacuum to cup &rarr; cup seals on wafer &rarr; gantry raises Z &rarr; translates to destination &rarr; lowers Z &rarr; solenoid vents to atmosphere &rarr; wafer releases.</li>
+          <li><strong>Wet wafer handling:</strong> After development, wafer is wet. Air nozzle dries for 15 seconds in the develop tray before vacuum pickup. Water breaks the vacuum seal, so wafer must be surface-dry.</li>
+          <li><strong>Testing:</strong> 50 pick-place cycles between two stations. Zero drops = pass. Any drops = redesign cup size, suction force, or add edge gripper fallback.</li>
+        </ul>
+
+        <h3>Subphase 3.7: Alignment System &mdash; Detail</h3>
+        <p>Layer-to-layer alignment is the hardest automation problem. The DLP defines the pattern, but the wafer must be positioned so the new pattern registers with the previous layer.</p>
+        <ul class="docs-list">
+          <li><strong>Alignment marks:</strong> Each layer includes cross-shaped marks at 2+ known positions on the die. The camera finds these marks on the wafer from the previous layer.</li>
+          <li><strong>Detection:</strong> OpenCV template matching or contour detection. Cross marks are high-contrast (metal on glass, or stained protein on glass).</li>
+          <li><strong>Correction:</strong> Two SG90 micro servos push micrometer heads against return springs. Software commands servo angle &rarr; micrometer position &rarr; wafer shifts. Resolution: ~2&mu;m per servo step.</li>
+          <li><strong>Verification:</strong> After adjustment, camera re-captures. Software confirms alignment error &lt;3&mu;m. If not, re-adjust. Loop until converged or flag for manual review.</li>
+          <li><strong>Target accuracy:</strong> &lt;3&mu;m for 10&mu;m features (Albu 10M), &lt;8&mu;m for 25&mu;m features (Albu 25M), &lt;17&mu;m for 50&mu;m features (Albu 50M).</li>
+        </ul>
+
+        <h3>Subphase 3.9: Python Orchestration &mdash; Detail</h3>
+        <p>The orchestration script controls the entire layer cycle. It communicates with:</p>
+        <ul class="docs-list">
+          <li><strong>CNC gantry:</strong> via serial/USB, sending G-code (GRBL or Klipper). Controls XYZ motion for wafer transfer.</li>
+          <li><strong>Arduino GPIO:</strong> via serial. Controls relays for vacuum pump, solenoid valves, spin motor, hot plate, air pump, DLP trigger.</li>
+          <li><strong>DLP projector:</strong> via HDMI. Displays mask images as full-screen patterns on a virtual monitor output.</li>
+          <li><strong>USB camera:</strong> via OpenCV. Captures alignment images, runs mark detection, calculates offsets.</li>
+          <li><strong>Micrometer servos:</strong> via Arduino PWM. Adjusts alignment based on camera feedback.</li>
+        </ul>
+        <p>The full layer cycle pseudocode (pick &rarr; coat &rarr; bake &rarr; align &rarr; expose &rarr; develop &rarr; inspect &rarr; return) takes ~5&ndash;6 minutes. A 6-layer CPU process runs in ~35 minutes unattended.</p>
+
         <h2>Cleanroom: Grow Tent + HEPA</h2>
         <p>ISO 7 (Class 10,000) is sufficient for features &ge;25&mu;m. At 50&mu;m features, particles &gt;10&mu;m are the concern &mdash; ISO 7 handles this easily.</p>
         <table class="inline-table">

@@ -1,0 +1,323 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Phase 1.5: Automated DLP Lithography - Albu Docs</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../../style.css">
+  <link rel="stylesheet" href="../docs.css">
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' rx='12' fill='%23434e64'/><rect x='15' y='15' width='70' height='70' rx='2' fill='none' stroke='white' stroke-width='4'/><circle cx='50' cy='50' r='28' fill='none' stroke='white' stroke-width='3.5'/><rect x='25' y='25' width='50' height='50' rx='1' fill='none' stroke='white' stroke-width='3' transform='rotate(45 50 50)'/><circle cx='50' cy='50' r='15' fill='none' stroke='white' stroke-width='2.5'/><rect x='37' y='37' width='26' height='26' rx='1' fill='none' stroke='white' stroke-width='2'/><circle cx='50' cy='50' r='4' fill='white'/></svg>">
+</head>
+<body>
+  <nav>
+    <div class="nav-inner">
+      <a href="/albu/" class="nav-logo">
+        <svg class="nav-logo-mark" viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <rect x="10" y="10" width="80" height="80" rx="2" stroke="#434e64" stroke-width="5"/>
+          <circle cx="50" cy="50" r="32" stroke="#434e64" stroke-width="4.5"/>
+          <rect x="22" y="22" width="56" height="56" rx="1" stroke="#434e64" stroke-width="4" transform="rotate(45 50 50)"/>
+          <circle cx="50" cy="50" r="17" stroke="#434e64" stroke-width="3.5"/>
+          <rect x="36" y="36" width="28" height="28" rx="1" stroke="#434e64" stroke-width="3"/>
+          <circle cx="50" cy="50" r="5" fill="#434e64"/>
+        </svg>
+        <div>
+          <div style="font-size:11px;font-weight:700;color:#434e64;letter-spacing:0.12em">KOSL</div>
+          <div style="font-size:20px;font-weight:700;color:#434e64">Albu</div>
+        </div>
+      </a>
+      <div class="nav-links">
+        <a href="/albu/#about">About</a>
+        <a href="/albu/#phase-1">Phase 1</a>
+        <a href="/albu/docs/" class="nav-active">Documentation</a>
+        <a href="https://github.com/levkropp/albu" class="nav-gh">GitHub</a>
+      </div>
+    </div>
+  </nav>
+  <div class="docs-layout">
+    <aside class="docs-sidebar" data-active="phase-1.5"></aside>
+    <main class="docs-main">
+      <div class="docs-content">
+        <h1>Phase 1.5: Automated DLP Lithography</h1>
+        <p class="docs-lead">Upgrading the CNC 3018 from manual laser direct-write to automated DLP maskless projection lithography. This intermediate phase transforms the Phase 1 proof-of-concept into a semi-automated fab tool &mdash; the basis for the <strong>KO-1 Lite</strong> ($4,999 early adopter product).</p>
+
+        <!-- ===== Why Phase 1.5? ===== -->
+        <h2 id="why">Why Phase 1.5?</h2>
+        <p>Phase 1 proves the resist works. Using the CNC 3018&rsquo;s 5W laser in direct-write mode, we demonstrate pattern transfer at ~100&mu;m resolution &mdash; enough to confirm the photochemistry, the develop process, and the basic workflow. But 100&mu;m features are too coarse for anything beyond the simplest test structures, and every step is manual: hand-pipetting resist, manually focusing the laser, visually checking development by eye.</p>
+
+        <p>Phase 1.5 bridges the gap between &ldquo;it works&rdquo; and &ldquo;it&rsquo;s a process.&rdquo; Three critical upgrades transform the CNC 3018 into a semi-automated lithography tool:</p>
+
+        <ul class="docs-list">
+          <li><strong>DLP maskless exposure (5&ndash;25&mu;m):</strong> A used DLP projector replaces the scanning laser for pattern exposure. Instead of raster-scanning a single point, the DLP flashes an entire mask image onto the wafer in one shot. Resolution improves from ~100&mu;m to 5&ndash;50&mu;m depending on reduction optics. Exposure time drops from minutes (scanning) to seconds (flood).</li>
+          <li><strong>Automated wafer handling:</strong> A gantry-mounted vacuum pickup nozzle moves the wafer between stations &mdash; spin coater, hot plate, exposure zone, develop tray, cassette &mdash; without human hands touching the substrate. This eliminates the single largest source of contamination and mishandling.</li>
+          <li><strong>Automated development:</strong> Solenoid-controlled fill, drain, rinse, and dry cycle replaces hand-dipping. Timing is precise and repeatable. No more over-developing or under-rinsing.</li>
+        </ul>
+
+        <p>The resulting machine is the <strong>KO-1 Lite</strong> &mdash; a desktop lithography tool sold to early adopters for $4,999 CAD. Revenue from KO-1 Lite sales funds Phase 3 development (the full KO-1 with precision stages and HEPA enclosure).</p>
+
+        <div class="docs-callout">
+          <strong>Phase 1.5 is not a detour.</strong> Every component added here (DLP projector, vacuum pickup, develop station, Arduino GPIO control) carries forward directly into Phase 3 and the KO-1. Nothing is throwaway work.
+        </div>
+
+        <!-- ===== BOM ===== -->
+        <h2 id="bom">What You Add to the CNC 3018</h2>
+        <p>Phase 1.5 is a bolt-on upgrade to the existing CNC 3018 from Phase 1. No frame modifications, no new CNC machine. Everything mounts to the existing bed or gantry.</p>
+
+        <table class="inline-table">
+          <tr><th>Component</th><th>Purpose</th><th>Cost</th></tr>
+          <tr><td>Casio XJ-M140 DLP projector (used)</td><td>Maskless lithography, 1024&times;768 pixels, 455nm laser/LED source</td><td>$210</td></tr>
+          <tr><td>5x microscope objective</td><td>Reduction optics (250&mu;m mask pixel &rarr; 50&mu;m wafer feature)</td><td>$15</td></tr>
+          <tr><td>Condenser lens (aspheric 25mm)</td><td>Collimates DLP output into objective</td><td>$8</td></tr>
+          <tr><td>DC diaphragm vacuum pump</td><td>Wafer pickup suction</td><td>$12</td></tr>
+          <tr><td>Silicone suction cup (10mm) + tubing</td><td>Gantry-mounted vacuum nozzle</td><td>$7</td></tr>
+          <tr><td>3-way solenoid valve</td><td>Vacuum on/off + vent to release</td><td>$8</td></tr>
+          <tr><td>Develop tray (3D printed)</td><td>Water immersion development</td><td>$3</td></tr>
+          <tr><td>Solenoid valves &times; 2 (12V NC)</td><td>Fill + drain water control</td><td>$10</td></tr>
+          <tr><td>Peristaltic pump (12V DC)</td><td>Rinse spray</td><td>$12</td></tr>
+          <tr><td>Aquarium air pump + solenoid</td><td>Blow-dry after develop</td><td>$15</td></tr>
+          <tr><td>Arduino Mega 2560</td><td>GPIO controller for all peripherals</td><td>$12</td></tr>
+          <tr><td>8-channel relay module</td><td>Switches 12V devices</td><td>$8</td></tr>
+          <tr><td>USB camera (5MP)</td><td>Alignment + inspection</td><td>$20</td></tr>
+          <tr><td>12V 10A power supply</td><td>Powers peripherals</td><td>$12</td></tr>
+          <tr><td>Wiring + connectors + 3D printed mounts</td><td>Integration</td><td>$20</td></tr>
+          <tr><td>Micro servos &times; 2 (SG90)</td><td>Drive micrometer adjusters for fine alignment</td><td>$4</td></tr>
+          <tr><td>Micrometer heads &times; 2</td><td>Fine XY alignment of wafer under DLP</td><td>$25</td></tr>
+          <tr><td><strong>Total Phase 1.5 upgrade</strong></td><td></td><td><strong>~$401</strong></td></tr>
+        </table>
+
+        <p>Combined with the Phase 1 CNC 3018 setup (~$525), total investment to reach Phase 1.5 is approximately <strong>$926</strong>.</p>
+
+        <!-- ===== Station Layout ===== -->
+        <h2 id="station-layout">Station Layout on CNC 3018 Bed</h2>
+        <p>The 300&times;180mm CNC 3018 bed is divided into five functional stations. The gantry&rsquo;s X/Y/Z travel covers the entire bed, allowing the vacuum pickup nozzle to transfer wafers between any two stations.</p>
+
+        <pre><code>CNC 3018 bed (300 &times; 180mm):
+&#9484;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9488;
+&#9474;                                            &#9474;
+&#9474;  &#9484;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9488;  &#9484;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9488;  &#9484;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9488; &#9474;
+&#9474;  &#9474; SPIN    &#9474;  &#9474; EXPOSE   &#9474;  &#9474; DEVELOP   &#9474; &#9474;
+&#9474;  &#9474; COATER  &#9474;  &#9474; (DLP     &#9474;  &#9474; (tray +   &#9474; &#9474;
+&#9474;  &#9474;         &#9474;  &#9474;  zone)   &#9474;  &#9474;  rinse +  &#9474; &#9474;
+&#9474;  &#9474;         &#9474;  &#9474;          &#9474;  &#9474;  dry)     &#9474; &#9474;
+&#9474;  &#9492;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9496;  &#9492;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9496;  &#9492;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9496; &#9474;
+&#9474;                                            &#9474;
+&#9474;  &#9484;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9488;  &#9484;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9488;                 &#9474;
+&#9474;  &#9474; CASSETTE&#9474;  &#9474; HOT PLATE&#9474;                 &#9474;
+&#9474;  &#9474; (3 slot)&#9474;  &#9474; (bake)   &#9474;                 &#9474;
+&#9474;  &#9492;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9496;  &#9492;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9496;                 &#9474;
+&#9492;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9496;
+
+DLP projector on shelf above, aimed at EXPOSE zone
+5W laser stays on gantry (for ablation, not lithography)
+Vacuum pickup nozzle on gantry Z-carriage</code></pre>
+
+        <p>The top row holds the three process stations used in every layer cycle (coat, expose, develop). The bottom row holds the wafer cassette (input/output storage) and the hot plate for pre-exposure bake. The DLP projector sits on a separate shelf above the bed, aimed downward through reduction optics at the EXPOSE zone. The 5W laser module remains on the gantry for occasional ablation work but is not used for lithography in Phase 1.5.</p>
+
+        <!-- ===== DLP Projector Setup ===== -->
+        <h2 id="dlp-setup">DLP Projector Setup</h2>
+        <p>The Casio XJ-M140 is a laser/LED hybrid DLP projector. Its blue channel uses a <strong>455nm laser diode</strong> &mdash; not a broadband lamp. This is critical: 455nm is close enough to the 405nm sensitivity peak of most photoresists to achieve exposure, and the laser source is far more spatially coherent than an LED, enabling sharp imaging through reduction optics.</p>
+
+        <h3>Display Configuration</h3>
+        <ul class="docs-list">
+          <li><strong>Input:</strong> HDMI from the control computer. The projector appears as a second monitor.</li>
+          <li><strong>Pattern generation:</strong> Python script renders mask patterns as full-screen images on the projector output. Blue-only images (R=0, G=0, B=max) ensure only the 455nm laser diode fires &mdash; the red and green LED sources remain off, preventing unwanted broadband exposure.</li>
+          <li><strong>Resolution:</strong> Native 1024&times;768 XGA. Each DLP micromirror pixel is approximately 13&mu;m at the DMD plane.</li>
+          <li><strong>Exposure control:</strong> Display a white (blue) pattern for the calibrated exposure time, then display black to stop. Alternatively, use the projector&rsquo;s built-in shutter if available.</li>
+        </ul>
+
+        <h3>Mounting and Optics</h3>
+        <p>The projector mounts on a shelf or bracket above the CNC bed, pointed downward at the EXPOSE station. Between the projector lens and the wafer, reduction optics demagnify the projected image:</p>
+
+        <table class="inline-table">
+          <tr><th>Option</th><th>Reduction</th><th>Pixel on Wafer</th><th>Field Size</th><th>Best For</th></tr>
+          <tr><td><strong>A: 5x objective</strong></td><td>5:1</td><td>~50&mu;m</td><td>~6.6 &times; 5mm</td><td>Albu-4 CPU at 25&ndash;50&mu;m (die fits in 1&ndash;2 shots)</td></tr>
+          <tr><td><strong>B: 2x lens</strong></td><td>2:1</td><td>~6.5&mu;m</td><td>~13 &times; 10mm</td><td>SERV at 10&ndash;13&mu;m (die fits in 1 shot)</td></tr>
+          <tr><td><strong>C: 1:1 (no reduction)</strong></td><td>1:1</td><td>~13&mu;m</td><td>~13 &times; 10mm</td><td>Largest field, simplest optics, no objective needed</td></tr>
+        </table>
+
+        <p>For the KO-1 Lite targeting the Albu 50M process (50&mu;m features), <strong>Option A (5x reduction)</strong> is the default. The condenser lens (aspheric, 25mm focal length) collimates the diverging DLP output into a parallel beam, which the 5x microscope objective then focuses onto the wafer at 5:1 demagnification. The Albu-4 CPU die (~5mm) fits within the 6.6&times;5mm field, so the entire die is exposed in a single flash &mdash; no stitching required.</p>
+
+        <p>For users targeting SERV at 10&ndash;13&mu;m, swapping to Option B (2x reduction lens) or Option C (direct 1:1 projection) provides finer resolution at the cost of requiring more precise alignment.</p>
+
+        <div class="docs-callout">
+          <strong>No lamp modification needed.</strong> Unlike older mercury-lamp projectors that require UV filter removal, the Casio XJ-M140&rsquo;s laser diode outputs 455nm directly. Just send blue-only images and you get a clean narrowband exposure source.
+        </div>
+
+        <!-- ===== Automated Process Flow ===== -->
+        <h2 id="process-flow">Automated Process Flow</h2>
+        <p>A Python orchestration script controls the full layer cycle. The script communicates with the CNC gantry (G-code over serial) and the Arduino Mega (relay commands over serial) to coordinate all station operations.</p>
+
+        <h3>One Layer Cycle</h3>
+        <ol class="docs-list">
+          <li><strong>PICK from cassette:</strong> Gantry moves to cassette position. Z lowers to wafer slot height. Vacuum pump activates, solenoid routes vacuum to suction cup. Cup seals on wafer. Z raises. Gantry translates to spin coater. (~15 seconds)</li>
+          <li><strong>COAT on spin coater:</strong> Gantry places wafer on spin chuck (vacuum off, vent to release). Resist dispenser deposits ~300&mu;L onto center of wafer. Spin motor ramps to target RPM (3000&ndash;6000 depending on desired thickness) for 30 seconds. Wafer remains on chuck while spin decelerates. (~45 seconds)</li>
+          <li><strong>BAKE on hot plate:</strong> Gantry picks up coated wafer, places on hot plate station. Hot plate holds 60&deg;C for 2 minutes (soft bake to drive off solvent and improve resist adhesion). (~2 minutes 15 seconds including transfer)</li>
+          <li><strong>EXPOSE under DLP:</strong> Gantry picks up baked wafer, places on expose station sub-stage (micrometer-adjustable platform). For layer 1, wafer is simply centered. For layer 2+, USB camera captures image through beam splitter, software detects alignment marks from previous layer, servo-driven micrometers adjust wafer XY position. Python script displays mask pattern on DLP projector (blue-only, full screen). Exposure time: 20&ndash;180 seconds depending on resist sensitivity and DLP intensity. (~30 seconds for layer 1, ~90 seconds for aligned layers)</li>
+          <li><strong>DEVELOP in tray:</strong> Gantry picks up exposed wafer, places in develop tray. Solenoid valve opens to fill tray with DI water (or developer solution). Soak for 30 seconds. Drain valve opens. Peristaltic pump sprays fresh rinse water for 10 seconds. Air nozzle blow-dries the wafer for 15 seconds. (~75 seconds)</li>
+          <li><strong>INSPECT under camera:</strong> Gantry picks up developed wafer, positions under USB camera. Software captures image and checks pattern quality &mdash; contrast, edge sharpness, defect count. Results logged. If pattern fails quality check, wafer is flagged for manual review. (~20 seconds)</li>
+          <li><strong>RETURN to cassette:</strong> Gantry places wafer back in cassette slot. Vacuum off, vent to release. Layer complete. (~15 seconds)</li>
+        </ol>
+
+        <p><strong>Total time per layer: ~5&ndash;6 minutes.</strong> A 6-layer CPU process (gate oxide, gate metal, source/drain implant, contact holes, metal interconnect, passivation) completes in approximately 35 minutes with no human intervention after loading the blank wafer into the cassette.</p>
+
+        <h3>Pseudocode</h3>
+        <pre><code>def run_layer(layer_num, mask_image, expose_time_s):
+    # 1. Pick wafer from cassette
+    gantry.move_to(CASSETTE_POS)
+    gantry.lower_z(CASSETTE_SLOT_HEIGHT[layer_num])
+    vacuum.activate()
+    time.sleep(0.5)  # seal time
+    gantry.raise_z()
+
+    # 2. Coat
+    gantry.move_to(SPIN_COATER_POS)
+    gantry.lower_z(SPIN_COATER_HEIGHT)
+    vacuum.release()
+    dispenser.dispense(volume_uL=300)
+    spin_motor.run(rpm=4000, duration_s=30)
+    time.sleep(5)  # deceleration
+
+    # 3. Bake
+    vacuum.activate()  # pick up from spin coater
+    gantry.raise_z()
+    gantry.move_to(HOT_PLATE_POS)
+    gantry.lower_z(HOT_PLATE_HEIGHT)
+    vacuum.release()
+    hot_plate.set_temp(60)
+    time.sleep(120)  # 2-minute soft bake
+
+    # 4. Expose
+    vacuum.activate()  # pick up from hot plate
+    gantry.raise_z()
+    gantry.move_to(EXPOSE_POS)
+    gantry.lower_z(EXPOSE_HEIGHT)
+    vacuum.release()
+
+    if layer_num &gt; 1:
+        img = camera.capture()
+        offset = alignment.detect_marks(img)
+        micrometers.adjust(offset)
+        img2 = camera.capture()
+        alignment.verify(img2)  # confirm &lt;5um error
+
+    dlp.display(mask_image)
+    time.sleep(expose_time_s)
+    dlp.blank()
+
+    # 5. Develop
+    vacuum.activate()
+    gantry.raise_z()
+    gantry.move_to(DEVELOP_POS)
+    gantry.lower_z(DEVELOP_HEIGHT)
+    vacuum.release()
+    fill_valve.open()
+    time.sleep(3)  # fill tray
+    fill_valve.close()
+    time.sleep(30)  # develop soak
+    drain_valve.open()
+    time.sleep(5)
+    drain_valve.close()
+    rinse_pump.run(duration_s=10)
+    air_nozzle.blow(duration_s=15)
+
+    # 6. Inspect
+    vacuum.activate()
+    gantry.raise_z()
+    gantry.move_to(CAMERA_POS)
+    result = camera.inspect_pattern()
+    log_result(layer_num, result)
+
+    # 7. Return to cassette
+    gantry.move_to(CASSETTE_POS)
+    gantry.lower_z(CASSETTE_SLOT_HEIGHT[layer_num])
+    vacuum.release()
+
+    return result</code></pre>
+
+        <!-- ===== Alignment System ===== -->
+        <h2 id="alignment">Alignment System</h2>
+        <p>Layer-to-layer alignment is the most challenging automation problem in Phase 1.5. The DLP defines the pattern, but the wafer must be positioned so that each new layer registers precisely with the previous layers.</p>
+
+        <h3>Optical Setup</h3>
+        <ul class="docs-list">
+          <li><strong>Camera placement:</strong> USB camera (5MP) is co-aligned with the DLP projection axis. Two approaches: (A) beam splitter on the DLP optical axis so the camera sees exactly what the DLP illuminates, or (B) offset camera with a known, calibrated XY offset from the DLP center. Option A is more accurate; Option B is simpler to build.</li>
+          <li><strong>Illumination:</strong> Ring LED or off-axis LED provides illumination for camera inspection independent of the DLP. The camera needs to see the wafer surface clearly even when the DLP is not exposing.</li>
+        </ul>
+
+        <h3>Alignment Procedure</h3>
+        <ul class="docs-list">
+          <li><strong>Layer 1:</strong> No alignment needed. The wafer is simply centered on the expose station. The first mask pattern defines the reference coordinate system.</li>
+          <li><strong>Layer 2+:</strong> The camera captures an image of the wafer. OpenCV template matching (or contour detection) locates cross-shaped alignment marks printed in the previous layer. The software calculates the XY offset and rotation between the detected marks and their expected positions in the new mask.</li>
+          <li><strong>Correction:</strong> Two SG90 micro servos push against micrometer heads mounted on the expose station sub-stage. Each micrometer has a return spring. The software commands a servo angle, which translates to a micrometer displacement, which shifts the wafer in X or Y. Resolution: approximately 2&mu;m per servo step.</li>
+          <li><strong>Verification:</strong> After adjustment, the camera re-captures and the software confirms the alignment error is within tolerance. If not, the adjust-verify loop repeats (up to 5 iterations) before flagging for manual intervention.</li>
+        </ul>
+
+        <h3>Accuracy Targets</h3>
+        <table class="inline-table">
+          <tr><th>Process</th><th>Feature Size</th><th>Required Alignment</th><th>Margin (fraction of feature)</th></tr>
+          <tr><td>Albu 50M</td><td>50&mu;m</td><td>&lt;17&mu;m</td><td>1/3</td></tr>
+          <tr><td>Albu 25M</td><td>25&mu;m</td><td>&lt;8&mu;m</td><td>1/3</td></tr>
+          <tr><td>Albu 10M</td><td>10&mu;m</td><td>&lt;3&mu;m</td><td>1/3</td></tr>
+        </table>
+
+        <p>The KO-1 Lite targets <strong>&lt;5&mu;m alignment accuracy</strong>, which is sufficient for 50&mu;m features (1/10 feature size margin) and adequate for 25&mu;m features (1/5 feature margin). Achieving &lt;3&mu;m for the Albu 10M process may require the precision stages of the full KO-1 (Phase 3).</p>
+
+        <!-- ===== KO-1 Lite Product Concept ===== -->
+        <h2 id="ko1-lite">KO-1 Lite Product Concept</h2>
+        <p>The Phase 1.5 machine &mdash; CNC 3018 with DLP exposure, automated wafer handling, and automated development &mdash; becomes the <strong>KO-1 Lite</strong>, KOSL&rsquo;s first commercial product.</p>
+
+        <h3>Pricing and Margins</h3>
+        <table class="inline-table">
+          <tr><th>Item</th><th>Cost</th></tr>
+          <tr><td>Phase 1 BOM (CNC 3018 + laser + microscope + goggles)</td><td>$525</td></tr>
+          <tr><td>Phase 1.5 upgrade BOM</td><td>$401</td></tr>
+          <tr><td>Assembly labor</td><td>$200</td></tr>
+          <tr><td>Testing and calibration</td><td>$100</td></tr>
+          <tr><td>Consumables kit (resist, wafers, developer, silver paint)</td><td>$150</td></tr>
+          <tr><td><strong>Total cost per unit</strong></td><td><strong>~$1,376</strong></td></tr>
+        </table>
+
+        <p><strong>Retail price: $4,999 CAD.</strong> Gross margin: ~72%. This margin funds Phase 3 development, including the CNC 4040-PRO upgrade, precision stages, and HEPA enclosure.</p>
+
+        <h3>What Ships</h3>
+        <ul class="docs-list">
+          <li>Fully assembled CNC 3018 with all Phase 1 and Phase 1.5 components mounted and wired</li>
+          <li>DLP projector (Casio XJ-M140) mounted on shelf bracket with reduction optics aligned</li>
+          <li>All five stations wired and tested (spin coater, hot plate, expose, develop, cassette)</li>
+          <li>Arduino Mega + relay board pre-flashed with firmware</li>
+          <li>Consumables kit: photoresist (100mL), glass slides (50 pack), silver conductive paint (10mL), developer concentrate (500mL), syringe tips, cotton swabs</li>
+          <li>Software on USB drive: Python orchestration scripts, mask design templates, calibration routines</li>
+          <li>2 pairs of laser safety goggles (OD5+ at 450nm)</li>
+          <li>Quick-start guide and process recipe cards</li>
+        </ul>
+
+        <h3>Capability</h3>
+        <p>The KO-1 Lite runs the <strong>Albu 50M process</strong>: 50&mu;m minimum features, suitable for circuits of approximately 100&ndash;500 transistors. This is enough for simple logic gates, ring oscillators, shift registers, small counters, and basic analog circuits (amplifiers, current mirrors). Not enough for a CPU &mdash; that requires the full KO-1 &mdash; but enough to learn semiconductor fabrication and build real working ICs.</p>
+
+        <!-- ===== Limitations vs KO-1 Full ===== -->
+        <h2 id="limitations">Limitations vs KO-1 Full</h2>
+        <p>The KO-1 Lite is a capable entry point, but it makes deliberate tradeoffs to hit the $4,999 price point. Here is how it compares to the full KO-1 (Phase 3):</p>
+
+        <table class="inline-table">
+          <tr><th>Specification</th><th>KO-1 Lite (Phase 1.5)</th><th>KO-1 (Phase 3)</th></tr>
+          <tr><td>Base machine</td><td>CNC 3018-PRO</td><td>CNC 4040-PRO</td></tr>
+          <tr><td>Work area</td><td>300 &times; 180mm</td><td>400 &times; 400mm</td></tr>
+          <tr><td>Positioning</td><td>~50&mu;m (lead screws)</td><td>~10&ndash;30&mu;m (ball screws + rails)</td></tr>
+          <tr><td>Cleanroom</td><td>None (open air)</td><td>HEPA enclosed (ISO 7)</td></tr>
+          <tr><td>Wafer handling</td><td>Gantry vacuum pickup</td><td>Gantry vacuum pickup + more stations</td></tr>
+          <tr><td>Max transistors</td><td>~500 (yield-limited)</td><td>~5,000</td></tr>
+          <tr><td>Best feature</td><td>50&mu;m (Albu 50M)</td><td>10&ndash;25&mu;m (Albu 10M/25M)</td></tr>
+          <tr><td>Price</td><td>$4,999</td><td>$8,999</td></tr>
+        </table>
+
+        <p>The primary limitations of the KO-1 Lite are <strong>positioning accuracy</strong> (lead screws vs ball screws) and <strong>particle control</strong> (no enclosure). Both directly limit yield at higher transistor counts. A 500-transistor circuit on the KO-1 Lite will have reasonable yield; a 2,000-transistor circuit will not, because stray particles on an open bench create defects that scale with die area and layer count.</p>
+
+        <p>The KO-1 Lite is designed for users who want to learn the process, build simple circuits, and decide whether they want to invest in the full KO-1. Early adopters who purchase the KO-1 Lite will receive a trade-in credit toward the KO-1 when it ships.</p>
+      </div>
+    </main>
+  </div>
+  <script src="/albu/docs/sidebar-loader.js"></script>
+</body>
+</html>
