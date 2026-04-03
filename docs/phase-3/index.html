@@ -95,6 +95,86 @@
           <strong>Backup approach:</strong> If direct-write resolution proves insufficient, a 10x photomask reduction system (mask printed at 10x scale, projected through a reduction objective) provides an alternative path to 10&mu;m features.
         </div>
 
+        <h2>Single-Machine Station Layout</h2>
+        <p>The CNC 3018 bed (300&times;180mm) is divided into stations. The gantry doubles as a pick-and-place robot, moving the wafer between stations. A Python script orchestrates the process via G-code + GPIO control of peripherals.</p>
+
+        <pre><code>CNC 3018 bed layout (300 &times; 180mm):
+
+  ┌──────────────────────────────────────────────────┐
+  │                                                  │
+  │  ┌──────────┐   ┌──────────────┐   ┌──────────┐ │
+  │  │ SPIN     │   │ EXPOSE       │   │ DEVELOP  │ │
+  │  │ COATER   │   │              │   │          │ │
+  │  │ motor +  │   │ mask + 5x    │   │ water    │ │
+  │  │ chuck    │   │ lens above   │   │ tray +   │ │
+  │  │ resist   │   │ (on gantry)  │   │ drain +  │ │
+  │  │ syringe  │   │ + camera     │   │ rinse    │ │
+  │  └──────────┘   └──────────────┘   └──────────┘ │
+  │                                                  │
+  │     ┌──────────┐                                 │
+  │     │ WAFER    │  parking / storage              │
+  │     │ PARKING  │                                 │
+  │     └──────────┘                                 │
+  └──────────────────────────────────────────────────┘</code></pre>
+
+        <h3>Gantry-Mounted Tools</h3>
+        <p>The Z carriage carries multiple tools, selected by position or a tool changer:</p>
+        <ul class="docs-list">
+          <li><strong>Vacuum pickup nozzle:</strong> Syringe-based suction cup. Picks up and places wafers between stations.</li>
+          <li><strong>Projection head:</strong> UV-C LED + mask holder + 5x reduction objective. For photomask exposure.</li>
+          <li><strong>Laser head:</strong> 5W 450nm module. For mask writing and direct ablation.</li>
+          <li><strong>Camera:</strong> USB camera, always available. Alignment mark detection and inspection.</li>
+          <li><strong>Resist dispenser:</strong> Stepper-driven syringe. Precise 300&mu;L dispensing onto the spin coater.</li>
+        </ul>
+
+        <h3>Automated Process Flow</h3>
+        <ol class="docs-list">
+          <li><strong>COAT:</strong> Gantry picks up blank wafer from PARKING, places on SPIN COATER. Dispenses 300&mu;L resist. Spin coater runs 30 seconds. Wait for drying.</li>
+          <li><strong>EXPOSE:</strong> Gantry picks up coated wafer, places on EXPOSE station (micrometer sub-stage). Camera detects alignment marks. Software calculates offset. Stage adjusts. UV LED fires for calibrated duration.</li>
+          <li><strong>DEVELOP:</strong> Gantry picks up exposed wafer, places in DEVELOP tray. Solenoid valve fills tray with water. Wait 30 seconds. Drain valve opens. Rinse nozzle sprays fresh water. Air nozzle dries.</li>
+          <li><strong>INSPECT:</strong> Gantry picks up wafer, moves under camera. Software checks pattern quality. If OK, return to step 1 for next layer.</li>
+        </ol>
+        <p><strong>Time per layer:</strong> ~5 minutes (coat 1 min + expose 1 min + develop 1 min + transfer/inspect 2 min). A 6-layer CPU process: ~30 minutes with no human intervention after loading the blank wafer.</p>
+
+        <h3>Station Hardware Costs</h3>
+        <table class="inline-table">
+          <tr><th>Component</th><th>Cost</th><th>Notes</th></tr>
+          <tr><td>5x plan objective</td><td>~$15</td><td>For CPU die projection (4mm field of view)</td></tr>
+          <tr><td>275nm UV-C LEDs</td><td>~$15</td><td>Exposure source</td></tr>
+          <tr><td>Micrometer sub-stage (2 heads + springs)</td><td>~$25</td><td>Fine alignment during exposure</td></tr>
+          <tr><td>USB camera</td><td>~$20</td><td>Alignment mark detection</td></tr>
+          <tr><td>Resist syringe + stepper dispenser</td><td>~$15</td><td>Gantry-mounted, precise volume</td></tr>
+          <tr><td>Develop tray (3D printed) + drain</td><td>~$3</td><td>With drain port</td></tr>
+          <tr><td>Solenoid valves &times; 2</td><td>~$10</td><td>Fill + drain control</td></tr>
+          <tr><td>Peristaltic pump (rinse)</td><td>~$12</td><td>Or gravity feed</td></tr>
+          <tr><td>Vacuum nozzle + pump</td><td>~$15</td><td>Wafer pickup/transfer</td></tr>
+          <tr><td>Arduino Mega + relay board</td><td>~$23</td><td>GPIO control of all peripherals</td></tr>
+          <tr><td>Compressed air nozzle + valve</td><td>~$8</td><td>Drying</td></tr>
+          <tr><td>3D printed mounts and fixtures</td><td>~$5</td><td>Station brackets, tool holders</td></tr>
+          <tr><td><strong>Total automation upgrade</strong></td><td><strong>~$166</strong></td><td></td></tr>
+        </table>
+
+        <h2>Cleanroom: Grow Tent + HEPA</h2>
+        <p>ISO 7 (Class 10,000) is sufficient for features &ge;25&mu;m. At 50&mu;m features, particles &gt;10&mu;m are the concern &mdash; ISO 7 handles this easily.</p>
+        <table class="inline-table">
+          <tr><th>Item</th><th>Cost</th></tr>
+          <tr><td>Grow tent (4&times;4 ft)</td><td>~$60</td></tr>
+          <tr><td>HEPA fan filter unit</td><td>~$80&ndash;120</td></tr>
+          <tr><td><strong>Total cleanroom</strong></td><td><strong>~$140&ndash;180</strong></td></tr>
+        </table>
+        <p>The entire CNC fab line fits inside the grow tent. HEPA filter provides positive pressure, keeping particles out. Wear nitrile gloves and a lint-free smock when operating.</p>
+
+        <h2>Cost Trajectory: Zero to CPU-Capable</h2>
+        <table class="inline-table">
+          <tr><th>Phase</th><th>What You Add</th><th>Cumulative Cost</th></tr>
+          <tr><td>Phase 1</td><td>CNC 3018 + laser + microscope + goggles</td><td>$525</td></tr>
+          <tr><td>Phase 2</td><td>Spin coater + consumables (silver paint, zinc acetate, etc.)</td><td>~$650</td></tr>
+          <tr><td>Phase 2.5</td><td>5x objective + UV LEDs + mask projection + camera</td><td>~$730</td></tr>
+          <tr><td>Phase 3</td><td>Automation (valves, pump, pickup, GPIO) + cleanroom</td><td>~$925</td></tr>
+          <tr><td>Phase 4</td><td>CPU fabrication (consumables only, process is ready)</td><td>~$950</td></tr>
+        </table>
+        <p><strong>Under $1,000 CAD from zero to CPU-capable.</strong> The single most expensive item is the CNC 3018 itself ($229).</p>
+
         <!-- ===== Yield Characterization ===== -->
         <h2 id="yield">Yield Characterization</h2>
         <p>Before attempting a CPU, we need statistical data on the process. Gut feeling and a handful of working transistors are not enough &mdash; we need numbers.</p>
