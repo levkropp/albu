@@ -136,6 +136,38 @@ With sub-pixel fitting (centroid): ~50nm alignment accuracy</code></pre>
           <tr><td>Misc + contingency</td><td>$700&ndash;1,100</td></tr>
           <tr><td><strong>Total</strong></td><td><strong>$2,200&ndash;$3,200</strong></td></tr>
         </table>
+
+        <h2>Critical Validation Tests</h2>
+        <p>Machine 3 requires these tests before attempting multi-layer IC fabrication.</p>
+
+        <h3>Test 3.1: Stage Accuracy Verification</h3>
+        <table class="inline-table">
+          <tr><th>Measure</th><th>Method</th><th>Requirement</th></tr>
+          <tr><td>Positioning accuracy</td><td>Laser-mark a grid of dots at known 100&mu;m spacing, measure under microscope</td><td>&lt;5&mu;m error</td></tr>
+          <tr><td>Repeatability</td><td>Command stage to same position 20 times, measure spread</td><td>&lt;2&mu;m standard deviation</td></tr>
+          <tr><td>Backlash</td><td>Approach same position from +X and &minus;X, measure difference</td><td>&lt;3&mu;m</td></tr>
+        </table>
+
+        <h3>Test 3.2: Alignment Mark Detection</h3>
+        <table class="inline-table">
+          <tr><th>Variable</th><th>Sweep</th></tr>
+          <tr><td>Mark size</td><td>10, 20, 50, 100&mu;m cross marks</td></tr>
+          <tr><td>Objective magnification</td><td>10x, 20x, 50x</td></tr>
+          <tr><td>Detection algorithm</td><td>Template matching, edge detection, centroid fitting</td></tr>
+        </table>
+        <p><strong>Measure:</strong> Detected position vs known position across 50 marks. Need &lt;1&mu;m RMS error for 10&mu;m feature alignment.</p>
+
+        <h3>Test 3.3: Focused Laser Spot Size</h3>
+        <table class="inline-table">
+          <tr><th>Variable</th><th>Sweep</th></tr>
+          <tr><td>Objective</td><td>Repurposed BEBANG 40x, new 10x, new 20x</td></tr>
+          <tr><td>Laser source</td><td>Genmitsu 5W multimode, single-mode 405nm diode</td></tr>
+        </table>
+        <p><strong>Method:</strong> Ablate single-pass lines in thin aluminum film on glass. Measure line width under microscope = effective spot size. The single-mode diode through a 20x objective should achieve 3&ndash;5&mu;m; the multimode 5W diode will be 10&ndash;20&mu;m.</p>
+
+        <h3>Test 3.4: Multi-Layer Alignment Accuracy</h3>
+        <p>The ultimate integration test. Write alignment marks + a test pattern on layer 1 (resist or ablation). Process the layer. Write layer 2 using alignment marks for registration. Measure the overlay error between layers.</p>
+        <p><strong>Pass criterion:</strong> &lt;3&mu;m overlay error (1/3 of minimum feature size) across a 7mm die area.</p>
       </div>
     </main>
   </div>

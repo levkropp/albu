@@ -282,6 +282,18 @@ Also include:
 
         <p>Document everything: photos, exposure parameters, development times, stain method, any failures and what caused them. This data feeds directly into Phase 2 process optimization.</p>
 
+        <h2>Go/No-Go Decision Matrix</h2>
+        <p>Phase 1 has a clear decision tree. If the primary approach fails, each fallback is cheaper and faster than the previous attempt.</p>
+
+        <table class="inline-table">
+          <tr><th>Result</th><th>Decision</th></tr>
+          <tr><td>Egg white + riboflavin works at 450nm</td><td>Proceed with egg white as primary resist. Test PVA in parallel as shelf-stable product formulation.</td></tr>
+          <tr><td>PVA + riboflavin works but egg white doesn&rsquo;t</td><td>Switch to PVA (Elmer&rsquo;s glue) as primary resist. Less romantic but more consistent and shelf-stable.</td></tr>
+          <tr><td>Neither works at 450nm</td><td>Order 275nm UV-C LEDs (~$15 on AliExpress). Re-test both formulations. Egg white at 275nm is proven in the paper.</td></tr>
+          <tr><td>Neither works at 275nm</td><td>Problem is in film preparation, not wavelength. Revisit filtering/degassing. Test with direct sunlight UV as control.</td></tr>
+          <tr><td>Nothing works at all</td><td>Buy commercial photoresist (Shipley 1813, ~$30 on eBay) to validate rest of process. Return to resist development later.</td></tr>
+        </table>
+
         <div class="docs-callout">
           <strong>What's next:</strong> Once Phase 1 succeeds, Phase 2 begins immediately. The first transistor (ZnO TFT on glass) uses the same spin coater, the same laser, and the same egg white &mdash; now as a gate dielectric instead of a photoresist. The transition is seamless.
         </div>

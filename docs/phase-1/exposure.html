@@ -134,6 +134,43 @@ M5              ; Laser off</code></pre>
           <strong>If nothing works:</strong> If no exposure condition produces visible crosslinking after development, the riboflavin concentration may be too low, or 450nm may not generate sufficient singlet oxygen. Try: (1) double the riboflavin concentration, (2) add a second photosensitizer like rose bengal (available as food dye), (3) order 275nm UV-C LEDs as the fallback illumination source.
         </div>
 
+        <h2>Systematic Sweep Tests</h2>
+        <p>Run these sweeps in order. Each narrows the parameter space for the next.</p>
+
+        <h3>Sweep 1: Riboflavin concentration (is 450nm viable at all?)</h3>
+        <div class="docs-warning">
+          <strong>This is the single most important experiment in the entire project.</strong> If no riboflavin concentration produces crosslinking at 450nm, the wavelength strategy fails and we fall back to UV-C LEDs.
+        </div>
+        <table class="inline-table">
+          <tr><th>Variable</th><th>Values</th><th>Slides</th></tr>
+          <tr><td>Riboflavin (mg/mL)</td><td>0, 0.5, 1, 2, 5, 10</td><td>6</td></tr>
+          <tr><td>Hold constant</td><td colspan="2">Power S600, speed F200, spin 3000 RPM, egg white resist</td></tr>
+        </table>
+        <p><strong>Also run with PVA resist</strong> at PVA concentrations 5% and 10% &mdash; 12 additional slides. This tests both matrix materials simultaneously.</p>
+
+        <h3>Sweep 2: Power (given best riboflavin concentration)</h3>
+        <table class="inline-table">
+          <tr><th>Variable</th><th>Values</th><th>Slides</th></tr>
+          <tr><td>Laser power (S value)</td><td>S50, S100, S200, S400, S600, S800, S1000</td><td>7</td></tr>
+          <tr><td>Hold constant</td><td colspan="2">Best riboflavin concentration from Sweep 1, speed F200</td></tr>
+        </table>
+
+        <h3>Sweep 3: Speed (given best power)</h3>
+        <table class="inline-table">
+          <tr><th>Variable</th><th>Values</th><th>Slides</th></tr>
+          <tr><td>Scan speed (mm/min)</td><td>F20, F50, F100, F200, F500, F1000, F2000</td><td>7</td></tr>
+          <tr><td>Hold constant</td><td colspan="2">Best riboflavin + best power from Sweeps 1-2</td></tr>
+        </table>
+
+        <h3>Sweep 4: Film thickness sensitivity</h3>
+        <table class="inline-table">
+          <tr><th>Variable</th><th>Values</th><th>Slides</th></tr>
+          <tr><td>Spin speed (RPM)</td><td>1000, 2000, 3000, 4000, 6000</td><td>5</td></tr>
+          <tr><td>Hold constant</td><td colspan="2">Best parameters from Sweeps 1-3</td></tr>
+        </table>
+
+        <p><strong>Total slides for all sweeps:</strong> ~37 (egg white) + ~12 (PVA) = ~49 slides. At 300&mu;L per slide, this uses ~15mL of resist = less than one egg.</p>
+
       </div>
     </main>
   </div>

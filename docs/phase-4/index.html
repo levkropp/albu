@@ -164,6 +164,25 @@
         <div class="docs-callout">
           <strong>The honest truth:</strong> Phase 4 may take years of iteration. The intermediate milestones (inverter, ring oscillator, flip-flop) are valuable demonstrations in their own right. Even a working 4-bit adder fabricated at home would be a significant achievement. SERV is the north star, not a short-term deliverable.
         </div>
+
+        <h2>Validation Milestones</h2>
+        <p>Each step validates the process before committing to the next level of complexity.</p>
+
+        <table class="inline-table">
+          <tr><th>Step</th><th>Circuit</th><th>Transistors</th><th>What It Validates</th><th>Pass Criterion</th></tr>
+          <tr><td>4a</td><td>CMOS Inverter</td><td>2</td><td>Both n-type and p-type TFTs work, complementary logic functions</td><td>Output swings rail-to-rail, V<sub>th</sub> within 30% of V<sub>DD</sub>/2</td></tr>
+          <tr><td>4b</td><td>NAND Gate</td><td>4</td><td>Multi-input logic, pull-up/pull-down network</td><td>Correct truth table for all 4 input combinations</td></tr>
+          <tr><td>4c</td><td>Ring Oscillator (5-stage)</td><td>10</td><td>Transistor uniformity across multiple devices, AC switching</td><td>Stable oscillation visible on oscilloscope</td></tr>
+          <tr><td>4d</td><td>D Flip-Flop</td><td>20&ndash;28</td><td>Sequential logic, clock-edge sensitivity</td><td>Correct latch/capture behavior on scope</td></tr>
+          <tr><td>4e</td><td>4-bit Adder</td><td>~60</td><td>Combinational logic at moderate scale, carry propagation</td><td>Correct sum for all tested input pairs</td></tr>
+          <tr><td>4f</td><td>State Machine</td><td>~200</td><td>Sequential + combinational integration, yield at scale</td><td>Correct state transitions for designed sequence</td></tr>
+          <tr><td>4g</td><td>SERV ALU</td><td>~500&ndash;1000</td><td>Complex logic, critical path timing</td><td>Correct arithmetic/logic operations</td></tr>
+          <tr><td>4h</td><td>Full SERV</td><td>~4000&ndash;8000</td><td>Complete processor, memory interface, instruction execution</td><td>Executes a test program correctly</td></tr>
+        </table>
+
+        <div class="docs-callout">
+          <strong>Each step is independently impressive and publishable.</strong> If yield prevents reaching Step 4h, every intermediate step still demonstrates advancing capability. A working CMOS ring oscillator (Step 4c) from grocery store materials on a glass slide is a significant achievement by itself.
+        </div>
       </div>
     </main>
   </div>

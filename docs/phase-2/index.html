@@ -217,6 +217,105 @@
           <tr><td>Phosphoric acid (rust remover)</td><td>Laser doping dopant source</td><td>$8</td></tr>
           <tr><td><strong>Total additional</strong></td><td></td><td><strong>~$130</strong></td></tr>
         </table>
+
+        <h2>Systematic Sweep Tests</h2>
+        <p>Every transistor approach must be validated with controlled sweeps before attempting integration. Run these in the order listed.</p>
+
+        <h3>Test 2.1: Egg White Dielectric Qualification</h3>
+        <p>Before building any transistor, verify the gate dielectric independently. Fabricate metal-insulator-metal (MIM) capacitors: silver paint (bottom electrode) &rarr; egg white (dielectric) &rarr; silver paint (top electrode) on glass.</p>
+        <table class="inline-table">
+          <tr><th>Variable</th><th>Sweep</th><th>Measure</th></tr>
+          <tr><td>Film thickness</td><td>100, 200, 300, 500nm (spin speed)</td><td>Leakage current vs. voltage (0&ndash;20V)</td></tr>
+          <tr><td>Crosslinking method</td><td>UV cure 5 min, UV cure 15 min, thermal 80&deg;C, thermal 150&deg;C</td><td>Leakage current, breakdown voltage</td></tr>
+        </table>
+        <p><strong>Pass criterion:</strong> Leakage &lt;10<sup>&minus;6</sup> A/cm&sup2; at operating voltage (5&ndash;10V). If this fails, try thicker films or gelatin (Jell-O) as an alternative dielectric.</p>
+
+        <h3>Test 2.2: ZnO TFT Parameter Sweep</h3>
+        <table class="inline-table">
+          <tr><th>Variable</th><th>Sweep</th><th>Devices</th></tr>
+          <tr><td>ZnO anneal temperature</td><td>200, 250, 300, 350&deg;C</td><td>4 slides &times; 4 devices each</td></tr>
+          <tr><td>ZnO layer count</td><td>1, 2, 3, 5 spin-coat layers</td><td>4 slides &times; 4 devices each</td></tr>
+          <tr><td>Channel length (S/D gap)</td><td>50, 100, 200, 500 &mu;m</td><td>4 devices per slide</td></tr>
+          <tr><td>Gate dielectric thickness</td><td>100, 200, 400nm</td><td>3 slides</td></tr>
+        </table>
+        <p><strong>Measure for each device:</strong> I<sub>DS</sub> vs V<sub>GS</sub> transfer curve (V<sub>GS</sub> = 0&ndash;15V in 1V steps, V<sub>DS</sub> = 5V). Extract: threshold voltage (V<sub>th</sub>), on/off ratio, field-effect mobility.</p>
+        <p><strong>Pass criterion:</strong> At least one condition gives on/off ratio &gt;10&sup3; with V<sub>th</sub> &lt; 10V.</p>
+
+        <h3>Test 2.3: Schottky Barrier &mdash; Egg White Interlayer Effect</h3>
+        <p>Quick experiment: fabricate simple diodes (metal on p-type Si) and measure I-V curves.</p>
+        <table class="inline-table">
+          <tr><th>Variable</th><th>Levels</th></tr>
+          <tr><td>Contact metal</td><td>Silver paint, gold leaf</td></tr>
+          <tr><td>Interlayer</td><td>None, egg white dip 10s, dip 30s, dip 60s</td></tr>
+          <tr><td>Dip solution dilution</td><td>1:10, 1:50, 1:100, 1:500 (egg white in water)</td></tr>
+        </table>
+        <p><strong>Measure:</strong> Forward and reverse I-V curves. Calculate barrier height and ideality factor from the diode equation.</p>
+        <p><strong>Pass criterion:</strong> Interlayer devices show &gt;10&times; lower reverse leakage than bare contacts. If gold leaf + interlayer achieves on/off &gt;10&sup4;, it may be viable for simple circuits.</p>
+
+        <h3>Test 2.4: Laser Doping Validation</h3>
+        <div class="docs-warning">
+          <strong>Honest assessment:</strong> Laser doping with a CW diode laser is physically plausible (the 1ms dwell time at 100mm/s allows ~7&mu;m diffusion depth in molten Si), and CW laser doping is used commercially in solar cell manufacturing. However, dopant activation, crystal damage, and contact resistance are genuine concerns. This test sequence determines if it works with our specific setup. Do not build a laser-doped MOSFET until these tests pass.
+        </div>
+
+        <h4>Step A: Can the laser melt silicon?</h4>
+        <table class="inline-table">
+          <tr><th>Variable</th><th>Sweep</th></tr>
+          <tr><td>Laser power (S value)</td><td>S200, S400, S600, S800, S1000</td></tr>
+          <tr><td>Scan speed (mm/min)</td><td>10, 20, 50, 100, 200</td></tr>
+        </table>
+        <p><strong>Measure:</strong> Visual inspection under microscope. Smooth, discolored track = melt/resolidification (good). Rough crater = ablation (too much power). No visible change = insufficient heating.</p>
+
+        <h4>Step B: Does phosphorus incorporate?</h4>
+        <table class="inline-table">
+          <tr><th>Variable</th><th>Sweep</th></tr>
+          <tr><td>Phosphoric acid concentration</td><td>10%, 25%, 50%, 85% (dilutions of rust remover)</td></tr>
+          <tr><td>Laser power</td><td>Best 3 from Step A</td></tr>
+          <tr><td>Scan speed</td><td>Best 3 from Step A</td></tr>
+          <tr><td>Number of passes</td><td>1, 3, 5, 10</td></tr>
+        </table>
+        <p><strong>Measure:</strong></p>
+        <ol class="docs-list">
+          <li><strong>Sheet resistance:</strong> Two-probe measurement on laser-scanned area vs unscanned area. Doped: k&Omega;/square or less. Undoped: M&Omega;/square. Need &gt;100&times; drop to confirm doping.</li>
+          <li><strong>Diode test:</strong> Silver contacts on doped region + undoped region. Rectifying behavior (current one direction only) confirms p-n junction formation.</li>
+        </ol>
+        <div class="docs-callout">
+          <strong>Go/No-Go:</strong> If no condition shows &gt;100&times; sheet resistance drop, laser doping is not working with our setup. Park this approach and focus on the ZnO TFT path. Do not attempt a laser-doped MOSFET.
+        </div>
+
+        <h4>Step C: Junction depth (if Step B passes)</h4>
+        <p>Etch the doped region with KOH (etches doped and undoped Si at different rates). Measure step height with microscope focus dial &asymp; junction depth. Need &gt;500nm for a functional MOSFET. If too shallow, proceed to Step D.</p>
+
+        <h4>Step D: Multi-pass depth increase</h4>
+        <table class="inline-table">
+          <tr><th>Variable</th><th>Sweep</th></tr>
+          <tr><td>Number of passes</td><td>1, 2, 5, 10, 20</td></tr>
+          <tr><td>Inter-pass delay</td><td>0 (continuous), 1s, 5s</td></tr>
+          <tr><td>Scan speed</td><td>10, 20, 50 mm/min (slower = longer melt)</td></tr>
+        </table>
+        <p><strong>Hypothesis:</strong> Multiple slow passes re-melt silicon each time, allowing phosphorus to diffuse deeper with each cycle. Commercial CW laser doping uses multiple passes for this reason.</p>
+
+        <h3>Test 2.5: Cu&sub2;O Formation by Laser Oxidation</h3>
+        <table class="inline-table">
+          <tr><th>Variable</th><th>Sweep</th></tr>
+          <tr><td>Laser power (S value)</td><td>S10, S20, S50, S100, S200</td></tr>
+          <tr><td>Scan speed (mm/min)</td><td>20, 50, 100, 200, 500</td></tr>
+          <tr><td>Substrate</td><td>Copper gilding leaf on glass, copper tape on glass</td></tr>
+        </table>
+        <p><strong>Measure:</strong> Color change: copper (shiny) &rarr; red/orange = Cu&sub2;O (target), black = CuO (overcooked), no change = insufficient heating. Then test conductivity: Cu&sub2;O should be semiconducting (high resistance), metallic Cu should be highly conductive.</p>
+        <p><strong>Pass criterion:</strong> Visible red/orange color change in a defined channel region without delamination, ablation, or full conversion to CuO.</p>
+
+        <h2>Phase 2 Go/No-Go Decision Matrix</h2>
+        <table class="inline-table">
+          <tr><th>Result</th><th>Decision</th></tr>
+          <tr><td>ZnO TFT works, on/off &gt;10&sup3;</td><td>Primary transistor for circuits. Proceed to ring oscillator.</td></tr>
+          <tr><td>ZnO TFT works but on/off &lt;10&sup2;</td><td>ZnO quality is poor. Try higher anneal temp, more layers, different sol-gel recipe.</td></tr>
+          <tr><td>ZnO TFT doesn&rsquo;t work at all</td><td>Check dielectric (Test 2.1). If dielectric leaks, try thicker film or gelatin.</td></tr>
+          <tr><td>Laser doping: &gt;100&times; resistance drop</td><td>Viable. Build laser-doped MOSFET.</td></tr>
+          <tr><td>Laser doping: &lt;10&times; even with multi-pass</td><td>Does not work with our laser. Park approach. Focus on ZnO TFT.</td></tr>
+          <tr><td>Egg white interlayer: &gt;10&times; leakage reduction</td><td>Interesting science, worth documenting. But use ZnO for circuits.</td></tr>
+          <tr><td>Cu&sub2;O forms by laser oxidation</td><td>Test as p-type TFT. If it works, enables CMOS with ZnO.</td></tr>
+          <tr><td>Cu&sub2;O doesn&rsquo;t form cleanly by laser</td><td>Use hot plate method (whole-film oxidation at 250&deg;C). Less elegant but proven.</td></tr>
+        </table>
       </div>
     </main>
   </div>
