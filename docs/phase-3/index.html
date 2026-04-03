@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Phase 3: Automated Chip Printer - Albu Docs</title>
+  <title>Phase 3: The Albu Process - Albu Docs</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
@@ -40,12 +40,38 @@
     <aside class="docs-sidebar" data-active="phase-3"></aside>
     <main class="docs-main">
       <div class="docs-content">
-        <h1>Phase 3: Automated Chip Printer</h1>
-        <p class="docs-lead">Machine 3 &mdash; a maskless direct-write lithography system with machine vision alignment. Software-defined patterns, sub-micron alignment, and 10&mu;m feature resolution from off-the-shelf components.</p>
+        <h1>Phase 3: The Albu Process</h1>
+        <p class="docs-lead">Building a reproducible, semi-automated semiconductor fabrication line from the process validated in Phase 2.</p>
 
-        <!-- ===== Architecture ===== -->
-        <h2 id="architecture">Machine Architecture</h2>
-        <p>The chip printer is a precision XY scanning system that focuses a single-mode laser through a microscope objective to directly write patterns onto photoresist-coated substrates. A beam splitter enables through-the-lens (TTL) camera alignment, so the same optical path used for exposure is also used for finding alignment marks.</p>
+        <!-- ===== Process Naming ===== -->
+        <h2 id="naming">Process Naming Convention</h2>
+        <p>The Albu process is named by its minimum reliable feature size. The name is earned through characterization, not aspiration &mdash; it reflects what the process can actually deliver with acceptable yield.</p>
+
+        <table class="inline-table">
+          <tr><th>Process Name</th><th>Minimum Feature</th><th>Meaning</th></tr>
+          <tr><td><strong>Albu 25M</strong></td><td>25&mu;m</td><td>25-micron minimum feature, stable and reproducible</td></tr>
+          <tr><td><strong>Albu 10M</strong></td><td>10&mu;m</td><td>10-micron minimum feature, stable and reproducible</td></tr>
+          <tr><td><strong>Albu 5M</strong></td><td>5&mu;m</td><td>5-micron minimum feature (stretch goal)</td></tr>
+        </table>
+
+        <p>The &ldquo;M&rdquo; stands for microns. Getting a named, characterized process is the goal of Phase 3 &mdash; a process where you can state the feature size, yield, and device parameters with confidence because they have been measured across dozens of devices.</p>
+
+        <!-- ===== What Needs Automating ===== -->
+        <h2 id="automation">What Needs Automating</h2>
+        <p>Phase 2 validates the transistor process with manual methods. Phase 3 turns those manual steps into a repeatable, semi-automated fabrication line. Every source of human variability needs to be reduced or eliminated.</p>
+
+        <table class="inline-table">
+          <tr><th>Process Step</th><th>Current (Phase 2)</th><th>Needed (Phase 3)</th></tr>
+          <tr><td>Spin coating</td><td>Manual pipette + hand-start</td><td>Automated dispense + programmed spin cycle + arm to load/unload substrates</td></tr>
+          <tr><td>Development</td><td>Hand-dipping</td><td>Automated wash station with timed immersion and rinse</td></tr>
+          <tr><td>Laser exposure</td><td>Already automated (CNC)</td><td>Upgrade to precision stage with encoders for &lt;5&mu;m accuracy</td></tr>
+          <tr><td>Layer alignment</td><td>Currently not possible</td><td>Machine vision camera + software alignment mark detection</td></tr>
+          <tr><td>Metrology</td><td>Manual microscope</td><td>Automated feature measurement for yield tracking</td></tr>
+        </table>
+
+        <!-- ===== Lithography Station ===== -->
+        <h2 id="lithography">The Lithography Station</h2>
+        <p>The core of the fab line is a maskless direct-write lithography system &mdash; a precision XY scanning stage that focuses a single-mode laser through a microscope objective to write patterns directly onto photoresist-coated substrates. A beam splitter enables through-the-lens (TTL) camera alignment, so the same optical path used for exposure is also used for finding alignment marks.</p>
 
         <h3>Core Components</h3>
         <ul class="docs-list">
@@ -55,90 +81,70 @@
           <li><strong>Machine vision camera:</strong> 5MP+ monochrome camera on the tube lens port. Provides live view of the substrate for alignment and focus.</li>
           <li><strong>Precision XY stage:</strong> Closed-loop linear stages with optical encoders. ~1&mu;m positioning accuracy. The substrate moves; the optics stay fixed.</li>
           <li><strong>Z focus stage:</strong> Motorized or piezo-driven for autofocus. Maintains the laser spot at the resist surface across the entire die.</li>
-          <li><strong>Motion controller:</strong> Klipper firmware running on a BTT Octopus board with TMC2209 stepper drivers. Proven in 3D printers, repurposed for nanometer-class motion control.</li>
+          <li><strong>Motion controller:</strong> Klipper firmware running on a BTT Octopus board with TMC2209 stepper drivers.</li>
           <li><strong>Software:</strong> Python + OpenCV for alignment mark detection, GDS-to-scan-path conversion, and exposure sequencing.</li>
         </ul>
 
-        <!-- ===== Why Maskless ===== -->
-        <h2 id="why-maskless">Why Maskless Over Photomask</h2>
-        <p>Traditional photolithography projects a pattern through a physical mask. Maskless direct-write eliminates the mask entirely.</p>
+        <h3>Why Maskless</h3>
+        <p>Maskless direct-write eliminates the need to produce a physical photomask for each layer. Pattern changes are instant (modify the GDS file and re-expose), and layer-to-layer alignment is computed from detected alignment marks rather than mechanical pin registration. The pipeline: <strong>GDS file &rarr; scan coordinates &rarr; affine transform &rarr; exposure</strong>.</p>
 
-        <table class="inline-table">
-          <tr><th>Advantage</th><th>Explanation</th></tr>
-          <tr><td>No mask fabrication</td><td>No need to produce a chrome-on-glass mask for each layer. Saves cost and turnaround time.</td></tr>
-          <tr><td>Software alignment</td><td>Layer-to-layer alignment is computed from detected alignment marks, not from mechanical pin registration.</td></tr>
-          <tr><td>Instant pattern changes</td><td>Modify the GDS file and re-expose. No physical artifact to remake.</td></tr>
-          <tr><td>Per-layer transform</td><td>Each layer's coordinate system is computed from actual alignment mark positions, correcting for substrate rotation and translation.</td></tr>
-        </table>
-
-        <p>The pipeline: <strong>GDS file &rarr; scan coordinates &rarr; affine transform &rarr; exposure</strong>. The entire pattern is defined in software.</p>
+        <h3>Exposure Strategy: Step-and-Scan</h3>
+        <p>The objective field of view limits how much area can be exposed at once. The lithography station uses a step-and-scan strategy: expose one field, step to the next, repeat until the full die is covered. At 10&mu;m features with a 20x objective, a 7mm die takes approximately 3&ndash;4 minutes per layer.</p>
 
         <div class="docs-callout">
           <strong>Backup approach:</strong> If direct-write resolution proves insufficient, a 10x photomask reduction system (mask printed at 10x scale, projected through a reduction objective) provides an alternative path to 10&mu;m features.
         </div>
 
-        <!-- ===== Software Alignment ===== -->
-        <h2 id="alignment">Software Alignment</h2>
-        <p>Multi-layer chip fabrication requires each layer to be precisely aligned to the previous one. Machine 3 uses computer vision to detect alignment marks and compute an affine transform for each exposure layer.</p>
+        <!-- ===== Yield Characterization ===== -->
+        <h2 id="yield">Yield Characterization</h2>
+        <p>Before attempting a CPU, we need statistical data on the process. Gut feeling and a handful of working transistors are not enough &mdash; we need numbers.</p>
 
-        <h3>Alignment Procedure</h3>
-        <ol class="docs-list">
-          <li><strong>Find alignment mark #1.</strong> Stage moves to the expected location. Camera acquires image. OpenCV template matching or contour detection locates the mark center. Record actual position (x<sub>1</sub>, y<sub>1</sub>).</li>
-          <li><strong>Find alignment mark #2.</strong> Stage moves to the second mark. Same detection. Record actual position (x<sub>2</sub>, y<sub>2</sub>).</li>
-          <li><strong>Compute affine transform.</strong> From the two measured positions vs. the two expected positions, compute the translation, rotation, and scale that maps design coordinates to stage coordinates.</li>
-          <li><strong>Apply transform.</strong> Every exposure coordinate in the GDS scan path is transformed through this matrix before being sent to the stage controller.</li>
-        </ol>
+        <h3>Methodology</h3>
+        <ul class="docs-list">
+          <li>Fabricate 50+ identical transistors across multiple substrates</li>
+          <li>Measure V<sub>th</sub>, on/off ratio, and mobility for each device</li>
+          <li>Calculate mean, standard deviation, and yield (% of devices that meet spec)</li>
+          <li>Track defect density per unit area</li>
+        </ul>
 
-        <h3>Alignment Accuracy</h3>
-        <p>The theoretical alignment precision is determined by the camera resolution divided by the objective magnification:</p>
-        <pre><code>alignment_precision = camera_pixel_size / objective_magnification
-
-Example: 2.2&mu;m pixel (5MP sensor) / 20x objective = 110nm per pixel
-With sub-pixel fitting (centroid): ~50nm alignment accuracy</code></pre>
-        <p>At 10&mu;m feature sizes, a 50nm alignment budget is more than sufficient. Even 1&mu;m alignment (20x worse) would be acceptable.</p>
-
-        <!-- ===== Exposure Strategy ===== -->
-        <h2 id="exposure">Exposure Strategy: Step-and-Scan</h2>
-        <p>The objective field of view limits how much area can be exposed at once. Machine 3 uses a step-and-scan strategy: expose one field, step to the next, repeat until the full die is covered.</p>
-
+        <h3>Yield Targets</h3>
         <table class="inline-table">
-          <tr><th>Parameter</th><th>Value</th></tr>
-          <tr><td>Objective</td><td>20x LWD</td></tr>
-          <tr><td>Field of view</td><td>~500&mu;m &times; 500&mu;m</td></tr>
-          <tr><td>Die size</td><td>7mm &times; 7mm</td></tr>
-          <tr><td>Fields per die</td><td>14 &times; 14 = 196</td></tr>
-          <tr><td>Raster step within field</td><td>10&mu;m</td></tr>
-          <tr><td>Time per field</td><td>~1 second</td></tr>
-          <tr><td>Time per layer</td><td>~3&ndash;4 minutes</td></tr>
-          <tr><td>Total for 8 layers</td><td>~30 minutes</td></tr>
+          <tr><th>Target CPU</th><th>Transistor Count</th><th>Required Per-Transistor Yield</th><th>Estimated Die Yield</th></tr>
+          <tr><td>Albu-4 (4-bit CPU)</td><td>~1,000</td><td>&gt;99%</td><td>~90%</td></tr>
+          <tr><td>SERV (RISC-V core)</td><td>~4,500</td><td>&gt;99.9%</td><td>~95%</td></tr>
         </table>
 
-        <p>Target resolution: <strong>10&mu;m features</strong>. This is achievable with a 405nm laser through a 20x objective (diffraction limit ~0.5&mu;m), leaving comfortable margin for mechanical and optical imperfections.</p>
+        <p>Getting from 99% to 99.9% per-transistor yield is the central engineering challenge of Phase 3. Every defect source must be identified and eliminated: particles in the resist, pinholes in the gate dielectric, incomplete etching, contact resistance variation, film thickness non-uniformity.</p>
 
-        <!-- ===== BOM ===== -->
-        <h2 id="bom">Bill of Materials</h2>
-        <p>Estimated total: <strong>$2,200&ndash;$3,200</strong>. All components are commercially available from standard suppliers.</p>
+        <div class="docs-warning">
+          <strong>This data determines Phase 4.</strong> The yield numbers from Phase 3 directly dictate whether we attempt the Albu-4 custom CPU (~1,000 transistors) or the SERV RISC-V core (~4,500 transistors). There is no point designing a CPU until we know what the process can deliver.
+        </div>
+
+        <!-- ===== Budget ===== -->
+        <h2 id="budget">Budget</h2>
+        <p>Estimated total: <strong>$5,000&ndash;$15,000</strong> depending on automation level. This phase is intended to be crowdfunded.</p>
 
         <table class="inline-table">
           <tr><th>Component</th><th>Cost</th></tr>
           <tr><td>Precision XY stages with encoders</td><td>$400&ndash;600</td></tr>
+          <tr><td>Machine vision camera</td><td>$100&ndash;200</td></tr>
+          <tr><td>Automated spin coater upgrades</td><td>$200&ndash;400</td></tr>
+          <tr><td>Robotic arm or manual transfer fixture</td><td>$100&ndash;500</td></tr>
+          <tr><td>Control electronics</td><td>$200&ndash;400</td></tr>
           <tr><td>Z focus stage (motorized)</td><td>$100&ndash;200</td></tr>
           <tr><td>Objectives (20x, 50x LWD)</td><td>$150&ndash;300</td></tr>
           <tr><td>Beam splitter + tube lens</td><td>$70&ndash;110</td></tr>
-          <tr><td>Machine vision camera (5MP+)</td><td>$80&ndash;150</td></tr>
           <tr><td>Single-mode laser + driver (405nm)</td><td>$50&ndash;80</td></tr>
-          <tr><td>UV-C LEDs (275nm)</td><td>$30&ndash;50</td></tr>
-          <tr><td>Klipper + BTT Octopus + TMC2209 drivers</td><td>$120&ndash;180</td></tr>
-          <tr><td>Optical breadboard</td><td>$100&ndash;200</td></tr>
-          <tr><td>Enclosure + vibration isolation</td><td>$110&ndash;170</td></tr>
-          <tr><td>Vacuum chuck</td><td>$30&ndash;50</td></tr>
+          <tr><td>Optical breadboard + enclosure</td><td>$200&ndash;370</td></tr>
           <tr><td>Computer (mini PC)</td><td>$150&ndash;250</td></tr>
-          <tr><td>Misc + contingency</td><td>$700&ndash;1,100</td></tr>
-          <tr><td><strong>Total</strong></td><td><strong>$2,200&ndash;$3,200</strong></td></tr>
+          <tr><td>Iteration, consumables, and contingency</td><td>$3,000&ndash;$12,000</td></tr>
         </table>
 
+        <p>The wide range reflects uncertainty in how much iteration will be required. The minimum viable fab line (manual substrate transfer, semi-automated spin coating, CNC-based exposure with encoder upgrade) is at the low end. A fully automated line with robotic substrate handling and closed-loop metrology is at the high end.</p>
+
+        <!-- ===== Validation Tests ===== -->
         <h2>Critical Validation Tests</h2>
-        <p>Machine 3 requires these tests before attempting multi-layer IC fabrication.</p>
+        <p>The lithography station and automated process line require these tests before attempting multi-layer IC fabrication.</p>
 
         <h3>Test 3.1: Stage Accuracy Verification</h3>
         <table class="inline-table">

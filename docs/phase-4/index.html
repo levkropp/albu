@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Phase 4: SERV RISC-V CPU - Albu Docs</title>
+  <title>Phase 4: First CPU - Albu Docs</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
@@ -40,104 +40,134 @@
     <aside class="docs-sidebar" data-active="phase-4"></aside>
     <main class="docs-main">
       <div class="docs-content">
-        <h1>Phase 4: SERV RISC-V CPU</h1>
-        <p class="docs-lead">The endgame &mdash; fabricating SERV, the world's smallest RISC-V CPU, on a home-built CMOS process. ~6,000 transistors on a single die, written with egg white photoresist.</p>
+        <h1>Phase 4: First CPU</h1>
+        <p class="docs-lead">Building the first processor fabricated with the Albu process &mdash; either a custom 4-bit design or a SERV RISC-V core, depending on Phase 3 yield.</p>
 
-        <!-- ===== SERV Overview ===== -->
-        <h2 id="serv-overview">What Is SERV?</h2>
-        <p>SERV is a bit-serial RISC-V CPU designed by Olof Kindgren. It implements the RV32I base integer instruction set by processing one bit at a time, trading speed for minimal area. It is fully open source.</p>
+        <!-- ===== Decision ===== -->
+        <h2 id="decision">Decision: Albu-4 vs SERV</h2>
+        <p>The choice depends entirely on yield data from Phase 3. There is no point committing to a CPU architecture until we know what the process can deliver.</p>
 
+        <table class="inline-table">
+          <tr><th>Yield per Transistor</th><th>Feasible Target</th><th>Die Yield (estimate)</th></tr>
+          <tr><td>&gt;99.5%</td><td>SERV core (~4,500 transistors)</td><td>~80%</td></tr>
+          <tr><td>99&ndash;99.5%</td><td>Albu-4 custom 4-bit CPU (~1,000 transistors)</td><td>~90%</td></tr>
+          <tr><td>98&ndash;99%</td><td>Albu-4 with reduced registers (~800 transistors)</td><td>~85%</td></tr>
+          <tr><td>&lt;98%</td><td>Need to improve process first</td><td>Not feasible</td></tr>
+        </table>
+
+        <!-- ===== Option A: Albu-4 ===== -->
+        <h2 id="albu-4">Option A: Albu-4 Custom 4-bit CPU</h2>
+        <p>A custom-designed 4-bit processor using approximately 900&ndash;1,000 NMOS transistors. Simple enough to be feasible at moderate yield, complex enough to be a real programmable computer.</p>
+
+        <h3>Architecture</h3>
+        <ul class="docs-list">
+          <li><strong>Data bus:</strong> 4-bit</li>
+          <li><strong>Address bus:</strong> 10&ndash;12 bit</li>
+          <li><strong>Registers:</strong> 2&ndash;4 general purpose</li>
+          <li><strong>Memory:</strong> External SRAM for program and data storage</li>
+        </ul>
+
+        <h3>Instruction Set (16 instructions)</h3>
+        <table class="inline-table">
+          <tr><th>Instruction</th><th>Description</th></tr>
+          <tr><td>ADD</td><td>Add two registers</td></tr>
+          <tr><td>SUB</td><td>Subtract two registers</td></tr>
+          <tr><td>AND</td><td>Bitwise AND</td></tr>
+          <tr><td>OR</td><td>Bitwise OR</td></tr>
+          <tr><td>XOR</td><td>Bitwise XOR</td></tr>
+          <tr><td>NOT</td><td>Bitwise NOT</td></tr>
+          <tr><td>LOAD</td><td>Load from memory</td></tr>
+          <tr><td>STORE</td><td>Store to memory</td></tr>
+          <tr><td>JUMP</td><td>Unconditional jump</td></tr>
+          <tr><td>BRANCH-IF-ZERO</td><td>Conditional branch</td></tr>
+          <tr><td>SHIFT-LEFT</td><td>Shift left by 1</td></tr>
+          <tr><td>SHIFT-RIGHT</td><td>Shift right by 1</td></tr>
+          <tr><td>NOP</td><td>No operation</td></tr>
+          <tr><td>HALT</td><td>Stop execution</td></tr>
+          <tr><td>IN</td><td>Read from input port</td></tr>
+          <tr><td>OUT</td><td>Write to output port</td></tr>
+        </table>
+
+        <h3>Transistor Budget</h3>
+        <table class="inline-table">
+          <tr><th>Block</th><th>Estimated Transistors</th></tr>
+          <tr><td>Control logic (instruction decode, sequencing)</td><td>~350</td></tr>
+          <tr><td>ALU (4-bit arithmetic/logic)</td><td>~200</td></tr>
+          <tr><td>Program counter (10-bit)</td><td>~200</td></tr>
+          <tr><td>Registers (2 &times; 4-bit)</td><td>~160</td></tr>
+          <tr><td><strong>Total</strong></td><td><strong>~910</strong></td></tr>
+        </table>
+
+        <h3>Why 4-bit?</h3>
+        <p>3-bit saves only ~130 transistors but loses BCD arithmetic and halves the instruction space. Below 4-bit is a programmable state machine, not a CPU. 4-bit is the minimum width that supports BCD (binary-coded decimal), 16 distinct instructions, and useful calculator-class arithmetic.</p>
+
+        <h3>Demo</h3>
+        <p>Runs a program that counts in binary on 4 LEDs, or adds two numbers entered via DIP switches.</p>
+
+        <div class="docs-callout">
+          <strong>Detailed ISA and gate-level design will be published here once Phase 3 yield data determines this is the target.</strong>
+        </div>
+
+        <!-- ===== Option B: SERV ===== -->
+        <h2 id="serv">Option B: SERV RISC-V Core</h2>
+        <p>Based on the <a href="https://github.com/olofk/serv">SERV project</a> by Olof Kindgren &mdash; the world's smallest RISC-V CPU. A full 32-bit processor that processes one bit at a time, trading speed for minimal transistor count.</p>
+
+        <h3>Key Specifications</h3>
         <table class="inline-table">
           <tr><th>Property</th><th>Value</th></tr>
           <tr><td>Instruction set</td><td>RV32I (base integer)</td></tr>
           <tr><td>Architecture</td><td>Bit-serial (1 bit per cycle)</td></tr>
-          <tr><td>FPGA size</td><td>~1,000 LUTs</td></tr>
-          <tr><td>CMOS transistor count</td><td>~4,000&ndash;8,000 (4&ndash;8 per gate)</td></tr>
+          <tr><td>FPGA synthesis</td><td>198 LUTs + 164 FFs on iCE40</td></tr>
+          <tr><td>ASIC gate equivalents</td><td>~2,100</td></tr>
+          <tr><td>NMOS-only transistor estimate (core)</td><td>~4,500</td></tr>
+          <tr><td>With CSR (interrupts)</td><td>~5,300</td></tr>
           <tr><td>License</td><td>ISC (fully open source)</td></tr>
         </table>
 
-        <p>SERV's serial architecture makes it uniquely suited to home fabrication: it minimizes transistor count at the cost of clock cycles per instruction (32 cycles for a 32-bit operation). For a proof-of-concept CPU, transistor count matters far more than speed.</p>
+        <h3>External Register File</h3>
+        <p>Key insight: SERV is designed with an <strong>external register file</strong>. Only the CPU core logic needs to be on our chip. The 32&times;32-bit register file (which would add ~6,000 transistors) can be a $0.50 commodity SRAM IC. This cuts the on-chip transistor count nearly in half.</p>
 
-        <!-- ===== Die Size ===== -->
-        <h2 id="die-size">Die Size Estimates</h2>
-        <p>At 10&mu;m minimum feature size (Machine 3's target resolution), each transistor occupies significantly more area than in commercial processes. But SERV is small enough that it still fits on a single die.</p>
+        <h3>Why SERV Matters</h3>
+        <p>Full RISC-V software compatibility. GCC toolchain, Zephyr RTOS. &ldquo;Hello world&rdquo; compiled with standard tools, running on a chip made from eggs. The software ecosystem is the payoff for the extra transistors.</p>
 
+        <h3>Die Size Estimates</h3>
         <table class="inline-table">
-          <tr><th>Parameter</th><th>Estimate</th></tr>
-          <tr><td>Transistor cell size</td><td>~30&mu;m &times; 40&mu;m = 1,200 &mu;m&sup2;</td></tr>
-          <tr><td>Active transistor count</td><td>~6,000</td></tr>
-          <tr><td>Active area</td><td>~7.2 mm&sup2;</td></tr>
-          <tr><td>With routing overhead (4&ndash;7x)</td><td>~30&ndash;50 mm&sup2;</td></tr>
-          <tr><td>Die dimensions</td><td>~5&ndash;7mm per side</td></tr>
+          <tr><th>Feature Size</th><th>Estimated Die Area</th><th>Die Dimensions</th><th>Notes</th></tr>
+          <tr><td>10&mu;m</td><td>~30&ndash;50 mm&sup2;</td><td>5&ndash;7mm per side</td><td>Comfortable substrate size</td></tr>
+          <tr><td>25&mu;m</td><td>~200 mm&sup2;</td><td>~14mm per side</td><td>Pushes substrate limits</td></tr>
         </table>
 
-        <p>A 7mm &times; 7mm die fits comfortably within the Machine 3 exposure field. The routing overhead (interconnect wiring between transistors) dominates the die area, as expected at this feature size.</p>
-
-        <!-- ===== CMOS Process ===== -->
-        <h2 id="cmos-process">CMOS Process Requirements</h2>
-        <p>A CPU requires both n-type and p-type transistors for CMOS logic. Two process options are available from Phase 2:</p>
-
-        <h3>Option A: Oxide TFT CMOS (Glass Substrate)</h3>
-        <ul class="docs-list">
-          <li><strong>NMOS:</strong> ZnO thin-film transistors</li>
-          <li><strong>PMOS:</strong> Cu&#8322;O thin-film transistors</li>
-          <li>Both on glass, patterned with vinegar etch</li>
-          <li>Egg white gate dielectric for both</li>
-        </ul>
-
-        <h3>Option B: Laser-Doped Silicon CMOS</h3>
-        <ul class="docs-list">
-          <li><strong>NMOS:</strong> Phosphoric acid laser doping (n+ source/drain in p-type Si)</li>
-          <li><strong>PMOS:</strong> Boric acid laser doping (p+ source/drain in n-type Si, or n-well in p-type Si)</li>
-          <li>Requires both dopant types and potentially a twin-well process</li>
-          <li>Higher performance but more complex</li>
-        </ul>
-
-        <h3>Layer Count</h3>
-        <p>Minimum 6&ndash;8 mask layers for a functional CMOS process:</p>
-        <ol class="docs-list">
-          <li><strong>Well</strong> &mdash; defines n-well or p-well regions</li>
-          <li><strong>Active</strong> &mdash; defines transistor channel areas</li>
-          <li><strong>Gate</strong> &mdash; defines gate electrodes</li>
-          <li><strong>Contact</strong> &mdash; opens vias to source/drain/gate</li>
-          <li><strong>Metal 1</strong> &mdash; first routing layer</li>
-          <li><strong>Via</strong> &mdash; connects Metal 1 to Metal 2</li>
-          <li><strong>Metal 2</strong> &mdash; second routing layer</li>
-        </ol>
-        <p>Each layer is aligned and exposed by Machine 3 using the software alignment system described in Phase 3.</p>
-
-        <!-- ===== Yield ===== -->
-        <h2 id="yield">Yield Analysis</h2>
-        <p>Yield is the probability that every transistor on the die works. With thousands of transistors, even small per-device failure rates compound dramatically.</p>
+        <!-- ===== Bit Width Analysis ===== -->
+        <h2 id="bit-width">Bit Width Analysis</h2>
+        <p>Why 4-bit is the sweet spot for a custom design, and why SERV is worth the extra transistors if yield allows.</p>
 
         <table class="inline-table">
-          <tr><th>Per-Transistor Yield</th><th>6,000 Transistors</th><th>Die Yield</th></tr>
-          <tr><td>99.0%</td><td>e<sup>-60&times;0.01</sup></td><td>~55%</td></tr>
-          <tr><td>99.5%</td><td>e<sup>-60&times;0.005</sup></td><td>~74%</td></tr>
-          <tr><td>99.9%</td><td>e<sup>-60&times;0.001</sup></td><td>~94%</td></tr>
-          <tr><td>99.99%</td><td>e<sup>-60&times;0.0001</sup></td><td>~99.4%</td></tr>
+          <tr><th>Bits</th><th>Transistors (est.)</th><th>Useful?</th></tr>
+          <tr><td>2</td><td>~690</td><td>Barely &mdash; programmable state machine</td></tr>
+          <tr><td>3</td><td>~780</td><td>Marginal &mdash; 8 instructions, values 0&ndash;7</td></tr>
+          <tr><td>4</td><td>~910</td><td>Yes &mdash; BCD, 16 instructions, calculators</td></tr>
+          <tr><td>8</td><td>~1,440</td><td>Classic &mdash; but 1.5x the transistors of 4-bit</td></tr>
+          <tr><td>32 (SERV)</td><td>~4,500</td><td>Full RISC-V with external register file</td></tr>
         </table>
 
-        <p>The target: defect density below 10/cm&sup2; across the die area. At 99% per-transistor yield, roughly half of all dice work &mdash; marginal but potentially viable with multiple attempts. At 99.9%, yield is comfortable. Getting from 99% to 99.9% is the central engineering challenge.</p>
-
-        <div class="docs-warning">
-          <strong>This is the hardest part of the entire project.</strong> No amount of clever architecture can compensate for poor yield. Every process step &mdash; coating uniformity, exposure dose control, development, etching, contact quality &mdash; must be optimized to near-perfection before attempting a full SERV die.
+        <div class="docs-callout">
+          <strong>For comparison:</strong> Intel 4004 had 2,300 PMOS transistors in 1971. Albu-4 targets ~910 NMOS transistors for comparable 4-bit functionality using modern logic minimization. SERV at ~4,500 NMOS transistors delivers a full 32-bit RISC-V &mdash; roughly 2x the 4004 for 8x the data width.
         </div>
 
-        <!-- ===== Phased Approach ===== -->
-        <h2 id="phased-approach">Phased Build-Up to SERV</h2>
-        <p>Do not attempt a 6,000-transistor die on the first try. Each step validates the process at increasing complexity, building confidence in yield and alignment before committing to the full CPU.</p>
+        <!-- ===== Validation Milestones ===== -->
+        <h2 id="milestones">Validation Milestones</h2>
+        <p>Each step validates the process before committing to the next level of complexity.</p>
 
         <table class="inline-table">
-          <tr><th>Step</th><th>Circuit</th><th>Transistors</th><th>Validates</th></tr>
-          <tr><td>4a</td><td>CMOS inverter</td><td>2</td><td>Basic PMOS + NMOS, threshold voltage matching</td></tr>
-          <tr><td>4b</td><td>NAND gate</td><td>4</td><td>Multi-transistor logic, pull-up/pull-down networks</td></tr>
-          <tr><td>4c</td><td>5-stage ring oscillator</td><td>10</td><td>Dynamic switching, propagation delay, oscillation</td></tr>
-          <tr><td>4d</td><td>D flip-flop</td><td>20&ndash;28</td><td>Sequential logic, clock distribution, setup/hold times</td></tr>
-          <tr><td>4e</td><td>4-bit adder</td><td>~60</td><td>Combinational logic depth, carry propagation</td></tr>
-          <tr><td>4f</td><td>Simple state machine</td><td>~200</td><td>Multi-layer routing, yield at moderate scale</td></tr>
-          <tr><td>4g</td><td>SERV ALU</td><td>~500&ndash;1,000</td><td>Core arithmetic unit, critical path timing</td></tr>
-          <tr><td>4h</td><td>Full SERV CPU</td><td>~4,000&ndash;8,000</td><td>Complete RV32I execution, memory interface</td></tr>
+          <tr><th>Step</th><th>Circuit</th><th>Transistors</th><th>What It Validates</th><th>Pass Criterion</th></tr>
+          <tr><td>4a</td><td>NMOS Inverter</td><td>2</td><td>Basic transistor + pull-up, logic inversion</td><td>Output swings between V<sub>DD</sub> and ground</td></tr>
+          <tr><td>4b</td><td>NAND Gate</td><td>4</td><td>Multi-input logic, pull-up/pull-down network</td><td>Correct truth table for all 4 input combinations</td></tr>
+          <tr><td>4c</td><td>Ring Oscillator (5-stage)</td><td>10</td><td>Transistor uniformity across multiple devices, AC switching</td><td>Stable oscillation visible on oscilloscope</td></tr>
+          <tr><td>4d</td><td>D Flip-Flop</td><td>20&ndash;28</td><td>Sequential logic, clock-edge sensitivity</td><td>Correct latch/capture behavior on scope</td></tr>
+          <tr><td>4e</td><td>4-bit Adder</td><td>~60</td><td>Combinational logic at moderate scale, carry propagation</td><td>Correct sum for all tested input pairs</td></tr>
+          <tr><td>4f</td><td>State Machine</td><td>~200</td><td>Sequential + combinational integration, yield at scale</td><td>Correct state transitions for designed sequence</td></tr>
+          <tr><td>4g</td><td>ALU (4-bit or SERV)</td><td>~200&ndash;1,000</td><td>Arithmetic/logic unit, critical path timing</td><td>Correct arithmetic/logic operations</td></tr>
+          <tr><td>4h</td><td>Full CPU</td><td>~910&ndash;4,500</td><td>Complete processor, memory interface, instruction execution</td><td>Executes a test program correctly</td></tr>
         </table>
 
         <p>Each step must produce working devices before advancing. Failure at any step indicates a process issue that must be resolved &mdash; not a reason to skip ahead.</p>
@@ -146,42 +176,23 @@
         <h2 id="challenges">Honest Challenges</h2>
         <p>Phase 4 is the most ambitious goal in the Albu project. These are the hard problems that must be solved:</p>
 
-        <h3>Alignment Tolerance</h3>
-        <p>At 10&mu;m feature sizes, layer-to-layer alignment must be better than ~3&mu;m (&lt;1/3 of minimum feature). Machine 3's camera-based alignment targets 50nm, which is sufficient in theory &mdash; but thermal drift, stage hysteresis, and substrate warping can all degrade real-world performance.</p>
-
         <h3>Yield</h3>
-        <p>The fundamental challenge. Every defect source must be identified and eliminated: particles in the resist, pinholes in the gate dielectric, incomplete etching, contact resistance variation, film thickness non-uniformity. Statistical process control across thousands of devices is required.</p>
+        <p>The fundamental challenge. Every defect source must be identified and eliminated: particles in the resist, pinholes in the gate dielectric, incomplete etching, contact resistance variation, film thickness non-uniformity. Statistical process control across hundreds to thousands of devices is required.</p>
+
+        <h3>Alignment Tolerance</h3>
+        <p>Layer-to-layer alignment must be better than ~1/3 of minimum feature size. The Phase 3 camera-based alignment system targets this, but thermal drift, stage hysteresis, and substrate warping can all degrade real-world performance.</p>
 
         <h3>Multi-Layer Process Complexity</h3>
-        <p>A 6&ndash;8 layer process means the substrate goes through coating, exposure, development, and etching 6&ndash;8 times. Each cycle introduces opportunities for contamination, misalignment, and damage to previous layers. Process integration &mdash; ensuring each step is compatible with all prior steps &mdash; is a major engineering effort.</p>
+        <p>A multi-layer process means the substrate goes through coating, exposure, development, and etching multiple times. Each cycle introduces opportunities for contamination, misalignment, and damage to previous layers. Process integration &mdash; ensuring each step is compatible with all prior steps &mdash; is a major engineering effort.</p>
 
-        <h3>PMOS Characterization</h3>
-        <p>Cu&#8322;O p-type TFTs are less mature than ZnO n-type TFTs. Mobility is lower, threshold voltage is harder to control, and on/off ratios are typically worse. Balancing NMOS and PMOS characteristics for functional CMOS inverters requires careful process tuning.</p>
+        <h3>NMOS-Only Logic</h3>
+        <p>Both CPU options use NMOS-only logic with resistive pull-ups, avoiding the complexity of matching NMOS and PMOS characteristics. This simplifies fabrication but increases static power consumption and limits speed. For a proof-of-concept CPU, this trade-off is acceptable.</p>
 
         <h3>Interconnect Routing</h3>
-        <p>6,000 transistors need to be wired together. At 10&mu;m feature size, two metal layers may not provide enough routing density. Via reliability (electrical connection between Metal 1 and Metal 2) is critical &mdash; a single open via can kill a signal path.</p>
+        <p>Even 910 transistors need to be wired together. At 10&ndash;25&mu;m feature size, two metal layers may not provide enough routing density. Via reliability (electrical connection between Metal 1 and Metal 2) is critical &mdash; a single open via can kill a signal path.</p>
 
         <div class="docs-callout">
-          <strong>The honest truth:</strong> Phase 4 may take years of iteration. The intermediate milestones (inverter, ring oscillator, flip-flop) are valuable demonstrations in their own right. Even a working 4-bit adder fabricated at home would be a significant achievement. SERV is the north star, not a short-term deliverable.
-        </div>
-
-        <h2>Validation Milestones</h2>
-        <p>Each step validates the process before committing to the next level of complexity.</p>
-
-        <table class="inline-table">
-          <tr><th>Step</th><th>Circuit</th><th>Transistors</th><th>What It Validates</th><th>Pass Criterion</th></tr>
-          <tr><td>4a</td><td>CMOS Inverter</td><td>2</td><td>Both n-type and p-type TFTs work, complementary logic functions</td><td>Output swings rail-to-rail, V<sub>th</sub> within 30% of V<sub>DD</sub>/2</td></tr>
-          <tr><td>4b</td><td>NAND Gate</td><td>4</td><td>Multi-input logic, pull-up/pull-down network</td><td>Correct truth table for all 4 input combinations</td></tr>
-          <tr><td>4c</td><td>Ring Oscillator (5-stage)</td><td>10</td><td>Transistor uniformity across multiple devices, AC switching</td><td>Stable oscillation visible on oscilloscope</td></tr>
-          <tr><td>4d</td><td>D Flip-Flop</td><td>20&ndash;28</td><td>Sequential logic, clock-edge sensitivity</td><td>Correct latch/capture behavior on scope</td></tr>
-          <tr><td>4e</td><td>4-bit Adder</td><td>~60</td><td>Combinational logic at moderate scale, carry propagation</td><td>Correct sum for all tested input pairs</td></tr>
-          <tr><td>4f</td><td>State Machine</td><td>~200</td><td>Sequential + combinational integration, yield at scale</td><td>Correct state transitions for designed sequence</td></tr>
-          <tr><td>4g</td><td>SERV ALU</td><td>~500&ndash;1000</td><td>Complex logic, critical path timing</td><td>Correct arithmetic/logic operations</td></tr>
-          <tr><td>4h</td><td>Full SERV</td><td>~4000&ndash;8000</td><td>Complete processor, memory interface, instruction execution</td><td>Executes a test program correctly</td></tr>
-        </table>
-
-        <div class="docs-callout">
-          <strong>Each step is independently impressive and publishable.</strong> If yield prevents reaching Step 4h, every intermediate step still demonstrates advancing capability. A working CMOS ring oscillator (Step 4c) from grocery store materials on a glass slide is a significant achievement by itself.
+          <strong>The honest truth:</strong> Phase 4 may take years of iteration. The intermediate milestones (inverter, ring oscillator, flip-flop, adder) are valuable demonstrations in their own right. Even a working 4-bit adder fabricated at home from grocery store materials would be a significant achievement. The full CPU is the north star, not a short-term deliverable.
         </div>
       </div>
     </main>
