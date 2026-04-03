@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Preparing Egg White Resist - Albu Docs</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../../style.css">
+  <link rel="stylesheet" href="../docs.css">
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' rx='12' fill='%23434e64'/><rect x='15' y='15' width='70' height='70' rx='2' fill='none' stroke='white' stroke-width='4'/><circle cx='50' cy='50' r='28' fill='none' stroke='white' stroke-width='3.5'/><rect x='25' y='25' width='50' height='50' rx='1' fill='none' stroke='white' stroke-width='3' transform='rotate(45 50 50)'/><circle cx='50' cy='50' r='15' fill='none' stroke='white' stroke-width='2.5'/><rect x='37' y='37' width='26' height='26' rx='1' fill='none' stroke='white' stroke-width='2'/><circle cx='50' cy='50' r='4' fill='white'/></svg>">
+</head>
+<body>
+  <nav>
+    <div class="nav-inner">
+      <a href="/albu/" class="nav-logo">
+        <svg class="nav-logo-mark" viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <rect x="10" y="10" width="80" height="80" rx="2" stroke="#434e64" stroke-width="5"/>
+          <circle cx="50" cy="50" r="32" stroke="#434e64" stroke-width="4.5"/>
+          <rect x="22" y="22" width="56" height="56" rx="1" stroke="#434e64" stroke-width="4" transform="rotate(45 50 50)"/>
+          <circle cx="50" cy="50" r="17" stroke="#434e64" stroke-width="3.5"/>
+          <rect x="36" y="36" width="28" height="28" rx="1" stroke="#434e64" stroke-width="3"/>
+          <circle cx="50" cy="50" r="5" fill="#434e64"/>
+        </svg>
+        <div>
+          <div style="font-size:11px;font-weight:700;color:#434e64;letter-spacing:0.12em">KOSL</div>
+          <div style="font-size:20px;font-weight:700;color:#434e64">Albu</div>
+        </div>
+      </a>
+      <div class="nav-links">
+        <a href="/albu/#about">About</a>
+        <a href="/albu/#phase-1">Phase 1</a>
+        <a href="/albu/docs/" class="nav-active">Documentation</a>
+        <a href="https://github.com/levkropp/albu" class="nav-gh">GitHub</a>
+      </div>
+    </div>
+  </nav>
+  <div class="docs-layout">
+    <aside class="docs-sidebar" data-active="resist-prep"></aside>
+    <main class="docs-main">
+      <div class="docs-content">
+        <h1>Preparing Egg White Resist</h1>
+        <p class="docs-lead">How to filter, degas, and photosensitize chicken egg white into a functional photoresist for 450nm laser lithography.</p>
+
+        <h2>Materials</h2>
+        <ul class="docs-list">
+          <li>1 chicken egg (any grade, room temperature preferred)</li>
+          <li>Coffee filter (standard basket-style)</li>
+          <li>2 clean glass jars</li>
+          <li>Mason jar + hand vacuum pump (for degassing)</li>
+          <li>Riboflavin (vitamin B2) tablet, 100mg</li>
+          <li>Food-grade glycerol (for positive tone only)</li>
+        </ul>
+
+        <h2>Negative Tone Resist</h2>
+        <p>Start here. Negative tone is simpler &mdash; no glycerol, no precuring step. Exposed areas crosslink and remain after water development.</p>
+
+        <h3>1. Separate the egg</h3>
+        <p>Crack the egg and cleanly separate the white from the yolk. Any yolk contamination will degrade the resist quality. Collect the white in a clean glass jar.</p>
+        <p><strong>Yield:</strong> ~20mL per egg, enough for approximately 65 slides at 300&mu;L per slide.</p>
+
+        <h3>2. Filter</h3>
+        <p>Pour the egg white through a coffee filter into a second clean jar. Let it drip through by gravity &mdash; do not squeeze or press. This removes the thick viscous chalazae and gel-like ovomucin layer that would cause coating defects.</p>
+        <div class="docs-warning">
+          <strong>Do not skip filtering.</strong> The paper (Figure S2) explicitly shows that unfiltered albumen produces poor patterns. This step takes 5&ndash;10 minutes but is critical.
+        </div>
+
+        <h3>3. Degas and partially dehydrate</h3>
+        <p>Pour the filtered albumen into the mason jar vacuum chamber. Connect the hand vacuum pump and pump until bubbles stop rising aggressively (~5 minutes). Continue pumping gently until you observe a <strong>slight cloudiness at the edges</strong> of the liquid &mdash; this is protein "phasing out" and indicates sufficient dehydration.</p>
+        <p>Stop pumping at this point. Over-dehydration will make the resist too viscous for uniform spin coating.</p>
+        <div class="docs-callout">
+          <strong>No vacuum pump?</strong> Let the jar sit covered in the fridge for 24 hours, then skim any surface foam. This is less controlled but workable for initial experiments.
+        </div>
+
+        <h3>4. Add riboflavin photosensitizer</h3>
+        <p>Crush one 100mg riboflavin (B2) tablet into a fine powder. Add to the filtered albumen (~20mL). Stir gently for 2&ndash;3 minutes until dissolved. The liquid will take on a slight yellow tint.</p>
+        <p><strong>Target concentration:</strong> ~1&ndash;5 mg/mL. Exact dosing is not critical &mdash; the exposure dose matrix (Step 3 of the protocol) will optimize for your specific concentration.</p>
+        <p><strong>Why riboflavin:</strong> The original paper used 254nm UV where proteins absorb directly. Our 450nm laser requires a photosensitizer. Riboflavin has its strongest visible absorption peak at 445&ndash;450nm and generates singlet oxygen that crosslinks proteins. See <a href="/albu/docs/science/wavelength.html">450nm Wavelength Strategy</a> for details.</p>
+
+        <h3>5. Storage</h3>
+        <p>Cap the jar and refrigerate. The resist is stable for approximately <strong>1 week</strong>. Label with the preparation date. Discard if you observe cloudiness, separation, or off-smell.</p>
+
+        <h2>Positive Tone Resist</h2>
+        <p>In positive tone, exposed areas become water-soluble and wash away. Attempt this after negative tone works.</p>
+        <p>Follow all the steps above, then add glycerol:</p>
+        <ol class="docs-list">
+          <li>Measure 10mL of prepared negative-tone resist (filtered, degassed, riboflavin-doped).</li>
+          <li>Add 1mL of food-grade glycerol (10:1 volume ratio).</li>
+          <li>Mix gently to avoid introducing bubbles.</li>
+        </ol>
+
+        <div class="docs-warning">
+          <strong>Glycerol ratio is critical.</strong> More than 1:10 glycerol = poor substrate adhesion, film peels off during development. Less than 0.5:10 = reverts to negative tone behavior (glycerol insufficient to prevent aggregation). Stick to 1:10 for initial experiments.
+        </div>
+
+        <p>Positive tone requires a <strong>two-step exposure</strong>: a low-intensity pre-cure (secures film to substrate) followed by a high-intensity patterned exposure (fragments protein in exposed areas). See <a href="/albu/docs/phase-1/exposure.html">Laser Exposure</a> for details.</p>
+
+        <h2>Troubleshooting</h2>
+        <table class="inline-table">
+          <tr><th>Problem</th><th>Likely Cause</th><th>Fix</th></tr>
+          <tr><td>Resist is too viscous to spin coat</td><td>Over-dehydrated during vacuum step</td><td>Add distilled water dropwise until consistency is like thin syrup</td></tr>
+          <tr><td>Film has visible particles/chunks</td><td>Insufficient filtering</td><td>Re-filter through a fresh coffee filter, or use finer filter paper</td></tr>
+          <tr><td>Resist turns cloudy in storage</td><td>Bacterial growth or protein denaturation</td><td>Discard and prepare fresh. Ensure jar is clean and stored cold.</td></tr>
+          <tr><td>Yellow tint too dark after riboflavin</td><td>Excess riboflavin</td><td>Not a problem for function. If concerned, use half a tablet next time.</td></tr>
+        </table>
+
+      </div>
+    </main>
+  </div>
+  <script src="/albu/docs/sidebar-loader.js"></script>
+</body>
+</html>

@@ -30,40 +30,7 @@
   </nav>
 
   <div class="docs-layout">
-    <aside class="docs-sidebar">
-      <div class="sidebar-section">
-        <div class="sidebar-heading">Getting Started</div>
-        <a href="./" class="sidebar-link active">Overview</a>
-        <a href="equipment/" class="sidebar-link">Equipment List</a>
-        <a href="phase-1/" class="sidebar-link">Phase 1 Protocol</a>
-      </div>
-      <div class="sidebar-section">
-        <div class="sidebar-heading">Science</div>
-        <a href="science/" class="sidebar-link">How Egg White Resist Works</a>
-        <a href="science/wavelength.html" class="sidebar-link">450nm Wavelength Strategy</a>
-        <a href="science/chemicals.html" class="sidebar-link">Grocery Store Chemical Toolkit</a>
-      </div>
-      <div class="sidebar-section">
-        <div class="sidebar-heading">Equipment</div>
-        <a href="equipment/cnc-laser.html" class="sidebar-link">CNC 3018 + Laser Setup</a>
-        <a href="equipment/spin-coater.html" class="sidebar-link">3D Printed Spin Coater</a>
-        <a href="equipment/microscope.html" class="sidebar-link">Microscope Configuration</a>
-      </div>
-      <div class="sidebar-section">
-        <div class="sidebar-heading">Process Recipes</div>
-        <a href="phase-1/resist-prep.html" class="sidebar-link">Preparing Egg White Resist</a>
-        <a href="phase-1/spin-coating.html" class="sidebar-link">Spin Coating Protocol</a>
-        <a href="phase-1/exposure.html" class="sidebar-link">Laser Exposure Parameters</a>
-        <a href="phase-1/development.html" class="sidebar-link">Water Development</a>
-        <a href="phase-1/staining.html" class="sidebar-link">Staining &amp; Imaging</a>
-      </div>
-      <div class="sidebar-section">
-        <div class="sidebar-heading">Future Phases</div>
-        <a href="#" class="sidebar-link sidebar-disabled">Phase 2: Transistors</a>
-        <a href="#" class="sidebar-link sidebar-disabled">Phase 3: Chip Printer</a>
-        <a href="#" class="sidebar-link sidebar-disabled">Phase 4: SERV RISC-V</a>
-      </div>
-    </aside>
+    <aside class="docs-sidebar" data-active="overview"></aside>
 
     <main class="docs-main">
       <div class="docs-content">
@@ -71,7 +38,7 @@
         <p class="docs-lead">Everything you need to replicate our work. Every process recipe, equipment spec, and experiment result is documented here.</p>
 
         <div class="docs-callout">
-          <strong>Work in progress.</strong> Phase 1 is actively underway. Documentation is being written as we build and experiment. Pages marked as disabled in the sidebar are planned but not yet written.
+          <strong>Phase 1 is underway.</strong> Equipment has been ordered. Documentation covers all four project phases. Process recipes will be validated and updated with real experiment data as we progress.
         </div>
 
         <h2>Quick Start</h2>
@@ -112,16 +79,28 @@
         <table class="docs-nav-table">
           <tbody>
             <tr>
-              <td><strong><a href="equipment/">Equipment</a></strong></td>
-              <td>Bill of materials, build instructions for the spin coater, CNC laser setup, microscope configuration</td>
-            </tr>
-            <tr>
               <td><strong><a href="science/">Science</a></strong></td>
-              <td>How egg white photoresist works, the 450nm wavelength strategy, the grocery store chemical toolkit</td>
+              <td>How egg white resist works, 450nm wavelength strategy, grocery store chemical toolkit</td>
             </tr>
             <tr>
-              <td><strong><a href="phase-1/">Phase 1 Protocol</a></strong></td>
-              <td>Step-by-step resist preparation, spin coating, exposure, development, staining, and resolution testing</td>
+              <td><strong><a href="equipment/">Equipment</a></strong></td>
+              <td>Bill of materials, CNC laser setup, 3D printed spin coater, microscope configuration</td>
+            </tr>
+            <tr>
+              <td><strong><a href="phase-1/">Phase 1</a></strong></td>
+              <td>Prove the photoresist: resist prep, spin coating, laser exposure, water development, staining</td>
+            </tr>
+            <tr>
+              <td><strong><a href="phase-2/">Phase 2</a></strong></td>
+              <td>First transistors: ZnO TFT, Schottky MOSFET, laser-doped Si MOSFET, Cu<sub>2</sub>O TFT, ring oscillator</td>
+            </tr>
+            <tr>
+              <td><strong><a href="phase-3/">Phase 3</a></strong></td>
+              <td>Automated chip printer: maskless direct-write lithography, machine vision alignment, 10&mu;m resolution</td>
+            </tr>
+            <tr>
+              <td><strong><a href="phase-4/">Phase 4</a></strong></td>
+              <td>SERV RISC-V CPU: ~6,000 transistors at 10&mu;m, CMOS process flow, yield analysis</td>
             </tr>
           </tbody>
         </table>
@@ -135,5 +114,6 @@
       </div>
     </main>
   </div>
+  <script src="/albu/docs/sidebar-loader.js"></script>
 </body>
 </html>

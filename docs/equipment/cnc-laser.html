@@ -1,0 +1,211 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>CNC 3018 + Laser Setup - Albu Docs</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../../style.css">
+  <link rel="stylesheet" href="../docs.css">
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' rx='12' fill='%23434e64'/><rect x='15' y='15' width='70' height='70' rx='2' fill='none' stroke='white' stroke-width='4'/><circle cx='50' cy='50' r='28' fill='none' stroke='white' stroke-width='3.5'/><rect x='25' y='25' width='50' height='50' rx='1' fill='none' stroke='white' stroke-width='3' transform='rotate(45 50 50)'/><circle cx='50' cy='50' r='15' fill='none' stroke='white' stroke-width='2.5'/><rect x='37' y='37' width='26' height='26' rx='1' fill='none' stroke='white' stroke-width='2'/><circle cx='50' cy='50' r='4' fill='white'/></svg>">
+</head>
+<body>
+  <nav>
+    <div class="nav-inner">
+      <a href="/albu/" class="nav-logo">
+        <svg class="nav-logo-mark" viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <rect x="10" y="10" width="80" height="80" rx="2" stroke="#434e64" stroke-width="5"/>
+          <circle cx="50" cy="50" r="32" stroke="#434e64" stroke-width="4.5"/>
+          <rect x="22" y="22" width="56" height="56" rx="1" stroke="#434e64" stroke-width="4" transform="rotate(45 50 50)"/>
+          <circle cx="50" cy="50" r="17" stroke="#434e64" stroke-width="3.5"/>
+          <rect x="36" y="36" width="28" height="28" rx="1" stroke="#434e64" stroke-width="3"/>
+          <circle cx="50" cy="50" r="5" fill="#434e64"/>
+        </svg>
+        <div>
+          <div style="font-size:11px;font-weight:700;color:#434e64;letter-spacing:0.12em">KOSL</div>
+          <div style="font-size:20px;font-weight:700;color:#434e64">Albu</div>
+        </div>
+      </a>
+      <div class="nav-links">
+        <a href="/albu/#about">About</a>
+        <a href="/albu/#phase-1">Phase 1</a>
+        <a href="/albu/docs/" class="nav-active">Documentation</a>
+        <a href="https://github.com/levkropp/albu" class="nav-gh">GitHub</a>
+      </div>
+    </div>
+  </nav>
+  <div class="docs-layout">
+    <aside class="docs-sidebar" data-active="cnc-laser"></aside>
+    <main class="docs-main">
+      <div class="docs-content">
+        <h1>CNC 3018 + Laser Setup</h1>
+        <p class="docs-lead">Assembling the Genmitsu CNC 3018-PRO, mounting the 5W 450nm laser module, configuring GRBL, and calibrating focus for resist exposure and metal ablation.</p>
+
+        <h2>CNC Assembly Notes</h2>
+        <p>The Genmitsu CNC 3018-PRO ships as a kit. Assembly takes 2&ndash;3 hours. The included manual is adequate but the following tips from community experience will save time:</p>
+        <ul class="docs-list">
+          <li><strong>Pre-sort all fasteners.</strong> The kit includes 15+ types of screws and nuts in unlabeled bags. Lay them out and match to the manual diagrams before starting.</li>
+          <li><strong>Tighten the eccentric nuts on the V-wheels.</strong> Each axis carriage rides on V-slot wheels. The eccentric nuts adjust preload &mdash; too loose and the carriage wobbles, too tight and it binds. Dial them so the carriage slides freely with no play.</li>
+          <li><strong>Check the lead screw couplers.</strong> The flexible couplers connecting the stepper motors to the T8 lead screws must be tight on both ends. Loose couplers cause backlash and missed steps.</li>
+          <li><strong>Route cables away from moving parts.</strong> Use zip ties to secure stepper motor and limit switch cables to the frame. A snagged cable during a job causes axis misalignment.</li>
+          <li><strong>Level the spoilboard.</strong> The MDF spoilboard is not machined flat. For laser work this matters less than for milling, but shimming the corners to within 0.5mm helps with consistent focus distance.</li>
+        </ul>
+
+        <h2>Mounting the Laser Module</h2>
+        <p>The Genmitsu 5W 450nm laser module is designed for plug-and-play installation on the 3018-PRO:</p>
+        <ol class="docs-list">
+          <li><strong>Remove the spindle motor</strong> from the Z-axis carriage (3 screws on the 52mm clamp).</li>
+          <li><strong>Install the laser mounting bracket</strong> (included with laser module) into the same clamp. The bracket has the same 52mm outer diameter.</li>
+          <li><strong>Slide the laser module into the bracket</strong> and tighten the set screw. The laser should point straight down (perpendicular to the work surface).</li>
+          <li><strong>Connect the signal cable</strong> to the spindle control header on the GRBL board. The laser module uses the same PWM signal (0&ndash;5V) that controls spindle speed. Pin mapping: PWM to PWM, GND to GND, 12V to 12V.</li>
+          <li><strong>Connect the laser power cable</strong> to the 12V supply (shared with CNC power or dedicated).</li>
+        </ol>
+
+        <div class="docs-warning">
+          <strong>Before powering on:</strong> Put on OD4+ (OD6+ preferred) laser safety goggles rated for 450nm. A 5W 450nm laser causes permanent retinal damage in microseconds. Never power the laser without goggles, even briefly, even for "just testing."
+        </div>
+
+        <h2>GRBL Configuration</h2>
+        <p>GRBL is the open-source motion control firmware running on the Arduino Nano inside the 3018-PRO. Key settings for laser operation:</p>
+
+        <h3>Essential Settings</h3>
+        <pre><code>$32=1    ; Laser mode ON (critical!)
+         ; In laser mode, S0 turns laser off during rapid moves (G0)
+         ; Without this, laser fires during repositioning moves
+
+$110=800  ; X max rate, mm/min
+$111=800  ; Y max rate, mm/min
+$112=500  ; Z max rate, mm/min
+
+$100=800  ; X steps/mm (T8 lead screw, 8mm pitch, 1/8 microstepping)
+$101=800  ; Y steps/mm
+$102=800  ; Z steps/mm
+
+$30=1000  ; Max spindle speed (S value). S1000 = 100% laser power
+$31=0     ; Min spindle speed. S0 = laser off</code></pre>
+
+        <div class="docs-callout">
+          <strong>$32=1 is non-negotiable.</strong> Without laser mode enabled, GRBL treats the laser like a spindle &mdash; it stays on at the last S value during G0 rapid moves. This means the laser fires at full power while repositioning between features, burning lines across your substrate and creating a fire hazard.
+        </div>
+
+        <h3>Verifying Steps/mm</h3>
+        <p>The default 800 steps/mm assumes T8 lead screws (8mm pitch) with 1/8 microstepping on the stepper drivers. Verify by commanding a 10mm move and measuring with calipers. If the actual distance is off, recalculate:</p>
+        <pre><code>steps/mm = (steps_per_rev * microsteps) / lead_screw_pitch
+         = (200 * 8) / 2.0
+         = 800 steps/mm (for T8 lead screw, 2mm pitch per start, 4-start = 8mm lead)
+
+; Correction: T8 4-start lead screw has 8mm lead (not pitch)
+; 200 steps/rev * 8 microsteps / 8mm lead = 200 steps/mm
+; Wait - check your specific board. Some 3018-PROs ship with
+; different microstepping. Measure and adjust.</code></pre>
+        <p>The actual value depends on your specific board's microstepping configuration. <strong>Always measure empirically</strong> &mdash; command a 50mm move, measure with calipers, and adjust $100/$101/$102 until the commanded distance matches the measured distance.</p>
+
+        <h2>Focus Procedure</h2>
+        <p>The laser spot size determines the minimum feature size achievable. Proper focus is critical.</p>
+        <ol class="docs-list">
+          <li><strong>Mount a piece of dark paper</strong> (black construction paper or painted cardboard) on the spoilboard.</li>
+          <li><strong>Set laser to 1&ndash;2% power:</strong> Send <code>S10</code> (1% of S1000) or <code>S20</code> (2%). This is enough to mark paper without igniting it.</li>
+          <li><strong>Start with the laser module ~50mm above the paper.</strong></li>
+          <li><strong>Fire a short pulse</strong> (command <code>G1 X0.5 F100 S10</code> to draw a 0.5mm line) and examine the mark.</li>
+          <li><strong>Lower Z by 1mm</strong> (<code>G91 G0 Z-1</code>) and repeat. The mark will get smaller as you approach the focal point, then grow again past it.</li>
+          <li><strong>Narrow down in 0.2mm increments</strong> around the minimum mark size. The optimal Z height is where the burn mark is smallest and sharpest.</li>
+          <li><strong>Record this Z height</strong> as your focal distance. For the stock Genmitsu module, expect ~30&ndash;40mm from the lens to the work surface.</li>
+          <li><strong>Measure the spot size</strong> at focus under the microscope. The stock module achieves ~100&ndash;150&mu;m compressed spot.</li>
+        </ol>
+
+        <h3>Focus Consistency</h3>
+        <p>For consistent results across the substrate, the work surface must be at a uniform distance from the lens. Sources of variation:</p>
+        <ul class="docs-list">
+          <li><strong>Substrate thickness:</strong> Glass slides are ~1mm thick. Account for this when setting Z.</li>
+          <li><strong>Spoilboard flatness:</strong> Shim or surface the spoilboard if variation exceeds 0.3mm.</li>
+          <li><strong>Slide placement:</strong> Tape the slide flat to the spoilboard. Any tilt changes focal distance across the slide.</li>
+        </ul>
+
+        <h2>Software Setup</h2>
+
+        <h3>LaserGRBL (Free, Windows)</h3>
+        <p>The recommended starting point. LaserGRBL connects to the 3018-PRO over USB serial and provides:</p>
+        <ul class="docs-list">
+          <li>Manual jog controls (X/Y/Z movement)</li>
+          <li>G-code console for sending raw commands</li>
+          <li>Image import and rasterization (for engraving images &mdash; less relevant for us)</li>
+          <li>Custom G-code file loading and execution</li>
+        </ul>
+        <p>Download from <code>lasergrbl.com</code>. Connect at 115200 baud.</p>
+
+        <h3>LightBurn ($60, Cross-Platform)</h3>
+        <p>More capable than LaserGRBL, with vector drawing tools and precise power/speed controls. Worth the cost if you plan to design complex exposure patterns. Available for Windows, macOS, and Linux.</p>
+
+        <h3>UGS / Candle (Free, Cross-Platform)</h3>
+        <p>Universal G-code Sender (UGS) or Candle &mdash; general-purpose GRBL control interfaces. Good for sending manually written G-code files, which is what we do for most exposure patterns.</p>
+
+        <h2>G-code Basics for Exposure</h2>
+        <p>Most of our exposure patterns are simple geometries written as G-code by hand or generated by scripts. Key commands:</p>
+
+        <h3>Power Control (S Values)</h3>
+        <table class="inline-table">
+          <tr><th>S Value</th><th>Power %</th><th>Use Case</th></tr>
+          <tr><td><code>S0</code></td><td>0%</td><td>Laser off. Used for positioning moves.</td></tr>
+          <tr><td><code>S10&ndash;S50</code></td><td>1&ndash;5%</td><td><strong>Resist exposure.</strong> Low power for riboflavin-mediated crosslinking. Start here.</td></tr>
+          <tr><td><code>S100&ndash;S300</code></td><td>10&ndash;30%</td><td>Moderate power. Likely carbonizes resist. Useful for marking/alignment.</td></tr>
+          <tr><td><code>S500&ndash;S1000</code></td><td>50&ndash;100%</td><td><strong>Ablation.</strong> Metal patterning, cutting thin films, vaporizing material.</td></tr>
+        </table>
+
+        <h3>Feed Rate (F Values)</h3>
+        <table class="inline-table">
+          <tr><th>F Value</th><th>Speed</th><th>Use Case</th></tr>
+          <tr><td><code>F50&ndash;F200</code></td><td>50&ndash;200 mm/min</td><td>Slow exposure. Higher dose per point. Use with lowest S values.</td></tr>
+          <tr><td><code>F200&ndash;F600</code></td><td>200&ndash;600 mm/min</td><td>Moderate speed. Balance of dose and throughput.</td></tr>
+          <tr><td><code>F600&ndash;F800</code></td><td>600&ndash;800 mm/min</td><td>Fast. Low dose per point. Use with higher S values for metal ablation.</td></tr>
+        </table>
+
+        <h3>Example: Exposure Test Pattern</h3>
+        <pre><code>; Exposure test: 5 lines at different S values
+; Feed rate F100 (100 mm/min), lines 5mm long, 1mm apart
+G90          ; Absolute positioning
+G21          ; Units: mm
+G0 X0 Y0    ; Home position (laser off in laser mode)
+G1 X5 F100 S10   ; Line 1: 1% power
+G0 X0 Y1         ; Reposition (laser off)
+G1 X5 F100 S20   ; Line 2: 2% power
+G0 X0 Y2
+G1 X5 F100 S30   ; Line 3: 3% power
+G0 X0 Y3
+G1 X5 F100 S40   ; Line 4: 4% power
+G0 X0 Y4
+G1 X5 F100 S50   ; Line 5: 5% power
+G0 X0 Y0         ; Return home
+M5                ; Laser off</code></pre>
+
+        <h2>Dual-Use: Exposure vs. Ablation</h2>
+        <p>The same laser module serves two fundamentally different purposes across the Albu process:</p>
+
+        <div class="recipe-card">
+          <div class="recipe-meta">
+            <span class="recipe-tag">Phase 1</span>
+            <span class="recipe-tag">Low Power</span>
+          </div>
+          <h3>Resist Exposure (S10&ndash;S50)</h3>
+          <p>At 1&ndash;5% power (50&ndash;250mW), the laser activates riboflavin photosensitizer in the egg white film. The protein crosslinks and becomes water-insoluble. No material is removed &mdash; the laser is modifying the protein's chemical structure. The substrate temperature stays below the protein's denaturation threshold.</p>
+        </div>
+
+        <div class="recipe-card">
+          <div class="recipe-meta">
+            <span class="recipe-tag">Phase 2</span>
+            <span class="recipe-tag">High Power</span>
+          </div>
+          <h3>Metal Ablation (S500&ndash;S1000)</h3>
+          <p>At 50&ndash;100% power (2.5&ndash;5W), the laser vaporizes thin metal films (silver paint, copper leaf). Material is physically removed by thermal vaporization. This replaces wet chemical metal etching entirely. The substrate may be locally heated but the surrounding egg white resist (already crosslinked) is thermally stable enough to survive.</p>
+        </div>
+
+        <div class="docs-warning">
+          <strong>Fume extraction for ablation.</strong> Vaporizing metals produces fine particulate and fumes. When operating at S500+ for metal ablation, use a fume extractor or work in a well-ventilated area. A small fan with an activated carbon filter positioned near the work area is sufficient. This is not needed for low-power resist exposure.
+        </div>
+      </div>
+    </main>
+  </div>
+  <script src="/albu/docs/sidebar-loader.js"></script>
+</body>
+</html>

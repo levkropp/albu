@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Staining and Imaging - Albu Docs</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../../style.css">
+  <link rel="stylesheet" href="../docs.css">
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' rx='12' fill='%23434e64'/><rect x='15' y='15' width='70' height='70' rx='2' fill='none' stroke='white' stroke-width='4'/><circle cx='50' cy='50' r='28' fill='none' stroke='white' stroke-width='3.5'/><rect x='25' y='25' width='50' height='50' rx='1' fill='none' stroke='white' stroke-width='3' transform='rotate(45 50 50)'/><circle cx='50' cy='50' r='15' fill='none' stroke='white' stroke-width='2.5'/><rect x='37' y='37' width='26' height='26' rx='1' fill='none' stroke='white' stroke-width='2'/><circle cx='50' cy='50' r='4' fill='white'/></svg>">
+</head>
+<body>
+  <nav>
+    <div class="nav-inner">
+      <a href="/albu/" class="nav-logo">
+        <svg class="nav-logo-mark" viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <rect x="10" y="10" width="80" height="80" rx="2" stroke="#434e64" stroke-width="5"/>
+          <circle cx="50" cy="50" r="32" stroke="#434e64" stroke-width="4.5"/>
+          <rect x="22" y="22" width="56" height="56" rx="1" stroke="#434e64" stroke-width="4" transform="rotate(45 50 50)"/>
+          <circle cx="50" cy="50" r="17" stroke="#434e64" stroke-width="3.5"/>
+          <rect x="36" y="36" width="28" height="28" rx="1" stroke="#434e64" stroke-width="3"/>
+          <circle cx="50" cy="50" r="5" fill="#434e64"/>
+        </svg>
+        <div>
+          <div style="font-size:11px;font-weight:700;color:#434e64;letter-spacing:0.12em">KOSL</div>
+          <div style="font-size:20px;font-weight:700;color:#434e64">Albu</div>
+        </div>
+      </a>
+      <div class="nav-links">
+        <a href="/albu/#about">About</a>
+        <a href="/albu/#phase-1">Phase 1</a>
+        <a href="/albu/docs/" class="nav-active">Documentation</a>
+        <a href="https://github.com/levkropp/albu" class="nav-gh">GitHub</a>
+      </div>
+    </div>
+  </nav>
+  <div class="docs-layout">
+    <aside class="docs-sidebar" data-active="staining"></aside>
+    <main class="docs-main">
+      <div class="docs-content">
+        <h1>Staining and Imaging</h1>
+        <p class="docs-lead">Making egg white patterns visible under the microscope using protein-specific stains.</p>
+
+        <h2>Why Staining is Necessary</h2>
+        <p>Crosslinked egg white is a thin (~100-900nm), mostly transparent protein film on glass. Without staining, the patterns are nearly invisible under a standard optical microscope. Protein-specific stains bind to the remaining resist and provide contrast against the clear glass substrate.</p>
+
+        <h2>Iodine Stain (Primary Method)</h2>
+        <div class="recipe-card">
+          <div class="recipe-meta">
+            <span class="recipe-tag">Recommended</span>
+            <span class="recipe-tag">~2 minutes</span>
+          </div>
+          <h3>Iodine-Potassium Iodide Stain</h3>
+        </div>
+
+        <h3>Materials</h3>
+        <ul class="docs-list">
+          <li>Iodine tincture 2% (from pharmacy)</li>
+          <li>Distilled water</li>
+          <li>Shallow dish</li>
+        </ul>
+
+        <h3>Procedure</h3>
+        <ol class="docs-list">
+          <li>Prepare stain: add <strong>3&ndash;5 drops</strong> of 2% iodine tincture to 50mL of distilled water in a shallow dish. The solution should be light amber.</li>
+          <li>Immerse the developed slide for <strong>30 seconds</strong>.</li>
+          <li>Remove and rinse gently with distilled water from a squeeze bottle.</li>
+          <li>Air dry.</li>
+        </ol>
+
+        <p><strong>Result:</strong> Remaining protein stains <strong>yellow-brown</strong>. Glass remains clear. The contrast is sufficient for imaging at 100&ndash;250x magnification.</p>
+
+        <h2>Methylene Blue Stain (Alternative)</h2>
+        <div class="recipe-card">
+          <div class="recipe-meta">
+            <span class="recipe-tag">Alternative</span>
+            <span class="recipe-tag">Higher contrast</span>
+          </div>
+          <h3>Methylene Blue Protein Stain</h3>
+        </div>
+
+        <h3>Materials</h3>
+        <ul class="docs-list">
+          <li>Methylene blue solution (aquarium fish disease treatment, available at pet stores or Amazon)</li>
+          <li>Distilled water</li>
+        </ul>
+
+        <h3>Procedure</h3>
+        <ol class="docs-list">
+          <li>Prepare stain: add <strong>1 drop</strong> of methylene blue solution to 50mL of distilled water. The solution should be pale blue.</li>
+          <li>Immerse the developed slide for <strong>30 seconds</strong>.</li>
+          <li>Rinse gently with distilled water.</li>
+          <li>Air dry.</li>
+        </ol>
+
+        <p><strong>Result:</strong> Protein stains <strong>blue</strong>. Often provides higher contrast than iodine, especially on thinner films.</p>
+
+        <div class="docs-callout">
+          <strong>Try both stains</strong> on different slides from the same exposure batch. Different stains may perform better depending on film thickness and crosslinking degree. Both are reversible &mdash; restaining a slide with a different stain is possible after re-rinsing.
+        </div>
+
+        <h2>Microscope Imaging</h2>
+
+        <h3>Setup</h3>
+        <ol class="docs-list">
+          <li>Place the stained slide on the microscope stage.</li>
+          <li>Use <strong>transmitted light</strong> (bottom LED) for maximum contrast. The stained protein appears dark against a bright background.</li>
+          <li>Start at the lowest magnification: <strong>4x objective = 100x total</strong>. This gives a wide field of view (~4mm) to locate your patterns.</li>
+          <li>Once you've found a pattern, switch to <strong>10x objective = 250x total</strong> for detailed inspection of feature edges and quality.</li>
+        </ol>
+
+        <h3>Phone Photography</h3>
+        <ol class="docs-list">
+          <li>Attach the phone adapter (included with BEBANG microscope) to the eyepiece.</li>
+          <li>Align your phone camera lens with the eyepiece center. You should see the circular microscope field of view on your phone screen.</li>
+          <li>Focus the microscope first, then fine-adjust the phone position for a centered, sharp image.</li>
+          <li>Use the included wire shutter (plugs into phone headphone jack) for hands-free capture. This eliminates shake from tapping the screen.</li>
+          <li>Take photos at each magnification and label them with the exposure parameters used.</li>
+        </ol>
+
+        <div class="docs-callout">
+          <strong>Documentation tip:</strong> For each slide, photograph the same region at 100x and 250x. Include a reference feature (e.g., the edge of a known-width line) in each image so you can calculate actual feature sizes from the photos later.
+        </div>
+
+        <h2>What to Measure</h2>
+        <p>For each exposure condition that produced a pattern, record:</p>
+        <ul class="docs-list">
+          <li><strong>Line width</strong> &mdash; measure the actual width of the stained line. Compare to the programmed width.</li>
+          <li><strong>Edge quality</strong> &mdash; are the edges sharp or ragged? Is there a visible heat-affected zone?</li>
+          <li><strong>Background cleanliness</strong> &mdash; is the unexposed area fully clear, or is there residual haze?</li>
+          <li><strong>Contrast</strong> &mdash; how dark/intense is the stained pattern vs. the background?</li>
+          <li><strong>Defects</strong> &mdash; cracks, pinholes, peeling, particles?</li>
+        </ul>
+
+        <p>This data feeds directly into the <a href="/albu/docs/phase-1/exposure.html">exposure optimization</a> and determines your resolution limit for the <a href="/albu/docs/phase-1/">resolution test</a>.</p>
+
+      </div>
+    </main>
+  </div>
+  <script src="/albu/docs/sidebar-loader.js"></script>
+</body>
+</html>

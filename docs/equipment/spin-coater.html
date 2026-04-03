@@ -1,0 +1,227 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>3D Printed Spin Coater - Albu Docs</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../../style.css">
+  <link rel="stylesheet" href="../docs.css">
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' rx='12' fill='%23434e64'/><rect x='15' y='15' width='70' height='70' rx='2' fill='none' stroke='white' stroke-width='4'/><circle cx='50' cy='50' r='28' fill='none' stroke='white' stroke-width='3.5'/><rect x='25' y='25' width='50' height='50' rx='1' fill='none' stroke='white' stroke-width='3' transform='rotate(45 50 50)'/><circle cx='50' cy='50' r='15' fill='none' stroke='white' stroke-width='2.5'/><rect x='37' y='37' width='26' height='26' rx='1' fill='none' stroke='white' stroke-width='2'/><circle cx='50' cy='50' r='4' fill='white'/></svg>">
+</head>
+<body>
+  <nav>
+    <div class="nav-inner">
+      <a href="/albu/" class="nav-logo">
+        <svg class="nav-logo-mark" viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <rect x="10" y="10" width="80" height="80" rx="2" stroke="#434e64" stroke-width="5"/>
+          <circle cx="50" cy="50" r="32" stroke="#434e64" stroke-width="4.5"/>
+          <rect x="22" y="22" width="56" height="56" rx="1" stroke="#434e64" stroke-width="4" transform="rotate(45 50 50)"/>
+          <circle cx="50" cy="50" r="17" stroke="#434e64" stroke-width="3.5"/>
+          <rect x="36" y="36" width="28" height="28" rx="1" stroke="#434e64" stroke-width="3"/>
+          <circle cx="50" cy="50" r="5" fill="#434e64"/>
+        </svg>
+        <div>
+          <div style="font-size:11px;font-weight:700;color:#434e64;letter-spacing:0.12em">KOSL</div>
+          <div style="font-size:20px;font-weight:700;color:#434e64">Albu</div>
+        </div>
+      </a>
+      <div class="nav-links">
+        <a href="/albu/#about">About</a>
+        <a href="/albu/#phase-1">Phase 1</a>
+        <a href="/albu/docs/" class="nav-active">Documentation</a>
+        <a href="https://github.com/levkropp/albu" class="nav-gh">GitHub</a>
+      </div>
+    </div>
+  </nav>
+  <div class="docs-layout">
+    <aside class="docs-sidebar" data-active="spin-coater"></aside>
+    <main class="docs-main">
+      <div class="docs-content">
+        <h1>3D Printed Spin Coater</h1>
+        <p class="docs-lead">A ~$34 spin coater built from a BLDC motor, ESC, 12V supply, and 3D printed parts. Achieves 1000&ndash;6000 RPM for egg white film thicknesses from 900nm down to 100nm.</p>
+
+        <h2>Bill of Materials</h2>
+        <table class="inline-table">
+          <tr><th>Component</th><th>Specification</th><th>Source</th><th>Cost (CAD)</th></tr>
+          <tr>
+            <td><strong>BLDC motor</strong></td>
+            <td>2212 size or equivalent, 1000&ndash;1400 KV. Must reach 6000+ RPM at 12V.</td>
+            <td>Amazon (RC hobby motor)</td>
+            <td>~$12</td>
+          </tr>
+          <tr>
+            <td><strong>ESC (electronic speed controller)</strong></td>
+            <td>30A rated, supports the motor's KV range. Standard RC ESC with PWM throttle input.</td>
+            <td>Amazon</td>
+            <td>~$10</td>
+          </tr>
+          <tr>
+            <td><strong>12V DC power supply</strong></td>
+            <td>12V 5A minimum. Can share the CNC 3018's 24V supply through a buck converter, or use a dedicated 12V adapter.</td>
+            <td>Amazon / spare from other equipment</td>
+            <td>~$0&ndash;10</td>
+          </tr>
+          <tr>
+            <td><strong>3D printed chuck</strong></td>
+            <td>PLA or PETG, 80mm diameter, center hole press-fit to motor shaft.</td>
+            <td>3D printer (home or library)</td>
+            <td>~$1 filament</td>
+          </tr>
+          <tr>
+            <td><strong>3D printed splash guard</strong></td>
+            <td>Bowl-shaped enclosure, ~120mm inner diameter, 40mm tall walls.</td>
+            <td>3D printer</td>
+            <td>~$1 filament</td>
+          </tr>
+          <tr>
+            <td><strong>PWM signal source</strong></td>
+            <td>Arduino Nano ($5) or servo tester ($3) to generate 1000&ndash;2000&mu;s PWM for the ESC.</td>
+            <td>Amazon</td>
+            <td>~$3&ndash;5</td>
+          </tr>
+          <tr>
+            <td><strong>Misc</strong></td>
+            <td>M3 screws, wires, connectors, double-sided tape</td>
+            <td>Hardware store / Amazon</td>
+            <td>~$3</td>
+          </tr>
+        </table>
+
+        <div class="recipe-card">
+          <div class="recipe-meta">
+            <span class="recipe-tag">Total</span>
+            <span class="recipe-tag">~$30&ndash;34 CAD</span>
+          </div>
+          <h3>Complete Spin Coater BOM</h3>
+          <p>Under $35 for a spin coater that matches the performance specifications of commercial units costing $500&ndash;2000. The only trade-off is manual RPM control instead of digital programmable profiles.</p>
+        </div>
+
+        <h2>Design Requirements</h2>
+        <table class="inline-table">
+          <tr><th>Parameter</th><th>Requirement</th><th>Rationale</th></tr>
+          <tr>
+            <td><strong>Speed range</strong></td>
+            <td>1000&ndash;6000 RPM, continuously adjustable</td>
+            <td>Maps to 900nm&ndash;100nm egg white film thickness (per Jiang et al. Figure S11)</td>
+          </tr>
+          <tr>
+            <td><strong>Spin-up time</strong></td>
+            <td>&lt;2 seconds to target RPM</td>
+            <td>Slow acceleration causes radial thickness gradients (thicker at center)</td>
+          </tr>
+          <tr>
+            <td><strong>Runout</strong></td>
+            <td>&lt;0.5mm at 6000 RPM</td>
+            <td>Excessive wobble flings resist unevenly and can eject the substrate</td>
+          </tr>
+          <tr>
+            <td><strong>Chuck diameter</strong></td>
+            <td>80mm</td>
+            <td>Accommodates 25&times;75mm glass slides and &le;50mm wafer pieces</td>
+          </tr>
+          <tr>
+            <td><strong>Spin duration</strong></td>
+            <td>30&ndash;60 seconds sustained</td>
+            <td>Standard spin-coating protocol: ramp to speed, hold 30s, stop</td>
+          </tr>
+        </table>
+
+        <h2>Chuck Design</h2>
+        <p>The chuck is the critical 3D printed component. It must be balanced, flat, and securely attached to the motor shaft.</p>
+
+        <h3>Geometry</h3>
+        <ul class="docs-list">
+          <li><strong>Diameter:</strong> 80mm. Large enough for standard glass slides (25&times;75mm) placed diagonally or centered.</li>
+          <li><strong>Thickness:</strong> 5&ndash;6mm. Thick enough for rigidity, thin enough to keep mass low.</li>
+          <li><strong>Center hole:</strong> Sized for a press-fit onto the motor shaft (typically 3.17mm / 1/8" for 2212 motors). Print slightly undersized (3.0mm) and ream to fit.</li>
+          <li><strong>Flat top surface:</strong> Must be true to within 0.1mm. Print with the flat face on the build plate for best surface quality.</li>
+          <li><strong>Raised rim:</strong> Optional 3mm raised lip around the perimeter for splash containment. Keeps flung resist from spraying the workspace.</li>
+        </ul>
+
+        <h3>Printing Guidelines</h3>
+        <ul class="docs-list">
+          <li><strong>Material:</strong> PLA is fine. PETG for better chemical resistance if cleaning with IPA.</li>
+          <li><strong>Layer height:</strong> 0.2mm. The top surface is what matters &mdash; ensure adequate top layers (5+) for a flat, solid surface.</li>
+          <li><strong>Infill:</strong> 100% for the chuck. Mass distribution must be uniform for balance. Sparse infill creates weight asymmetry.</li>
+          <li><strong>Orientation:</strong> Print flat face down on the build plate.</li>
+        </ul>
+
+        <h2>Substrate Hold-Down</h2>
+        <p>The substrate must stay fixed to the chuck during spinning. Two approaches:</p>
+
+        <h3>Option 1: Double-Sided Tape (Simple)</h3>
+        <ul class="docs-list">
+          <li>Apply a small square (~10mm) of double-sided tape to the chuck center.</li>
+          <li>Press the glass slide onto the tape, centered on the chuck.</li>
+          <li>Works reliably up to ~4000 RPM. At 6000 RPM, centrifugal force may overcome the tape adhesion for heavier substrates.</li>
+          <li>Downside: leaves residue on the substrate back. Clean with IPA after removing.</li>
+        </ul>
+
+        <h3>Option 2: Vacuum Chuck (Better)</h3>
+        <ul class="docs-list">
+          <li>Drill a 2&ndash;3mm hole through the center of the chuck and through the motor shaft (or route a tube alongside the shaft).</li>
+          <li>Connect the bottom to a syringe pulled to create suction, or an aquarium air pump running in reverse.</li>
+          <li>The vacuum holds the substrate flat against the chuck by atmospheric pressure differential.</li>
+          <li>Works at all speeds. No residue. Easy substrate removal (release vacuum).</li>
+          <li>More complex to build but worth it for repeated use.</li>
+        </ul>
+
+        <h2>RPM Calibration</h2>
+        <p>Accurate RPM is essential because film thickness depends strongly on spin speed. A 10% RPM error produces a ~5% thickness error.</p>
+
+        <h3>Procedure</h3>
+        <ol class="docs-list">
+          <li><strong>Apply a small piece of reflective tape</strong> (aluminum tape or white tape on a dark chuck) to the chuck edge. This serves as a marker for the tachometer.</li>
+          <li><strong>Install a phone tachometer app</strong> &mdash; "Tachometer" (iOS) or "RPM Tachometer" (Android). These use the phone camera to detect the reflective tape flash.</li>
+          <li><strong>Set the ESC throttle to a low position</strong> and measure the RPM. Record the throttle position or PWM pulse width.</li>
+          <li><strong>Increment throttle in small steps</strong> and record RPM at each position.</li>
+          <li><strong>Build a calibration table</strong> mapping throttle position to RPM. Mark key speeds on the potentiometer dial or record PWM values:</li>
+        </ol>
+        <table class="inline-table">
+          <tr><th>Target RPM</th><th>Film Thickness</th><th>Throttle Position</th></tr>
+          <tr><td>1000</td><td>~900nm</td><td><em>(measure and record)</em></td></tr>
+          <tr><td>2000</td><td>~450nm</td><td><em>(measure and record)</em></td></tr>
+          <tr><td>3000</td><td>~300nm</td><td><em>(measure and record)</em></td></tr>
+          <tr><td>4000</td><td>~200nm</td><td><em>(measure and record)</em></td></tr>
+          <tr><td>6000</td><td>~100nm</td><td><em>(measure and record)</em></td></tr>
+        </table>
+
+        <h2>Troubleshooting</h2>
+
+        <h3>Vibration at High Speed</h3>
+        <p>The most common problem. Symptoms: audible buzzing, visible chuck wobble, substrate shifting.</p>
+        <ul class="docs-list">
+          <li><strong>Cause:</strong> Chuck imbalance. Even small weight asymmetry creates large centrifugal forces at 6000 RPM.</li>
+          <li><strong>Fix:</strong> Reprint the chuck at 100% infill. Verify the center hole is concentric. If vibration persists, add small pieces of tape to the light side (trial and error) until the chuck spins smoothly.</li>
+          <li><strong>Test:</strong> Spin the empty chuck at 6000 RPM. Place a coin on the chuck near the edge &mdash; if it stays put, balance is adequate.</li>
+        </ul>
+
+        <h3>Film Non-Uniformity</h3>
+        <p>Symptoms: visible thickness gradients (color fringes under reflected light), resist pooling on one side.</p>
+        <ul class="docs-list">
+          <li><strong>Substrate not level:</strong> Use a small bubble level on the chuck. Shim the motor mount until the chuck is horizontal to within 0.5&deg;.</li>
+          <li><strong>Off-center dispensing:</strong> Dispense the resist drop at the exact center of the substrate. Off-center dispensing causes one-sided pooling.</li>
+          <li><strong>Insufficient resist volume:</strong> Dispense enough to cover ~80% of the substrate area before spinning. For a 25&times;75mm slide, ~0.3mL is typical.</li>
+          <li><strong>Slow acceleration:</strong> If the motor ramps slowly, the resist flows outward unevenly. The ESC should hit target RPM in under 2 seconds.</li>
+        </ul>
+
+        <h3>Substrate Ejection</h3>
+        <p>Symptoms: substrate flies off the chuck during spin-up.</p>
+        <ul class="docs-list">
+          <li><strong>Tape adhesion failure:</strong> Use fresh double-sided tape. Press firmly. Consider switching to vacuum hold-down.</li>
+          <li><strong>Excessive acceleration:</strong> Some ESCs ramp too aggressively. Reduce acceleration rate if configurable.</li>
+          <li><strong>Wet substrate back:</strong> If resist leaked under the substrate, the tape loses grip. Keep the substrate underside dry.</li>
+        </ul>
+
+        <div class="docs-callout">
+          <strong>STL files coming soon.</strong> The chuck and splash guard STL files will be published to the GitHub repository once the spin coater is built and tested. We want to verify the design works before publishing it.
+        </div>
+      </div>
+    </main>
+  </div>
+  <script src="/albu/docs/sidebar-loader.js"></script>
+</body>
+</html>

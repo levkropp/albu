@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Phase 3: Automated Chip Printer - Albu Docs</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../../style.css">
+  <link rel="stylesheet" href="../docs.css">
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' rx='12' fill='%23434e64'/><rect x='15' y='15' width='70' height='70' rx='2' fill='none' stroke='white' stroke-width='4'/><circle cx='50' cy='50' r='28' fill='none' stroke='white' stroke-width='3.5'/><rect x='25' y='25' width='50' height='50' rx='1' fill='none' stroke='white' stroke-width='3' transform='rotate(45 50 50)'/><circle cx='50' cy='50' r='15' fill='none' stroke='white' stroke-width='2.5'/><rect x='37' y='37' width='26' height='26' rx='1' fill='none' stroke='white' stroke-width='2'/><circle cx='50' cy='50' r='4' fill='white'/></svg>">
+</head>
+<body>
+  <nav>
+    <div class="nav-inner">
+      <a href="/albu/" class="nav-logo">
+        <svg class="nav-logo-mark" viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <rect x="10" y="10" width="80" height="80" rx="2" stroke="#434e64" stroke-width="5"/>
+          <circle cx="50" cy="50" r="32" stroke="#434e64" stroke-width="4.5"/>
+          <rect x="22" y="22" width="56" height="56" rx="1" stroke="#434e64" stroke-width="4" transform="rotate(45 50 50)"/>
+          <circle cx="50" cy="50" r="17" stroke="#434e64" stroke-width="3.5"/>
+          <rect x="36" y="36" width="28" height="28" rx="1" stroke="#434e64" stroke-width="3"/>
+          <circle cx="50" cy="50" r="5" fill="#434e64"/>
+        </svg>
+        <div>
+          <div style="font-size:11px;font-weight:700;color:#434e64;letter-spacing:0.12em">KOSL</div>
+          <div style="font-size:20px;font-weight:700;color:#434e64">Albu</div>
+        </div>
+      </a>
+      <div class="nav-links">
+        <a href="/albu/#about">About</a>
+        <a href="/albu/#phase-1">Phase 1</a>
+        <a href="/albu/docs/" class="nav-active">Documentation</a>
+        <a href="https://github.com/levkropp/albu" class="nav-gh">GitHub</a>
+      </div>
+    </div>
+  </nav>
+  <div class="docs-layout">
+    <aside class="docs-sidebar" data-active="phase-3"></aside>
+    <main class="docs-main">
+      <div class="docs-content">
+        <h1>Phase 3: Automated Chip Printer</h1>
+        <p class="docs-lead">Machine 3 &mdash; a maskless direct-write lithography system with machine vision alignment. Software-defined patterns, sub-micron alignment, and 10&mu;m feature resolution from off-the-shelf components.</p>
+
+        <!-- ===== Architecture ===== -->
+        <h2 id="architecture">Machine Architecture</h2>
+        <p>The chip printer is a precision XY scanning system that focuses a single-mode laser through a microscope objective to directly write patterns onto photoresist-coated substrates. A beam splitter enables through-the-lens (TTL) camera alignment, so the same optical path used for exposure is also used for finding alignment marks.</p>
+
+        <h3>Core Components</h3>
+        <ul class="docs-list">
+          <li><strong>Laser source:</strong> Single-mode 405nm diode (or 275nm UV-C LED for higher resolution). Focused through microscope objective to a diffraction-limited spot.</li>
+          <li><strong>Microscope objective:</strong> 20x or 50x long-working-distance (LWD) objective. Defines the exposure spot size and field of view.</li>
+          <li><strong>Beam splitter:</strong> 50/50 plate or cube splitter. Sends laser down through the objective and reflects the sample image up to the camera.</li>
+          <li><strong>Machine vision camera:</strong> 5MP+ monochrome camera on the tube lens port. Provides live view of the substrate for alignment and focus.</li>
+          <li><strong>Precision XY stage:</strong> Closed-loop linear stages with optical encoders. ~1&mu;m positioning accuracy. The substrate moves; the optics stay fixed.</li>
+          <li><strong>Z focus stage:</strong> Motorized or piezo-driven for autofocus. Maintains the laser spot at the resist surface across the entire die.</li>
+          <li><strong>Motion controller:</strong> Klipper firmware running on a BTT Octopus board with TMC2209 stepper drivers. Proven in 3D printers, repurposed for nanometer-class motion control.</li>
+          <li><strong>Software:</strong> Python + OpenCV for alignment mark detection, GDS-to-scan-path conversion, and exposure sequencing.</li>
+        </ul>
+
+        <!-- ===== Why Maskless ===== -->
+        <h2 id="why-maskless">Why Maskless Over Photomask</h2>
+        <p>Traditional photolithography projects a pattern through a physical mask. Maskless direct-write eliminates the mask entirely.</p>
+
+        <table class="inline-table">
+          <tr><th>Advantage</th><th>Explanation</th></tr>
+          <tr><td>No mask fabrication</td><td>No need to produce a chrome-on-glass mask for each layer. Saves cost and turnaround time.</td></tr>
+          <tr><td>Software alignment</td><td>Layer-to-layer alignment is computed from detected alignment marks, not from mechanical pin registration.</td></tr>
+          <tr><td>Instant pattern changes</td><td>Modify the GDS file and re-expose. No physical artifact to remake.</td></tr>
+          <tr><td>Per-layer transform</td><td>Each layer's coordinate system is computed from actual alignment mark positions, correcting for substrate rotation and translation.</td></tr>
+        </table>
+
+        <p>The pipeline: <strong>GDS file &rarr; scan coordinates &rarr; affine transform &rarr; exposure</strong>. The entire pattern is defined in software.</p>
+
+        <div class="docs-callout">
+          <strong>Backup approach:</strong> If direct-write resolution proves insufficient, a 10x photomask reduction system (mask printed at 10x scale, projected through a reduction objective) provides an alternative path to 10&mu;m features.
+        </div>
+
+        <!-- ===== Software Alignment ===== -->
+        <h2 id="alignment">Software Alignment</h2>
+        <p>Multi-layer chip fabrication requires each layer to be precisely aligned to the previous one. Machine 3 uses computer vision to detect alignment marks and compute an affine transform for each exposure layer.</p>
+
+        <h3>Alignment Procedure</h3>
+        <ol class="docs-list">
+          <li><strong>Find alignment mark #1.</strong> Stage moves to the expected location. Camera acquires image. OpenCV template matching or contour detection locates the mark center. Record actual position (x<sub>1</sub>, y<sub>1</sub>).</li>
+          <li><strong>Find alignment mark #2.</strong> Stage moves to the second mark. Same detection. Record actual position (x<sub>2</sub>, y<sub>2</sub>).</li>
+          <li><strong>Compute affine transform.</strong> From the two measured positions vs. the two expected positions, compute the translation, rotation, and scale that maps design coordinates to stage coordinates.</li>
+          <li><strong>Apply transform.</strong> Every exposure coordinate in the GDS scan path is transformed through this matrix before being sent to the stage controller.</li>
+        </ol>
+
+        <h3>Alignment Accuracy</h3>
+        <p>The theoretical alignment precision is determined by the camera resolution divided by the objective magnification:</p>
+        <pre><code>alignment_precision = camera_pixel_size / objective_magnification
+
+Example: 2.2&mu;m pixel (5MP sensor) / 20x objective = 110nm per pixel
+With sub-pixel fitting (centroid): ~50nm alignment accuracy</code></pre>
+        <p>At 10&mu;m feature sizes, a 50nm alignment budget is more than sufficient. Even 1&mu;m alignment (20x worse) would be acceptable.</p>
+
+        <!-- ===== Exposure Strategy ===== -->
+        <h2 id="exposure">Exposure Strategy: Step-and-Scan</h2>
+        <p>The objective field of view limits how much area can be exposed at once. Machine 3 uses a step-and-scan strategy: expose one field, step to the next, repeat until the full die is covered.</p>
+
+        <table class="inline-table">
+          <tr><th>Parameter</th><th>Value</th></tr>
+          <tr><td>Objective</td><td>20x LWD</td></tr>
+          <tr><td>Field of view</td><td>~500&mu;m &times; 500&mu;m</td></tr>
+          <tr><td>Die size</td><td>7mm &times; 7mm</td></tr>
+          <tr><td>Fields per die</td><td>14 &times; 14 = 196</td></tr>
+          <tr><td>Raster step within field</td><td>10&mu;m</td></tr>
+          <tr><td>Time per field</td><td>~1 second</td></tr>
+          <tr><td>Time per layer</td><td>~3&ndash;4 minutes</td></tr>
+          <tr><td>Total for 8 layers</td><td>~30 minutes</td></tr>
+        </table>
+
+        <p>Target resolution: <strong>10&mu;m features</strong>. This is achievable with a 405nm laser through a 20x objective (diffraction limit ~0.5&mu;m), leaving comfortable margin for mechanical and optical imperfections.</p>
+
+        <!-- ===== BOM ===== -->
+        <h2 id="bom">Bill of Materials</h2>
+        <p>Estimated total: <strong>$2,200&ndash;$3,200</strong>. All components are commercially available from standard suppliers.</p>
+
+        <table class="inline-table">
+          <tr><th>Component</th><th>Cost</th></tr>
+          <tr><td>Precision XY stages with encoders</td><td>$400&ndash;600</td></tr>
+          <tr><td>Z focus stage (motorized)</td><td>$100&ndash;200</td></tr>
+          <tr><td>Objectives (20x, 50x LWD)</td><td>$150&ndash;300</td></tr>
+          <tr><td>Beam splitter + tube lens</td><td>$70&ndash;110</td></tr>
+          <tr><td>Machine vision camera (5MP+)</td><td>$80&ndash;150</td></tr>
+          <tr><td>Single-mode laser + driver (405nm)</td><td>$50&ndash;80</td></tr>
+          <tr><td>UV-C LEDs (275nm)</td><td>$30&ndash;50</td></tr>
+          <tr><td>Klipper + BTT Octopus + TMC2209 drivers</td><td>$120&ndash;180</td></tr>
+          <tr><td>Optical breadboard</td><td>$100&ndash;200</td></tr>
+          <tr><td>Enclosure + vibration isolation</td><td>$110&ndash;170</td></tr>
+          <tr><td>Vacuum chuck</td><td>$30&ndash;50</td></tr>
+          <tr><td>Computer (mini PC)</td><td>$150&ndash;250</td></tr>
+          <tr><td>Misc + contingency</td><td>$700&ndash;1,100</td></tr>
+          <tr><td><strong>Total</strong></td><td><strong>$2,200&ndash;$3,200</strong></td></tr>
+        </table>
+      </div>
+    </main>
+  </div>
+  <script src="/albu/docs/sidebar-loader.js"></script>
+</body>
+</html>

@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Water Development - Albu Docs</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../../style.css">
+  <link rel="stylesheet" href="../docs.css">
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' rx='12' fill='%23434e64'/><rect x='15' y='15' width='70' height='70' rx='2' fill='none' stroke='white' stroke-width='4'/><circle cx='50' cy='50' r='28' fill='none' stroke='white' stroke-width='3.5'/><rect x='25' y='25' width='50' height='50' rx='1' fill='none' stroke='white' stroke-width='3' transform='rotate(45 50 50)'/><circle cx='50' cy='50' r='15' fill='none' stroke='white' stroke-width='2.5'/><rect x='37' y='37' width='26' height='26' rx='1' fill='none' stroke='white' stroke-width='2'/><circle cx='50' cy='50' r='4' fill='white'/></svg>">
+</head>
+<body>
+  <nav>
+    <div class="nav-inner">
+      <a href="/albu/" class="nav-logo">
+        <svg class="nav-logo-mark" viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <rect x="10" y="10" width="80" height="80" rx="2" stroke="#434e64" stroke-width="5"/>
+          <circle cx="50" cy="50" r="32" stroke="#434e64" stroke-width="4.5"/>
+          <rect x="22" y="22" width="56" height="56" rx="1" stroke="#434e64" stroke-width="4" transform="rotate(45 50 50)"/>
+          <circle cx="50" cy="50" r="17" stroke="#434e64" stroke-width="3.5"/>
+          <rect x="36" y="36" width="28" height="28" rx="1" stroke="#434e64" stroke-width="3"/>
+          <circle cx="50" cy="50" r="5" fill="#434e64"/>
+        </svg>
+        <div>
+          <div style="font-size:11px;font-weight:700;color:#434e64;letter-spacing:0.12em">KOSL</div>
+          <div style="font-size:20px;font-weight:700;color:#434e64">Albu</div>
+        </div>
+      </a>
+      <div class="nav-links">
+        <a href="/albu/#about">About</a>
+        <a href="/albu/#phase-1">Phase 1</a>
+        <a href="/albu/docs/" class="nav-active">Documentation</a>
+        <a href="https://github.com/levkropp/albu" class="nav-gh">GitHub</a>
+      </div>
+    </div>
+  </nav>
+  <div class="docs-layout">
+    <aside class="docs-sidebar" data-active="development"></aside>
+    <main class="docs-main">
+      <div class="docs-content">
+        <h1>Water Development</h1>
+        <p class="docs-lead">Developing exposed egg white resist patterns using distilled water. No solvents, no specialty developers.</p>
+
+        <h2>Materials</h2>
+        <ul class="docs-list">
+          <li>Distilled water</li>
+          <li>Shallow dish (petri dish, small plate, or plastic container)</li>
+          <li>Squeeze bottle with distilled water (for rinsing)</li>
+          <li>Canned air (optional, for drying)</li>
+        </ul>
+
+        <h2>Procedure</h2>
+        <ol class="docs-list">
+          <li><strong>Fill dish.</strong> Pour room-temperature distilled water into a shallow dish, deep enough to submerge the slide (~5mm).</li>
+          <li><strong>Immerse.</strong> Gently place the exposed slide into the water, film side up. Do not drop it &mdash; the splash can damage delicate patterns.</li>
+          <li><strong>Develop.</strong> Wait <strong>30 seconds</strong>. Gently swirl the dish every 10 seconds to promote dissolution of soluble protein.</li>
+          <li><strong>Rinse.</strong> Remove the slide and rinse with fresh distilled water from a squeeze bottle, held at a shallow angle. The rinse removes loosened protein that's still clinging to the surface.</li>
+          <li><strong>Dry.</strong> Air dry by standing the slide upright, or gently blow with canned air (hold can upright to avoid propellant spray). Do not wipe &mdash; wiping will destroy the pattern.</li>
+        </ol>
+
+        <div class="docs-callout">
+          <strong>Development time:</strong> The paper used 30 seconds. If patterns are incomplete (residual protein in areas that should be clear), try extending to 60 seconds or using gently warmed water (30-40&deg;C). Over-development (>2 minutes) may attack even crosslinked areas.
+        </div>
+
+        <h2>What Happens During Development</h2>
+
+        <h3>Negative tone</h3>
+        <p>Exposed regions contain crosslinked protein aggregates with water-inaccessible beta-sheet structure. These are insoluble in water and remain on the slide. Unexposed regions contain native, soluble protein that dissolves and washes away.</p>
+        <p><strong>Result:</strong> Pattern matches the laser-exposed areas.</p>
+
+        <h3>Positive tone</h3>
+        <p>Exposed regions contain fragmented protein chains (small, water-soluble peptides). These dissolve readily. Unexposed regions contain glycerol-stabilized native protein, mildly pre-cured for adhesion, which remains on the slide.</p>
+        <p><strong>Result:</strong> Pattern is the inverse of the laser-exposed areas.</p>
+
+        <h2>Troubleshooting</h2>
+        <table class="inline-table">
+          <tr><th>Observation</th><th>Cause</th><th>Fix</th></tr>
+          <tr><td>Nothing washes away &mdash; entire film remains</td><td>Exposure dose too high (negative) or resist too thick</td><td>Reduce laser power or increase speed. Use thinner coating.</td></tr>
+          <tr><td>Everything washes away &mdash; no pattern remains</td><td>Exposure dose too low (negative) or poor substrate adhesion</td><td>Increase dose. Clean substrate more thoroughly. For positive tone, ensure pre-cure step was done.</td></tr>
+          <tr><td>Pattern is there but faint/incomplete</td><td>Under-development or over-development</td><td>Try different development times: 15s, 30s, 45s, 60s</td></tr>
+          <tr><td>Film peels off in large sheets</td><td>Poor adhesion to glass substrate</td><td>Clean substrate with IPA. For positive tone, increase pre-cure dose.</td></tr>
+          <tr><td>Edges of pattern are ragged</td><td>Partially crosslinked protein at pattern borders</td><td>Normal at the resolution limit. May improve with thinner resist.</td></tr>
+          <tr><td>Residue in background (haze)</td><td>Rinse was insufficient</td><td>Use more vigorous rinse. Try a second 15-second development bath.</td></tr>
+        </table>
+
+        <h2>Water Quality</h2>
+        <p>Distilled water is recommended to avoid mineral deposits on the pattern. Tap water works for initial experiments but may leave residue that's visible under the microscope. Deionized water is ideal but not necessary for Phase 1 feature sizes.</p>
+
+        <h2>Resist Stripping (for re-use of substrates)</h2>
+        <p>If you need to clean a slide completely and start over:</p>
+        <ul class="docs-list">
+          <li><strong>Hot water soak:</strong> Immerse in near-boiling water for 5 minutes. Most crosslinked protein will soften and peel.</li>
+          <li><strong>Enzyme digestion:</strong> Dissolve meat tenderizer (papain protease) in warm water (~1 teaspoon per 100mL). Soak the slide for 1&ndash;2 hours. The protease breaks down crosslinked protein.</li>
+          <li><strong>Concentrated urea:</strong> The paper mentions 8M urea at 4&deg;C overnight as an alternative. Urea is available at garden stores as fertilizer, but the meat tenderizer approach is more accessible.</li>
+        </ul>
+
+      </div>
+    </main>
+  </div>
+  <script src="/albu/docs/sidebar-loader.js"></script>
+</body>
+</html>

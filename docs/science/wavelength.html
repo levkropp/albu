@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>450nm Wavelength Strategy - Albu Docs</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../../style.css">
+  <link rel="stylesheet" href="../docs.css">
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' rx='12' fill='%23434e64'/><rect x='15' y='15' width='70' height='70' rx='2' fill='none' stroke='white' stroke-width='4'/><circle cx='50' cy='50' r='28' fill='none' stroke='white' stroke-width='3.5'/><rect x='25' y='25' width='50' height='50' rx='1' fill='none' stroke='white' stroke-width='3' transform='rotate(45 50 50)'/><circle cx='50' cy='50' r='15' fill='none' stroke='white' stroke-width='2.5'/><rect x='37' y='37' width='26' height='26' rx='1' fill='none' stroke='white' stroke-width='2'/><circle cx='50' cy='50' r='4' fill='white'/></svg>">
+</head>
+<body>
+  <nav>
+    <div class="nav-inner">
+      <a href="/albu/" class="nav-logo">
+        <svg class="nav-logo-mark" viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <rect x="10" y="10" width="80" height="80" rx="2" stroke="#434e64" stroke-width="5"/>
+          <circle cx="50" cy="50" r="32" stroke="#434e64" stroke-width="4.5"/>
+          <rect x="22" y="22" width="56" height="56" rx="1" stroke="#434e64" stroke-width="4" transform="rotate(45 50 50)"/>
+          <circle cx="50" cy="50" r="17" stroke="#434e64" stroke-width="3.5"/>
+          <rect x="36" y="36" width="28" height="28" rx="1" stroke="#434e64" stroke-width="3"/>
+          <circle cx="50" cy="50" r="5" fill="#434e64"/>
+        </svg>
+        <div>
+          <div style="font-size:11px;font-weight:700;color:#434e64;letter-spacing:0.12em">KOSL</div>
+          <div style="font-size:20px;font-weight:700;color:#434e64">Albu</div>
+        </div>
+      </a>
+      <div class="nav-links">
+        <a href="/albu/#about">About</a>
+        <a href="/albu/#phase-1">Phase 1</a>
+        <a href="/albu/docs/" class="nav-active">Documentation</a>
+        <a href="https://github.com/levkropp/albu" class="nav-gh">GitHub</a>
+      </div>
+    </div>
+  </nav>
+  <div class="docs-layout">
+    <aside class="docs-sidebar" data-active="wavelength"></aside>
+    <main class="docs-main">
+      <div class="docs-content">
+        <h1>450nm Wavelength Strategy</h1>
+        <p class="docs-lead">Why we use a $35 blue laser diode instead of the paper's 254nm deep-UV source, and how riboflavin bridges the gap.</p>
+
+        <h2>The Problem: Proteins Don't Absorb at 450nm</h2>
+        <p>Jiang et al. (2017) used <strong>254nm UV-C</strong> light to crosslink egg white protein. This wavelength works because proteins have two strong absorption bands in the UV:</p>
+        <ul class="docs-list">
+          <li><strong>200&ndash;220nm (peptide bond absorption):</strong> The amide backbone of every protein absorbs strongly here. This is the &pi;&rarr;&pi;* transition of the C=O bond in the peptide linkage. Peak near 190nm, tailing to ~230nm.</li>
+          <li><strong>280nm (aromatic side chains):</strong> Tryptophan (&epsilon;<sub>280</sub> &asymp; 5,500 M<sup>-1</sup>cm<sup>-1</sup>), tyrosine (&epsilon;<sub>280</sub> &asymp; 1,490), and phenylalanine (&epsilon;<sub>257</sub> &asymp; 200) absorb in this region. Ovalbumin contains 3 Trp, 10 Tyr, and 20 Phe residues.</li>
+        </ul>
+        <p>At <strong>450nm</strong>, native egg white proteins have essentially <strong>zero absorption</strong>. A 450nm photon (2.76 eV) lacks the energy to excite peptide bonds or aromatic side chains directly. Shining a blue laser at a thin film of egg white would do nothing &mdash; the light passes straight through.</p>
+
+        <h2>The Solution: Riboflavin as Photosensitizer</h2>
+        <p><strong>Riboflavin (vitamin B2)</strong> is a Type II photosensitizer with a strong absorption band centered at <strong>445&ndash;450nm</strong>. This is not a coincidence &mdash; we chose the laser wavelength to match this peak.</p>
+
+        <h3>Riboflavin Absorption Spectrum</h3>
+        <p>Riboflavin has four distinct absorption bands in the UV-visible range:</p>
+        <table class="inline-table">
+          <tr><th>Band</th><th>Wavelength (nm)</th><th>Molar Absorptivity</th><th>Relevance</th></tr>
+          <tr><td>Band I</td><td>445&ndash;450</td><td>~12,500 M<sup>-1</sup>cm<sup>-1</sup></td><td><strong>Our target.</strong> 450nm laser sits directly on this peak.</td></tr>
+          <tr><td>Band II</td><td>356&ndash;375</td><td>~10,600 M<sup>-1</sup>cm<sup>-1</sup></td><td>Also strong, but no cheap high-power lasers at this wavelength.</td></tr>
+          <tr><td>Band III</td><td>260&ndash;270</td><td>~28,000 M<sup>-1</sup>cm<sup>-1</sup></td><td>Overlaps with protein absorption. Hard to decouple effects.</td></tr>
+          <tr><td>Band IV</td><td>220&ndash;230</td><td>~30,000 M<sup>-1</sup>cm<sup>-1</sup></td><td>Deep UV. Requires specialty sources.</td></tr>
+        </table>
+        <p>The 445&ndash;450nm band (Band I) arises from the &pi;&rarr;&pi;* transition in the isoalloxazine ring system. It gives riboflavin its characteristic yellow color (absorbs blue, transmits yellow/green).</p>
+
+        <h3>The Photosensitization Mechanism</h3>
+        <p>Riboflavin mediates protein crosslinking through a <strong>Type II photosensitized oxidation</strong> pathway:</p>
+        <ol class="docs-list">
+          <li><strong>Photon absorption:</strong> Riboflavin absorbs a 450nm photon, exciting from the singlet ground state (S<sub>0</sub>) to the first excited singlet state (S<sub>1</sub>).</li>
+          <li><strong>Intersystem crossing:</strong> S<sub>1</sub> undergoes efficient intersystem crossing (ISC) to the triplet state (T<sub>1</sub>). Riboflavin's ISC quantum yield is ~0.67 &mdash; exceptionally high, making it an efficient photosensitizer.</li>
+          <li><strong>Energy transfer to oxygen:</strong> Triplet riboflavin (T<sub>1</sub>) transfers energy to dissolved molecular oxygen (O<sub>2</sub>, ground state triplet <sup>3</sup>&Sigma;<sub>g</sub>) to produce <strong>singlet oxygen</strong> (<sup>1</sup>O<sub>2</sub>). This is the Type II pathway.</li>
+          <li><strong>Amino acid oxidation:</strong> Singlet oxygen reacts with electron-rich amino acid side chains, primarily <strong>histidine</strong>, <strong>tryptophan</strong>, <strong>tyrosine</strong>, <strong>methionine</strong>, and <strong>cysteine</strong>. The oxidation products include dityrosine crosslinks, disulfide bridges, and carbonyl derivatives.</li>
+          <li><strong>Crosslinked network:</strong> The accumulation of intermolecular crosslinks produces an insoluble protein aggregate &mdash; the same end result as direct UV exposure, achieved through a different mechanism.</li>
+        </ol>
+
+        <div class="docs-callout">
+          <strong>Key insight:</strong> The riboflavin acts as an antenna. It captures 450nm photons that proteins cannot absorb and converts the energy into reactive oxygen species that do the actual crosslinking chemistry. The protein never needs to absorb the laser light directly.
+        </div>
+
+        <h2>Power Density Compensates</h2>
+        <p>Even with riboflavin mediating the reaction, there is a valid concern: is 450nm with a photosensitizer as efficient as direct 254nm absorption? Probably not per-photon. But we compensate with <strong>raw power density</strong>.</p>
+
+        <h3>Power Density Comparison</h3>
+        <table class="inline-table">
+          <tr><th>Parameter</th><th>Jiang et al. (2017)</th><th>Albu (Phase 1)</th></tr>
+          <tr><td>Wavelength</td><td>254nm (UV-C lamp)</td><td>450nm (laser diode)</td></tr>
+          <tr><td>Power</td><td>8 mW/cm&sup2; (flood exposure)</td><td>5W focused to ~100&mu;m spot</td></tr>
+          <tr><td>Exposure area</td><td>~1 cm&sup2; through photomask</td><td>~7.85 &times; 10<sup>-5</sup> cm&sup2; (100&mu;m spot)</td></tr>
+          <tr><td>Power density</td><td>8 mW/cm&sup2;</td><td><strong>~63,700 W/cm&sup2; (63.7 kW/cm&sup2;)</strong></td></tr>
+          <tr><td>Ratio</td><td>1&times;</td><td><strong>~8,000,000&times;</strong></td></tr>
+          <tr><td>Exposure time</td><td>5&ndash;30 minutes (flood)</td><td>Milliseconds per point (scanning)</td></tr>
+        </table>
+        <p>The power density at the focal spot is roughly <strong>8 million times higher</strong> than the paper's flood exposure. Even if riboflavin-mediated crosslinking is 100&times; less efficient per photon than direct UV absorption, we still have a massive surplus of photon flux. The exposure time per point drops from minutes to milliseconds.</p>
+
+        <div class="docs-warning">
+          <strong>Thermal damage risk.</strong> At 64 kW/cm&sup2;, thermal effects dominate if the beam dwells too long. The protein will carbonize rather than crosslink. Feed rate and laser power percentage must be tuned carefully &mdash; this is the core experimental challenge of Phase 1. We expect to operate at 1&ndash;5% power (50&ndash;250mW) for resist exposure, reserving full power for ablation.
+        </div>
+
+        <h3>Dose Calculation</h3>
+        <p>The paper reports optimal negative-tone exposure at <strong>~1&ndash;5 J/cm&sup2;</strong> at 254nm. For our setup at 1% power (50mW) focused to a 100&mu;m spot:</p>
+        <pre><code>Power density = 0.050 W / (7.85e-5 cm&sup2;) = 637 W/cm&sup2;
+Dwell time for 5 J/cm&sup2; = 5 / 637 = 7.8 ms
+At 100 mm/min feed rate: dwell per 100&mu;m = (0.1mm / 100mm) * 60s = 60 ms
+Delivered dose at 100 mm/min = 637 * 0.06 = 38 J/cm&sup2;</code></pre>
+        <p>Even at 1% laser power and 100 mm/min, we deliver <strong>38 J/cm&sup2;</strong> &mdash; well above the paper's threshold. This suggests we may need even lower power, faster feed rates, or both. The parameter space to explore is wide.</p>
+
+        <h2>Why Not Just Use UV-C?</h2>
+        <p>A reasonable question: if 254nm works directly, why not use UV-C LEDs?</p>
+
+        <table class="inline-table">
+          <tr><th>Factor</th><th>450nm Laser Diode</th><th>275nm UV-C LED</th></tr>
+          <tr><td>Cost</td><td>$35&ndash;40 (5W module)</td><td>$15&ndash;25 per LED (10&ndash;100mW each)</td></tr>
+          <tr><td>Optical power</td><td>5,000 mW</td><td>10&ndash;100 mW per LED</td></tr>
+          <tr><td>Focusability</td><td>Excellent (single emitter, round beam)</td><td>Poor (Lambertian, requires collimation optics)</td></tr>
+          <tr><td>Spot size achievable</td><td>~100&mu;m with stock lens</td><td>&gt;1mm without custom optics</td></tr>
+          <tr><td>Dual use for ablation</td><td>Yes (full power melts/vaporizes metals)</td><td>No (insufficient power)</td></tr>
+          <tr><td>Safety</td><td>Blue light &mdash; visible, goggles available</td><td>UV-C &mdash; invisible, skin/eye damage, ozone generation</td></tr>
+          <tr><td>CNC compatibility</td><td>Plug-and-play with 3018-PRO</td><td>Requires custom mounting and driver circuit</td></tr>
+        </table>
+        <p>The 450nm laser wins on power, cost-effectiveness, dual-use capability, and ease of integration. The only downside is requiring a photosensitizer, and riboflavin is a $0.08/tablet vitamin supplement.</p>
+
+        <h2>Backup Plan: 275nm UV-C</h2>
+        <p>If riboflavin-mediated crosslinking at 450nm proves insufficient (e.g., poor crosslink density, inconsistent results, or thermal damage at all usable power levels), the fallback is:</p>
+        <ol class="docs-list">
+          <li><strong>Replace the laser module</strong> with a bank of 275nm UV-C LEDs (Seoul Viosys or similar, ~$15&ndash;25 each).</li>
+          <li><strong>Flood expose through a printed photomask</strong> (transparency film, laser-printed at 1200 DPI).</li>
+          <li><strong>Drop riboflavin</strong> from the resist formulation (no longer needed for photosensitization).</li>
+          <li><strong>Keep the CNC</strong> for laser ablation (metal patterning in Phase 2), but pattern resist with the UV-C array.</li>
+        </ol>
+        <p>This fallback closely replicates the paper's original method. It sacrifices direct-write capability (requires a physical photomask) and adds UV-C safety concerns, but it is a known-good approach.</p>
+
+        <div class="docs-callout">
+          <strong>Current status:</strong> Phase 1 begins with the 450nm + riboflavin approach. The UV-C fallback will only be pursued if 450nm conclusively fails after systematic parameter sweeps across power, feed rate, riboflavin concentration, and film thickness.
+        </div>
+
+        <h2>References</h2>
+        <ol class="docs-refs">
+          <li>Jiang, B. et al. (2017). "Water-Based Photo- and Electron-Beam Lithography Using Egg White as a Resist." <em>Adv. Mater. Interfaces</em>, 4, 1601223.</li>
+          <li>Cardoso, D.R. et al. (2012). "Riboflavin as a photosensitizer. Effects on human health and food quality." <em>Food &amp; Function</em>, 3, 487.</li>
+          <li>Kang, Y.N. et al. (2021). "Riboflavin-mediated protein crosslinking: mechanisms and biomedical applications." <em>J. Mater. Chem. B</em>, 9, 6745.</li>
+          <li>Au, V. &amp; Madison, S.A. (2000). "Effects of singlet oxygen on the extracellular matrix protein collagen: oxidation of the collagen crosslink histidinohydroxylysinonorleucine and histidine." <em>Arch. Biochem. Biophys.</em>, 384, 133.</li>
+        </ol>
+      </div>
+    </main>
+  </div>
+  <script src="/albu/docs/sidebar-loader.js"></script>
+</body>
+</html>

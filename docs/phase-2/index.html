@@ -1,0 +1,225 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Phase 2: Transistor Fabrication - Albu Docs</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../../style.css">
+  <link rel="stylesheet" href="../docs.css">
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' rx='12' fill='%23434e64'/><rect x='15' y='15' width='70' height='70' rx='2' fill='none' stroke='white' stroke-width='4'/><circle cx='50' cy='50' r='28' fill='none' stroke='white' stroke-width='3.5'/><rect x='25' y='25' width='50' height='50' rx='1' fill='none' stroke='white' stroke-width='3' transform='rotate(45 50 50)'/><circle cx='50' cy='50' r='15' fill='none' stroke='white' stroke-width='2.5'/><rect x='37' y='37' width='26' height='26' rx='1' fill='none' stroke='white' stroke-width='2'/><circle cx='50' cy='50' r='4' fill='white'/></svg>">
+</head>
+<body>
+  <nav>
+    <div class="nav-inner">
+      <a href="/albu/" class="nav-logo">
+        <svg class="nav-logo-mark" viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <rect x="10" y="10" width="80" height="80" rx="2" stroke="#434e64" stroke-width="5"/>
+          <circle cx="50" cy="50" r="32" stroke="#434e64" stroke-width="4.5"/>
+          <rect x="22" y="22" width="56" height="56" rx="1" stroke="#434e64" stroke-width="4" transform="rotate(45 50 50)"/>
+          <circle cx="50" cy="50" r="17" stroke="#434e64" stroke-width="3.5"/>
+          <rect x="36" y="36" width="28" height="28" rx="1" stroke="#434e64" stroke-width="3"/>
+          <circle cx="50" cy="50" r="5" fill="#434e64"/>
+        </svg>
+        <div>
+          <div style="font-size:11px;font-weight:700;color:#434e64;letter-spacing:0.12em">KOSL</div>
+          <div style="font-size:20px;font-weight:700;color:#434e64">Albu</div>
+        </div>
+      </a>
+      <div class="nav-links">
+        <a href="/albu/#about">About</a>
+        <a href="/albu/#phase-1">Phase 1</a>
+        <a href="/albu/docs/" class="nav-active">Documentation</a>
+        <a href="https://github.com/levkropp/albu" class="nav-gh">GitHub</a>
+      </div>
+    </div>
+  </nav>
+  <div class="docs-layout">
+    <aside class="docs-sidebar" data-active="phase-2"></aside>
+    <main class="docs-main">
+      <div class="docs-content">
+        <h1>Phase 2: Transistor Fabrication</h1>
+        <p class="docs-lead">Five transistor architectures, ordered from easiest to most ambitious. Each builds on the egg white resist and laser toolchain from Phase 1. Start with ZnO TFTs on glass and work toward CMOS.</p>
+
+        <div class="docs-callout">
+          <strong>Prerequisite:</strong> Phase 1 must be complete. You need a working spin coating process, calibrated laser exposure, and confirmed egg white film uniformity before attempting any transistor build.
+        </div>
+
+        <!-- ===== 1. ZnO TFT ===== -->
+        <h2 id="zno-tft">1. ZnO TFT on Glass</h2>
+        <p>The easiest and most proven approach. ZnO thin-film transistors (TFTs) use a bottom-contact, top-gate architecture on a glass substrate with egg white as the gate dielectric.</p>
+
+        <h3>Layer Stack</h3>
+        <pre><code>  Silver gate electrode        (top)
+  ────────────────────────
+  Egg white dielectric         UV-cured, ~300-450nm
+  ────────────────────────
+  ZnO channel                  sol-gel, 3 layers, ~60nm
+  ────────────────────────
+  Silver S/D contacts          laser-ablated gap ~100&mu;m
+  ────────────────────────
+  Glass substrate              (bottom)</code></pre>
+
+        <h3>ZnO Sol-Gel Preparation</h3>
+        <p>The channel semiconductor is zinc oxide deposited from a sol-gel solution:</p>
+        <ul class="docs-list">
+          <li><strong>Zinc acetate dihydrate</strong> dissolved in <strong>ethanol</strong> with <strong>monoethanolamine</strong> (MEA) as stabilizer</li>
+          <li>Typical recipe: 0.5M zinc acetate in ethanol, equimolar MEA</li>
+          <li>Spin coat each layer, bake at 300&deg;C on hot plate for 10 minutes</li>
+          <li>Repeat 3 times for a ~60nm channel layer</li>
+        </ul>
+
+        <h3>Process Flow</h3>
+        <ol class="docs-list">
+          <li><strong>Source/drain contacts.</strong> Paint silver conductive paint onto glass substrate in two pads with a narrow gap. Use the CNC laser to ablate a clean channel gap of ~100&mu;m between pads.</li>
+          <li><strong>ZnO channel.</strong> Spin coat ZnO sol-gel over the S/D region. Bake at 300&deg;C. Repeat for 3 layers total.</li>
+          <li><strong>Gate dielectric.</strong> Spin coat egg white over the ZnO channel. UV cure (expose with CNC laser at low dose) to crosslink the protein into a stable dielectric film. Target thickness: 300&ndash;450nm.</li>
+          <li><strong>Gate electrode.</strong> Apply silver paint as the top gate, aligned over the channel gap.</li>
+        </ol>
+
+        <h3>Testing</h3>
+        <p>Sweep V<sub>GS</sub> from 0 to 10V while measuring I<sub>DS</sub> at fixed V<sub>DS</sub>. Expected characteristics:</p>
+        <table class="inline-table">
+          <tr><th>Parameter</th><th>Expected Value</th></tr>
+          <tr><td>Threshold voltage (V<sub>th</sub>)</td><td>1&ndash;5V</td></tr>
+          <tr><td>On/off current ratio</td><td>10&sup3;&ndash;10&sup6;</td></tr>
+          <tr><td>Channel length</td><td>~100&mu;m</td></tr>
+        </table>
+
+        <h3>Added Cost</h3>
+        <table class="inline-table">
+          <tr><th>Material</th><th>Cost</th></tr>
+          <tr><td>Silver conductive paint</td><td>$20</td></tr>
+          <tr><td>Zinc acetate dihydrate</td><td>$12</td></tr>
+          <tr><td>Ethanol (solvent)</td><td>$5</td></tr>
+          <tr><td><strong>Total</strong></td><td><strong>~$37</strong></td></tr>
+        </table>
+
+        <!-- ===== 2. Schottky-Barrier MOSFET ===== -->
+        <h2 id="schottky-mosfet">2. Schottky-Barrier MOSFET + Egg White Interlayer</h2>
+        <p>This demonstrates a real MOSFET on silicon without any doping step. The key innovation is an ultra-thin egg white interlayer at the metal-silicon contact that reduces Schottky barrier leakage.</p>
+
+        <h3>Why This Works</h3>
+        <p>When metal contacts bare silicon, a Schottky barrier forms at the junction. The barrier height depends on the metal work function and produces significant leakage current that degrades transistor performance. An ultra-thin egg white protein layer (2&ndash;5nm) inserted at the contact acts as a dipole interlayer, modifying the effective barrier.</p>
+
+        <h3>Interlayer Deposition</h3>
+        <ul class="docs-list">
+          <li>Dilute egg white albumen 1:100 in distilled water</li>
+          <li>Dip the bare p-type Si wafer into the dilute solution</li>
+          <li>Withdraw slowly &mdash; surface tension leaves a 2&ndash;5nm protein film</li>
+          <li>Air dry at room temperature</li>
+        </ul>
+
+        <h3>Metal Contact Options</h3>
+        <table class="inline-table">
+          <tr><th>Contact Metal</th><th>Barrier Height (eV)</th><th>Relative Leakage</th></tr>
+          <tr><td>Silver paint</td><td>0.54</td><td>1x (baseline)</td></tr>
+          <tr><td>Gold leaf</td><td>0.80</td><td>~1/22,000x</td></tr>
+        </table>
+        <p>Gold leaf produces ~22,000x less leakage than silver due to its higher Schottky barrier. This makes gold the preferred contact metal for cleaner device characteristics.</p>
+
+        <h3>Process Flow</h3>
+        <ol class="docs-list">
+          <li><strong>Substrate.</strong> Start with a bare p-type silicon wafer.</li>
+          <li><strong>Interlayer.</strong> Dip coat in 1:100 diluted egg white.</li>
+          <li><strong>S/D contacts.</strong> Apply silver paint or gold leaf for source and drain.</li>
+          <li><strong>Gate dielectric.</strong> Spin coat egg white over the channel region, UV cure.</li>
+          <li><strong>Gate electrode.</strong> Apply silver paint gate.</li>
+        </ol>
+
+        <div class="docs-warning">
+          <strong>Limitation:</strong> Schottky-barrier MOSFETs exhibit ambipolar behavior &mdash; they conduct for both positive and negative gate voltages. This makes them unreliable for logic circuits. Good for a single device demonstration, but not suitable for building a ring oscillator or more complex circuits.
+        </div>
+
+        <!-- ===== 3. Laser-Doped Silicon MOSFET ===== -->
+        <h2 id="laser-doped">3. Laser-Doped Silicon MOSFET</h2>
+        <p>The most innovative approach in Phase 2. The CNC laser directly dopes silicon by melting the surface through a phosphorus-containing film. No vacuum chamber. No diffusion furnace. The laser does the doping.</p>
+
+        <h3>The Breakthrough</h3>
+        <p>A 5W 450nm laser focused to a ~100&mu;m spot can melt silicon's surface in approximately 120ns. When the surface is coated with phosphoric acid (available as hardware-store rust remover), the laser pulse melts a thin surface layer, phosphorus diffuses into the melt, and the silicon resolidifies with n+ doped regions. The resulting n+/p junction provides proper blocking behavior and the n+ to metal contact is ohmic &mdash; eliminating the Schottky barrier entirely.</p>
+
+        <h3>Process Flow</h3>
+        <ol class="docs-list">
+          <li><strong>Substrate.</strong> Bare p-type silicon wafer.</li>
+          <li><strong>Dopant source.</strong> Spin coat phosphoric acid solution over the wafer surface.</li>
+          <li><strong>Laser doping.</strong> Scan the CNC laser at full power over the source and drain areas. The laser melts the silicon surface and drives phosphorus into the melt zone, forming n+ doped regions.</li>
+          <li><strong>Rinse.</strong> Remove residual phosphoric acid with water.</li>
+          <li><strong>Gate dielectric.</strong> Spin coat egg white, UV cure.</li>
+          <li><strong>Contacts and gate.</strong> Silver paint for gate, source, and drain contacts.</li>
+        </ol>
+
+        <div class="docs-callout">
+          <strong>Key advantage:</strong> No vacuum equipment, no high-temperature furnace, no ion implanter. The entire doping step is performed by the same CNC laser used in Phase 1 for photolithography. Expected on/off ratio: 10&sup4;&ndash;10&sup6;.
+        </div>
+
+        <!-- ===== 4. Cu2O p-type TFT ===== -->
+        <h2 id="cu2o-tft">4. Cu&#8322;O p-type TFT</h2>
+        <p>Cuprous oxide (Cu&#8322;O) is a naturally p-type semiconductor formed by oxidizing copper. Combined with n-type ZnO, this enables complementary oxide TFT CMOS &mdash; both transistor polarities from kitchen-shelf materials.</p>
+
+        <h3>Selective Laser Oxidation</h3>
+        <p>The process exploits the CNC laser's ability to locally heat copper:</p>
+        <ol class="docs-list">
+          <li><strong>Apply copper.</strong> Press copper gilding leaf onto a glass substrate (adhesion via thin glue layer or direct contact).</li>
+          <li><strong>Laser oxidation.</strong> Scan the laser at 1&ndash;5% power over the channel region. This heats the copper to ~250&deg;C locally, converting it to Cu&#8322;O (a semiconductor). The source and drain areas remain as metallic copper (a conductor).</li>
+          <li><strong>Gate stack.</strong> Egg white gate dielectric + silver gate, same as ZnO TFT.</li>
+        </ol>
+        <p>The result: S/D contacts are metallic copper, channel is semiconducting Cu&#8322;O, all patterned by the same laser with no additional materials.</p>
+
+        <h3>CMOS Integration</h3>
+        <p>With both ZnO (n-type) and Cu&#8322;O (p-type) TFTs on the same glass substrate, you have complementary oxide CMOS. Both materials can be selectively etched with household vinegar (acetic acid), enabling patterning of individual devices.</p>
+
+        <table class="inline-table">
+          <tr><th>Property</th><th>ZnO TFT</th><th>Cu&#8322;O TFT</th></tr>
+          <tr><td>Type</td><td>n-channel</td><td>p-channel</td></tr>
+          <tr><td>Deposition</td><td>Sol-gel spin coat</td><td>Gilding leaf + laser oxidation</td></tr>
+          <tr><td>Etchant</td><td>Vinegar</td><td>Vinegar</td></tr>
+          <tr><td>Gate dielectric</td><td>Egg white</td><td>Egg white</td></tr>
+        </table>
+
+        <!-- ===== 5. Ring Oscillator ===== -->
+        <h2 id="ring-oscillator">5. Ring Oscillator Target</h2>
+        <p>The culminating demonstration of Phase 2: a working oscillator circuit built entirely from egg white transistors on a glass slide.</p>
+
+        <h3>Architecture</h3>
+        <ul class="docs-list">
+          <li><strong>5-stage NMOS-only ring oscillator</strong> using ZnO TFTs</li>
+          <li>10 transistors total (2 per inverter stage: driver + load)</li>
+          <li>Single metal layer (silver paint)</li>
+          <li>Layout fits in ~15mm &times; 5mm on a standard glass slide</li>
+        </ul>
+
+        <h3>Expected Performance</h3>
+        <table class="inline-table">
+          <tr><th>Parameter</th><th>Expected Value</th></tr>
+          <tr><td>Oscillation frequency</td><td>1&ndash;100 kHz</td></tr>
+          <tr><td>Supply voltage</td><td>5&ndash;15V</td></tr>
+          <tr><td>Transistor count</td><td>10</td></tr>
+          <tr><td>Die area</td><td>~15mm &times; 5mm</td></tr>
+        </table>
+
+        <div class="docs-callout">
+          <strong>The viral moment:</strong> An oscilloscope trace showing a self-sustaining waveform from an egg white circuit on a glass slide. This is the proof that protein-based semiconductor fabrication actually works at the circuit level.
+        </div>
+
+        <!-- ===== Equipment ===== -->
+        <h2 id="equipment">Phase 2 Equipment Additions</h2>
+        <p>Phase 2 reuses all Phase 1 equipment (CNC laser, spin coater, microscope) and adds the following:</p>
+
+        <table class="inline-table">
+          <tr><th>Item</th><th>Purpose</th><th>Cost</th></tr>
+          <tr><td>Hot plate (300&deg;C capable)</td><td>ZnO sol-gel annealing</td><td>$45</td></tr>
+          <tr><td>Silver conductive paint</td><td>Electrodes, interconnects</td><td>$20</td></tr>
+          <tr><td>Zinc acetate dihydrate</td><td>ZnO sol-gel precursor</td><td>$12</td></tr>
+          <tr><td>Copper gilding leaf</td><td>Cu&#8322;O TFT source material</td><td>$12</td></tr>
+          <tr><td>P-type silicon wafer</td><td>Schottky &amp; laser-doped MOSFETs</td><td>$15&ndash;25</td></tr>
+          <tr><td>Phosphoric acid (rust remover)</td><td>Laser doping dopant source</td><td>$8</td></tr>
+          <tr><td><strong>Total additional</strong></td><td></td><td><strong>~$130</strong></td></tr>
+        </table>
+      </div>
+    </main>
+  </div>
+  <script src="/albu/docs/sidebar-loader.js"></script>
+</body>
+</html>

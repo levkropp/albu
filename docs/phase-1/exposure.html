@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Laser Exposure Parameters - Albu Docs</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../../style.css">
+  <link rel="stylesheet" href="../docs.css">
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' rx='12' fill='%23434e64'/><rect x='15' y='15' width='70' height='70' rx='2' fill='none' stroke='white' stroke-width='4'/><circle cx='50' cy='50' r='28' fill='none' stroke='white' stroke-width='3.5'/><rect x='25' y='25' width='50' height='50' rx='1' fill='none' stroke='white' stroke-width='3' transform='rotate(45 50 50)'/><circle cx='50' cy='50' r='15' fill='none' stroke='white' stroke-width='2.5'/><rect x='37' y='37' width='26' height='26' rx='1' fill='none' stroke='white' stroke-width='2'/><circle cx='50' cy='50' r='4' fill='white'/></svg>">
+</head>
+<body>
+  <nav>
+    <div class="nav-inner">
+      <a href="/albu/" class="nav-logo">
+        <svg class="nav-logo-mark" viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <rect x="10" y="10" width="80" height="80" rx="2" stroke="#434e64" stroke-width="5"/>
+          <circle cx="50" cy="50" r="32" stroke="#434e64" stroke-width="4.5"/>
+          <rect x="22" y="22" width="56" height="56" rx="1" stroke="#434e64" stroke-width="4" transform="rotate(45 50 50)"/>
+          <circle cx="50" cy="50" r="17" stroke="#434e64" stroke-width="3.5"/>
+          <rect x="36" y="36" width="28" height="28" rx="1" stroke="#434e64" stroke-width="3"/>
+          <circle cx="50" cy="50" r="5" fill="#434e64"/>
+        </svg>
+        <div>
+          <div style="font-size:11px;font-weight:700;color:#434e64;letter-spacing:0.12em">KOSL</div>
+          <div style="font-size:20px;font-weight:700;color:#434e64">Albu</div>
+        </div>
+      </a>
+      <div class="nav-links">
+        <a href="/albu/#about">About</a>
+        <a href="/albu/#phase-1">Phase 1</a>
+        <a href="/albu/docs/" class="nav-active">Documentation</a>
+        <a href="https://github.com/levkropp/albu" class="nav-gh">GitHub</a>
+      </div>
+    </div>
+  </nav>
+  <div class="docs-layout">
+    <aside class="docs-sidebar" data-active="exposure"></aside>
+    <main class="docs-main">
+      <div class="docs-content">
+        <h1>Laser Exposure Parameters</h1>
+        <p class="docs-lead">Finding the optimal power and speed for crosslinking (negative) or fragmenting (positive) egg white at 450nm.</p>
+
+        <div class="docs-warning">
+          <strong>Safety:</strong> Always wear OD6+ laser safety goggles rated for 450nm when the laser is powered. Never look directly at the laser spot or its reflection, even with goggles. Ensure bystanders are also protected.
+        </div>
+
+        <h2>The Exposure Dose Matrix</h2>
+        <p>This is the most critical experiment in Phase 1. You need to find the combination of laser power and scan speed that properly processes the egg white at 450nm &mdash; a wavelength the original paper did not use.</p>
+        <p>The dose (energy per area) is determined by:</p>
+        <p><strong>Dose = Power &times; (Spot width / Feed rate) / Spot area</strong></p>
+        <p>Higher power or slower speed = higher dose. You're mapping the dose space to find the window where crosslinking (negative) or fragmentation (positive) occurs without burning.</p>
+
+        <h2>Test Pattern Setup</h2>
+        <p>In LaserGRBL or LightBurn, create a test pattern: 6 horizontal lines, each 5mm long, spaced 2mm apart. Each line will be drawn at a different feed rate. Create one slide per power level.</p>
+
+        <h3>Example G-code (one slide at 60% power)</h3>
+        <pre><code>G90 G21        ; Absolute mode, millimeters
+G0 X0 Y0       ; Move to start
+M3 S600        ; Laser on at 60% (S0-S1000 scale)
+
+G1 X5 Y0 F50   ; Line 1: 50 mm/min (slowest, highest dose)
+M5
+G0 X0 Y2
+M3 S600
+G1 X5 Y2 F100  ; Line 2: 100 mm/min
+M5
+G0 X0 Y4
+M3 S600
+G1 X5 Y4 F200  ; Line 3: 200 mm/min
+M5
+G0 X0 Y6
+M3 S600
+G1 X5 Y6 F500  ; Line 4: 500 mm/min
+M5
+G0 X0 Y8
+M3 S600
+G1 X5 Y8 F1000 ; Line 5: 1000 mm/min
+M5
+G0 X0 Y10
+M3 S600
+G1 X5 Y10 F2000 ; Line 6: 2000 mm/min (fastest, lowest dose)
+M5              ; Laser off</code></pre>
+
+        <h2>Full Test Matrix</h2>
+        <p>Run 6 slides, one per power level. Each slide has 6 lines at different speeds. Total: 36 exposure conditions.</p>
+        <table class="inline-table">
+          <tr><th>Slide</th><th>S value</th><th>Power %</th><th>Approx. mW</th></tr>
+          <tr><td>1</td><td>S100</td><td>10%</td><td>~500 mW</td></tr>
+          <tr><td>2</td><td>S200</td><td>20%</td><td>~1000 mW</td></tr>
+          <tr><td>3</td><td>S400</td><td>40%</td><td>~2000 mW</td></tr>
+          <tr><td>4</td><td>S600</td><td>60%</td><td>~3000 mW</td></tr>
+          <tr><td>5</td><td>S800</td><td>80%</td><td>~4000 mW</td></tr>
+          <tr><td>6</td><td>S1000</td><td>100%</td><td>~5000 mW</td></tr>
+        </table>
+        <p>Each slide has lines at F50, F100, F200, F500, F1000, F2000 mm/min.</p>
+
+        <div class="docs-callout">
+          <strong>Note on diode linearity:</strong> Laser diodes do not scale linearly with PWM duty cycle, especially below 10-20%. At very low S values, the diode may be below lasing threshold and emit only weak LED-mode light. Start testing at S100 (10%) and work upward.
+        </div>
+
+        <h2>What to Look For After Development</h2>
+        <p>Develop each slide in water (see <a href="/albu/docs/phase-1/development.html">Water Development</a>), then stain and examine:</p>
+
+        <h3>Negative tone (no glycerol)</h3>
+        <table class="inline-table">
+          <tr><th>Observation</th><th>Meaning</th><th>Action</th></tr>
+          <tr><td>Line remains, clean edges</td><td>Optimal dose &mdash; protein crosslinked</td><td>Record this power/speed as your baseline</td></tr>
+          <tr><td>Line remains but edges are ragged or browned</td><td>Dose too high &mdash; charring</td><td>Reduce power or increase speed</td></tr>
+          <tr><td>Line washed away</td><td>Dose too low &mdash; insufficient crosslinking</td><td>Increase power or decrease speed</td></tr>
+          <tr><td>Faint line, partially washed away</td><td>Near the threshold</td><td>You're close. Fine-tune around this parameter.</td></tr>
+        </table>
+
+        <h3>Positive tone (with glycerol, two-step exposure)</h3>
+        <p>For positive tone, use a two-step process:</p>
+        <ol class="docs-list">
+          <li><strong>Pre-cure:</strong> Flood expose the entire slide at low power (S50-S100) and slow speed. This mildly aggregates the film for substrate adhesion without fragmenting.</li>
+          <li><strong>Pattern exposure:</strong> Run the dose matrix lines at higher power. The high-dose exposure fragments protein in the exposed lines.</li>
+          <li><strong>Develop:</strong> Exposed (fragmented) lines wash away. Unexposed areas remain.</li>
+        </ol>
+
+        <h2>Expected Results</h2>
+        <p>Based on the power density analysis (see <a href="/albu/docs/science/wavelength.html">450nm Wavelength Strategy</a>):</p>
+        <ul class="docs-list">
+          <li>The 5W laser focused to a 100&mu;m spot delivers ~64 kW/cm&sup2; at full power</li>
+          <li>At 100 mm/min, each point receives ~60ms of exposure = ~3.8 J/cm&sup2;</li>
+          <li>The paper required ~4.8 J/cm&sup2; at 254nm. At 450nm with riboflavin, the effective dose requirement may be 2-10x higher due to lower photosensitizer quantum yield</li>
+          <li>Expect the optimal window to be in the mid-power (S400-S800), slow-to-moderate speed (F50-F500) range</li>
+        </ul>
+
+        <div class="docs-callout">
+          <strong>If nothing works:</strong> If no exposure condition produces visible crosslinking after development, the riboflavin concentration may be too low, or 450nm may not generate sufficient singlet oxygen. Try: (1) double the riboflavin concentration, (2) add a second photosensitizer like rose bengal (available as food dye), (3) order 275nm UV-C LEDs as the fallback illumination source.
+        </div>
+
+      </div>
+    </main>
+  </div>
+  <script src="/albu/docs/sidebar-loader.js"></script>
+</body>
+</html>

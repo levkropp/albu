@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Spin Coating Protocol - Albu Docs</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../../style.css">
+  <link rel="stylesheet" href="../docs.css">
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' rx='12' fill='%23434e64'/><rect x='15' y='15' width='70' height='70' rx='2' fill='none' stroke='white' stroke-width='4'/><circle cx='50' cy='50' r='28' fill='none' stroke='white' stroke-width='3.5'/><rect x='25' y='25' width='50' height='50' rx='1' fill='none' stroke='white' stroke-width='3' transform='rotate(45 50 50)'/><circle cx='50' cy='50' r='15' fill='none' stroke='white' stroke-width='2.5'/><rect x='37' y='37' width='26' height='26' rx='1' fill='none' stroke='white' stroke-width='2'/><circle cx='50' cy='50' r='4' fill='white'/></svg>">
+</head>
+<body>
+  <nav>
+    <div class="nav-inner">
+      <a href="/albu/" class="nav-logo">
+        <svg class="nav-logo-mark" viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <rect x="10" y="10" width="80" height="80" rx="2" stroke="#434e64" stroke-width="5"/>
+          <circle cx="50" cy="50" r="32" stroke="#434e64" stroke-width="4.5"/>
+          <rect x="22" y="22" width="56" height="56" rx="1" stroke="#434e64" stroke-width="4" transform="rotate(45 50 50)"/>
+          <circle cx="50" cy="50" r="17" stroke="#434e64" stroke-width="3.5"/>
+          <rect x="36" y="36" width="28" height="28" rx="1" stroke="#434e64" stroke-width="3"/>
+          <circle cx="50" cy="50" r="5" fill="#434e64"/>
+        </svg>
+        <div>
+          <div style="font-size:11px;font-weight:700;color:#434e64;letter-spacing:0.12em">KOSL</div>
+          <div style="font-size:20px;font-weight:700;color:#434e64">Albu</div>
+        </div>
+      </a>
+      <div class="nav-links">
+        <a href="/albu/#about">About</a>
+        <a href="/albu/#phase-1">Phase 1</a>
+        <a href="/albu/docs/" class="nav-active">Documentation</a>
+        <a href="https://github.com/levkropp/albu" class="nav-gh">GitHub</a>
+      </div>
+    </div>
+  </nav>
+  <div class="docs-layout">
+    <aside class="docs-sidebar" data-active="spin-coating"></aside>
+    <main class="docs-main">
+      <div class="docs-content">
+        <h1>Spin Coating Protocol</h1>
+        <p class="docs-lead">Depositing uniform thin films of egg white resist onto glass substrates using the 3D printed spin coater.</p>
+
+        <h2>Materials</h2>
+        <ul class="docs-list">
+          <li>Prepared egg white resist (<a href="/albu/docs/phase-1/resist-prep.html">see preparation</a>)</li>
+          <li>Glass microscope slides</li>
+          <li>Isopropyl alcohol 99%</li>
+          <li>Calibrated spin coater</li>
+          <li>Plastic pipettes (3mL graduated preferred)</li>
+          <li>Lint-free wipes or clean paper towels</li>
+        </ul>
+
+        <h2>Procedure</h2>
+
+        <h3>1. Clean the substrate</h3>
+        <p>Wipe the glass slide with isopropyl alcohol using a lint-free wipe. Allow to air dry completely (~30 seconds). A clean, grease-free surface is essential for uniform wetting and coating adhesion.</p>
+        <div class="docs-callout">
+          <strong>Test for cleanliness:</strong> A clean glass slide should show uniform water sheeting when breathed on. If water beads up, the surface has residual grease &mdash; re-clean.
+        </div>
+
+        <h3>2. Mount on spin coater</h3>
+        <p>Place the slide on the spin coater chuck. Secure with a small dot of double-sided tape at the center, or use vacuum if your coater supports it. Verify the slide is centered and level by spinning briefly at low speed and checking for wobble.</p>
+
+        <h3>3. Dispense resist</h3>
+        <p>Using a plastic pipette, deposit approximately <strong>300&mu;L</strong> (~6 drops) of egg white resist onto the center of the slide. Dispense slowly to avoid bubbles. Do not touch the pipette tip to the slide surface.</p>
+
+        <h3>4. Spin</h3>
+        <p>Start the spin coater at your target RPM. Hold for <strong>30 seconds</strong>. The resist will spread outward and excess will be flung off, leaving a uniform thin film.</p>
+
+        <h2>Thickness vs. Speed</h2>
+        <p>From Jiang et al. 2017 (Figure S11), using undiluted filtered albumen:</p>
+        <table class="inline-table">
+          <tr><th>Spin Speed</th><th>Film Thickness</th><th>Use Case</th></tr>
+          <tr><td>1000 RPM</td><td>~900 nm</td><td>Thick &mdash; easy to see, most forgiving for initial experiments</td></tr>
+          <tr><td>2000 RPM</td><td>~450 nm</td><td>Gate dielectric range for ZnO TFT (Phase 2)</td></tr>
+          <tr><td>3000 RPM</td><td>~300 nm</td><td>Standard photoresist thickness</td></tr>
+          <tr><td>4000 RPM</td><td>~200 nm</td><td>Thin resist for high resolution</td></tr>
+          <tr><td>6000 RPM</td><td>~100 nm</td><td>Minimum achievable thickness</td></tr>
+        </table>
+        <p>For thinner films, dilute the albumen with distilled water before coating. A 1:1 dilution should approximately halve the thickness at the same spin speed. This has not been characterized in the literature &mdash; it's an area for experimentation.</p>
+
+        <h2>Initial Thickness Mapping Experiment</h2>
+        <p>Before running exposure experiments, coat 5 slides at different speeds to understand your specific setup:</p>
+        <ol class="docs-list">
+          <li>Coat slide A at 1000 RPM (~900nm)</li>
+          <li>Coat slide B at 2000 RPM (~450nm)</li>
+          <li>Coat slide C at 3000 RPM (~300nm)</li>
+          <li>Coat slide D at 4000 RPM (~200nm)</li>
+          <li>Coat slide E at 6000 RPM (~100nm)</li>
+        </ol>
+        <p>After drying, tilt each slide under a light source. <strong>Thin-film interference colors</strong> (rainbow tint) indicate the film is thin and somewhat uniform. Consistent color across the surface = good uniformity. Splotchy or streaked = spin coater balance issue or contaminated surface.</p>
+
+        <h3>5. Dry</h3>
+        <p>Let the coated slide air dry at room temperature for 5 minutes, or place on a hot plate at 40&deg;C for 2 minutes. Do not exceed 60&deg;C at this stage &mdash; excessive heat will prematurely denature the protein and reduce photosensitivity.</p>
+
+        <h2>Troubleshooting</h2>
+        <table class="inline-table">
+          <tr><th>Problem</th><th>Cause</th><th>Fix</th></tr>
+          <tr><td>Film is streaky or non-uniform</td><td>Spin coater imbalance or off-center dispensing</td><td>Re-balance chuck, center substrate, dispense at exact center</td></tr>
+          <tr><td>Film has comets/radial streaks</td><td>Particles in the resist or on the substrate</td><td>Re-filter resist, re-clean substrate</td></tr>
+          <tr><td>Film is too thin to see</td><td>Speed too high or resist too dilute</td><td>Use 1000-2000 RPM for visible films</td></tr>
+          <tr><td>Resist pools instead of spreading</td><td>Speed too low or resist too viscous</td><td>Increase speed or dilute resist slightly with water</td></tr>
+          <tr><td>Substrate flies off during spin</td><td>Insufficient hold-down</td><td>Use more tape or add vacuum retention</td></tr>
+        </table>
+
+        <p>Use the <a href="/albu/docs/science/#widget-spin-coating">interactive thickness calculator</a> to predict film thickness for your parameters.</p>
+
+      </div>
+    </main>
+  </div>
+  <script src="/albu/docs/sidebar-loader.js"></script>
+</body>
+</html>

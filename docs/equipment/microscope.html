@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Microscope Configuration - Albu Docs</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../../style.css">
+  <link rel="stylesheet" href="../docs.css">
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' rx='12' fill='%23434e64'/><rect x='15' y='15' width='70' height='70' rx='2' fill='none' stroke='white' stroke-width='4'/><circle cx='50' cy='50' r='28' fill='none' stroke='white' stroke-width='3.5'/><rect x='25' y='25' width='50' height='50' rx='1' fill='none' stroke='white' stroke-width='3' transform='rotate(45 50 50)'/><circle cx='50' cy='50' r='15' fill='none' stroke='white' stroke-width='2.5'/><rect x='37' y='37' width='26' height='26' rx='1' fill='none' stroke='white' stroke-width='2'/><circle cx='50' cy='50' r='4' fill='white'/></svg>">
+</head>
+<body>
+  <nav>
+    <div class="nav-inner">
+      <a href="/albu/" class="nav-logo">
+        <svg class="nav-logo-mark" viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <rect x="10" y="10" width="80" height="80" rx="2" stroke="#434e64" stroke-width="5"/>
+          <circle cx="50" cy="50" r="32" stroke="#434e64" stroke-width="4.5"/>
+          <rect x="22" y="22" width="56" height="56" rx="1" stroke="#434e64" stroke-width="4" transform="rotate(45 50 50)"/>
+          <circle cx="50" cy="50" r="17" stroke="#434e64" stroke-width="3.5"/>
+          <rect x="36" y="36" width="28" height="28" rx="1" stroke="#434e64" stroke-width="3"/>
+          <circle cx="50" cy="50" r="5" fill="#434e64"/>
+        </svg>
+        <div>
+          <div style="font-size:11px;font-weight:700;color:#434e64;letter-spacing:0.12em">KOSL</div>
+          <div style="font-size:20px;font-weight:700;color:#434e64">Albu</div>
+        </div>
+      </a>
+      <div class="nav-links">
+        <a href="/albu/#about">About</a>
+        <a href="/albu/#phase-1">Phase 1</a>
+        <a href="/albu/docs/" class="nav-active">Documentation</a>
+        <a href="https://github.com/levkropp/albu" class="nav-gh">GitHub</a>
+      </div>
+    </div>
+  </nav>
+  <div class="docs-layout">
+    <aside class="docs-sidebar" data-active="microscope"></aside>
+    <main class="docs-main">
+      <div class="docs-content">
+        <h1>Microscope Configuration</h1>
+        <p class="docs-lead">Setting up the BEBANG YW-3006 compound microscope for resist inspection, and repurposing the 40x objective as a laser focusing lens for Machine 2.</p>
+
+        <h2>BEBANG YW-3006 Overview</h2>
+        <p>The BEBANG YW-3006 is a $90 CAD compound microscope marketed for students and hobbyists. For Albu Phase 1, it provides adequate magnification for inspecting egg white resist patterns after staining.</p>
+
+        <h3>Specifications</h3>
+        <table class="inline-table">
+          <tr><th>Component</th><th>Specification</th></tr>
+          <tr><td>Objectives</td><td>4x, 10x, 40x achromatic (RMS thread, standard parfocal distance)</td></tr>
+          <tr><td>Eyepiece</td><td>WF25x widefield (30mm tube)</td></tr>
+          <tr><td>Total magnification</td><td>100x (4x obj), 250x (10x obj), 1000x (40x obj)</td></tr>
+          <tr><td>Illumination</td><td>Dual LED: top (reflected/epi) and bottom (transmitted/diascopic)</td></tr>
+          <tr><td>Focus</td><td>Coarse + fine focus knobs, rack and pinion</td></tr>
+          <tr><td>Stage</td><td>Fixed stage with spring-loaded slide clips</td></tr>
+          <tr><td>Included accessories</td><td>Phone adapter, wire shutter, 15 prepared slides, carrying case</td></tr>
+        </table>
+
+        <h2>Working Magnifications</h2>
+
+        <h3>100x (4x Objective + WF25x Eyepiece)</h3>
+        <p>The primary <strong>survey magnification</strong>. Use this to:</p>
+        <ul class="docs-list">
+          <li>Find the exposed region on the slide (the stained pattern)</li>
+          <li>Assess overall pattern quality &mdash; are the lines straight? Is the exposure uniform?</li>
+          <li>Check for gross defects: resist peeling, contamination, incomplete development</li>
+          <li>Navigate to specific features before switching to higher magnification</li>
+        </ul>
+        <p>Field of view at 100x: ~4.5mm diameter. This covers the full width of most test patterns. The long working distance (~30mm) makes it easy to position the slide.</p>
+
+        <h3>250x (10x Objective + WF25x Eyepiece)</h3>
+        <p>The primary <strong>inspection magnification</strong>. Use this to:</p>
+        <ul class="docs-list">
+          <li>Measure feature widths (estimate by comparing to the known laser spot size)</li>
+          <li>Inspect edge quality of exposed lines &mdash; sharp vs. ragged edges indicate good vs. poor focus</li>
+          <li>Check development completeness &mdash; is unexposed resist fully removed?</li>
+          <li>Photograph results for documentation</li>
+        </ul>
+        <p>Field of view at 250x: ~1.8mm diameter. Sufficient to see individual lines from the CNC exposure pattern. The 10x objective has a comfortable ~10mm working distance.</p>
+
+        <h3>1000x (40x Objective + WF25x Eyepiece)</h3>
+
+        <div class="docs-warning">
+          <strong>The 40x objective has limited microscopy utility on this model.</strong> Multiple reviewer reports confirm that the 40x objective's short working distance (~0.5mm) combined with the BEBANG's illumination geometry means the objective physically blocks the transmitted light path. The image is dark even at maximum LED brightness. The fixed stage also makes precise positioning at 1000x difficult without a mechanical stage.
+        </div>
+
+        <p>Do not expect useful imaging at 1000x on this microscope. The 40x objective has a better purpose in our project &mdash; see below.</p>
+
+        <h2>Repurposing the 40x Objective</h2>
+        <p>The 40x objective is more valuable as a <strong>laser focusing lens for Machine 2</strong> (the Phase 3 automated chip printer) than as a microscopy tool on this microscope.</p>
+
+        <h3>Optical Properties</h3>
+        <table class="inline-table">
+          <tr><th>Property</th><th>Value</th><th>Why It Matters</th></tr>
+          <tr><td>Thread standard</td><td>RMS (Royal Microscopical Society), 0.7965" &times; 36 TPI</td><td>Standard thread. Easy to mount in a custom adapter or 3D printed holder.</td></tr>
+          <tr><td>Focal length</td><td>~4.5mm</td><td>Short focal length = tight focus. A well-corrected 4.5mm lens focuses a 450nm laser to a diffraction-limited spot of ~0.85&mu;m (theoretical).</td></tr>
+          <tr><td>Numerical aperture</td><td>~0.65</td><td>High NA captures a wide cone of light. Theoretical minimum spot diameter: 1.22 &times; &lambda; / NA = 1.22 &times; 0.45&mu;m / 0.65 &asymp; 0.85&mu;m.</td></tr>
+          <tr><td>Working distance</td><td>~0.5mm</td><td>Short, but acceptable when the substrate is on a precision Z stage (Machine 3 uses a piezo or stepper Z).</td></tr>
+          <tr><td>Optical correction</td><td>Achromatic (corrected for spherical and chromatic aberration at design wavelengths)</td><td>Produces a clean, symmetric focal spot. Far better than a bare lens.</td></tr>
+        </table>
+
+        <div class="docs-callout">
+          <strong>A $0 upgrade to sub-micron capability.</strong> The 40x objective included with the microscope is effectively a free, high-quality focusing lens. A comparable commercial aspheric lens with 0.65 NA would cost $50&ndash;200. By repurposing the 40x objective in Machine 2, the achievable spot size drops from ~100&mu;m (stock laser module lens) to &lt;1&mu;m (theoretical) or ~2&ndash;5&mu;m (practical, accounting for beam quality and alignment).
+        </div>
+
+        <h2>Phone Photography</h2>
+        <p>The BEBANG YW-3006 includes a phone adapter that clamps to the eyepiece tube. This is the primary way to capture and share results.</p>
+
+        <h3>Setup</h3>
+        <ol class="docs-list">
+          <li><strong>Attach the phone adapter</strong> to the eyepiece tube. Tighten the clamp ring until the adapter is snug but does not rotate.</li>
+          <li><strong>Center the phone camera</strong> over the eyepiece. Adjust the phone position in the adapter until you see a full, circular field of view in the camera app &mdash; no vignetting (dark edges).</li>
+          <li><strong>Use the wire shutter</strong> (included) or a Bluetooth remote to trigger the camera. Touching the phone directly causes vibration and blurry images.</li>
+          <li><strong>Use the phone's manual/pro mode</strong> if available. Lock the focus to the eyepiece distance. Set ISO low (100&ndash;400) and let the shutter speed float. Disable digital zoom.</li>
+        </ol>
+
+        <h3>Tips for Sharp Images</h3>
+        <ul class="docs-list">
+          <li><strong>Focus with the microscope, not the phone.</strong> Set the phone to autofocus once on the eyepiece, then lock focus. All subsequent focusing should be done with the microscope's coarse/fine knobs.</li>
+          <li><strong>Increase illumination.</strong> Turn the LED brightness to maximum. Longer exposure times (from dimmer light) amplify vibration blur.</li>
+          <li><strong>Let the microscope settle.</strong> After adjusting focus, wait 2&ndash;3 seconds before capturing. Mechanical settling reduces vibration.</li>
+          <li><strong>Take multiple shots.</strong> Microscope photography through eyepieces is inherently inconsistent. Take 5&ndash;10 shots and pick the sharpest.</li>
+        </ul>
+
+        <h2>Illumination Modes</h2>
+
+        <h3>Transmitted Light (Bottom LED)</h3>
+        <p>Light passes through the specimen from below. Use this mode for:</p>
+        <ul class="docs-list">
+          <li><strong>Stained egg white on glass slides</strong> &mdash; the primary use case. Iodine-stained protein appears brown against a bright background. Methylene blue stain appears blue.</li>
+          <li><strong>Thickness assessment</strong> &mdash; thicker resist regions appear darker in transmitted light.</li>
+          <li><strong>Transparent substrates only</strong> &mdash; glass slides, not silicon wafers.</li>
+        </ul>
+
+        <h3>Reflected Light (Top LED)</h3>
+        <p>Light illuminates the specimen from above. Use this mode for:</p>
+        <ul class="docs-list">
+          <li><strong>Opaque substrates</strong> &mdash; silicon wafers, metal-coated samples (Phase 2+).</li>
+          <li><strong>Surface topology</strong> &mdash; scratches, resist defects, ablation craters.</li>
+          <li><strong>Metal contact patterns</strong> &mdash; inspecting silver paint or copper film features.</li>
+        </ul>
+        <p>For Phase 1, transmitted light is the primary mode. Egg white on glass is transparent before staining and translucent after staining &mdash; both work best with transmitted illumination.</p>
+
+        <h2>Upgrade Path</h2>
+
+        <h3>Phase 2: SWIFT SW380T Trinocular (~$350 CAD)</h3>
+        <p>When moving to transistor fabrication, the upgrade to a trinocular microscope becomes worthwhile:</p>
+        <ul class="docs-list">
+          <li><strong>Trinocular port:</strong> Dedicated camera port allows simultaneous viewing and imaging. No phone adapter needed.</li>
+          <li><strong>Mechanical stage:</strong> Precise X/Y positioning with graduated dials. Essential for methodically scanning across a wafer.</li>
+          <li><strong>Better optics:</strong> Plan-achromatic objectives with flatter fields and better correction.</li>
+          <li><strong>40x/100x that work:</strong> Proper K&ouml;hler illumination means the 40x and 100x (oil) objectives are actually usable.</li>
+        </ul>
+
+        <h3>Phase 3: USB Camera for Machine 3 Alignment</h3>
+        <p>The automated chip printer (Machine 3) requires a camera for substrate alignment and in-situ process monitoring. A USB microscope camera (e.g., AmScope MU500 or similar 5MP CMOS) mounts to the trinocular port and provides:</p>
+        <ul class="docs-list">
+          <li><strong>Live video feed</strong> to the control computer for alignment mark detection.</li>
+          <li><strong>Automated image capture</strong> after each process step for quality logging.</li>
+          <li><strong>Measurement software</strong> &mdash; calibrated pixel-to-micron conversion for feature size measurement.</li>
+        </ul>
+
+        <div class="docs-callout">
+          <strong>For Phase 1, the BEBANG YW-3006 is sufficient.</strong> The upgrade path exists for when higher-precision imaging and automated alignment become necessary. Do not over-invest in microscopy equipment until Phase 1 proves the resist process works.
+        </div>
+      </div>
+    </main>
+  </div>
+  <script src="/albu/docs/sidebar-loader.js"></script>
+</body>
+</html>

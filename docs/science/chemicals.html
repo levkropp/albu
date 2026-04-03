@@ -1,0 +1,296 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Grocery Store Chemical Toolkit - Albu Docs</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../../style.css">
+  <link rel="stylesheet" href="../docs.css">
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' rx='12' fill='%23434e64'/><rect x='15' y='15' width='70' height='70' rx='2' fill='none' stroke='white' stroke-width='4'/><circle cx='50' cy='50' r='28' fill='none' stroke='white' stroke-width='3.5'/><rect x='25' y='25' width='50' height='50' rx='1' fill='none' stroke='white' stroke-width='3' transform='rotate(45 50 50)'/><circle cx='50' cy='50' r='15' fill='none' stroke='white' stroke-width='2.5'/><rect x='37' y='37' width='26' height='26' rx='1' fill='none' stroke='white' stroke-width='2'/><circle cx='50' cy='50' r='4' fill='white'/></svg>">
+</head>
+<body>
+  <nav>
+    <div class="nav-inner">
+      <a href="/albu/" class="nav-logo">
+        <svg class="nav-logo-mark" viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <rect x="10" y="10" width="80" height="80" rx="2" stroke="#434e64" stroke-width="5"/>
+          <circle cx="50" cy="50" r="32" stroke="#434e64" stroke-width="4.5"/>
+          <rect x="22" y="22" width="56" height="56" rx="1" stroke="#434e64" stroke-width="4" transform="rotate(45 50 50)"/>
+          <circle cx="50" cy="50" r="17" stroke="#434e64" stroke-width="3.5"/>
+          <rect x="36" y="36" width="28" height="28" rx="1" stroke="#434e64" stroke-width="3"/>
+          <circle cx="50" cy="50" r="5" fill="#434e64"/>
+        </svg>
+        <div>
+          <div style="font-size:11px;font-weight:700;color:#434e64;letter-spacing:0.12em">KOSL</div>
+          <div style="font-size:20px;font-weight:700;color:#434e64">Albu</div>
+        </div>
+      </a>
+      <div class="nav-links">
+        <a href="/albu/#about">About</a>
+        <a href="/albu/#phase-1">Phase 1</a>
+        <a href="/albu/docs/" class="nav-active">Documentation</a>
+        <a href="https://github.com/levkropp/albu" class="nav-gh">GitHub</a>
+      </div>
+    </div>
+  </nav>
+  <div class="docs-layout">
+    <aside class="docs-sidebar" data-active="chemicals"></aside>
+    <main class="docs-main">
+      <div class="docs-content">
+        <h1>Grocery Store Chemical Toolkit</h1>
+        <p class="docs-lead">Every chemical used across all four phases of Albu, sourced from grocery stores, pharmacies, hardware stores, and Amazon. No specialty lab suppliers. No hydrofluoric acid.</p>
+
+        <div class="docs-callout">
+          <strong>Design principle:</strong> If a chemical is not available at a Canadian grocery store, pharmacy, hardware store, or Amazon.ca, we find an alternative process that avoids it entirely. This constraint drives every material choice in the project.
+        </div>
+
+        <h2>What We Eliminated</h2>
+        <p>Conventional semiconductor fabrication relies on chemicals that are toxic, expensive, or restricted. Albu replaces every one of them:</p>
+        <table class="inline-table">
+          <tr><th>Industry Chemical</th><th>Hazard</th><th>Our Replacement</th><th>How</th></tr>
+          <tr><td>Hydrofluoric acid (HF)</td><td>Lethal on skin contact, penetrates tissue, causes cardiac arrest</td><td>KOH (drain cleaner)</td><td>Etches SiO<sub>2</sub> slowly at elevated temperature; acceptable for our feature sizes</td></tr>
+          <tr><td>PMMA / SU-8 photoresist</td><td>Requires organic solvents (chlorobenzene, cyclopentanone)</td><td>Egg white + riboflavin</td><td>Water-based resist, water development</td></tr>
+          <tr><td>TMAH / MF-319 developer</td><td>Tetramethylammonium hydroxide &mdash; toxic, restricted</td><td>Distilled water</td><td>Unexposed egg white is water-soluble</td></tr>
+          <tr><td>Piranha solution (H<sub>2</sub>SO<sub>4</sub> + H<sub>2</sub>O<sub>2</sub>)</td><td>Explosive reaction risk, severe burns</td><td>Isopropanol + distilled water</td><td>Sufficient for glass slide cleaning</td></tr>
+          <tr><td>Metal etchants (FeCl<sub>3</sub>, HNO<sub>3</sub>)</td><td>Corrosive, toxic fumes</td><td>Laser ablation</td><td>5W laser vaporizes thin metal films directly; no wet etch needed</td></tr>
+          <tr><td>Organic solvents (acetone, MIBK, NMP)</td><td>Flammable, neurotoxic (NMP)</td><td>Water + isopropanol</td><td>Only two solvents in entire process</td></tr>
+          <tr><td>Silane coupling agents</td><td>Moisture-sensitive, specialty chemical</td><td>None needed</td><td>Egg white adheres directly to glass and oxidized silicon</td></tr>
+        </table>
+
+        <h2>Resist &amp; Development</h2>
+        <table class="inline-table">
+          <tr><th>Chemical</th><th>Role</th><th>Replaces</th><th>Source</th><th>Cost (CAD)</th><th>Safety</th></tr>
+          <tr>
+            <td><strong>Egg white (albumen)</strong></td>
+            <td>Photoresist &amp; gate dielectric</td>
+            <td>PMMA, SU-8, silk fibroin</td>
+            <td>Grocery store</td>
+            <td>$0.33/egg (~20mL)</td>
+            <td>Food-safe. Allergen for some individuals.</td>
+          </tr>
+          <tr>
+            <td><strong>Riboflavin (vitamin B2)</strong></td>
+            <td>Photosensitizer &mdash; absorbs 450nm, generates singlet oxygen for crosslinking</td>
+            <td>Direct UV-C exposure</td>
+            <td>Pharmacy (supplement aisle)</td>
+            <td>$8 / 100 tablets</td>
+            <td>Non-toxic. Water-soluble vitamin. Yellow staining on surfaces.</td>
+          </tr>
+          <tr>
+            <td><strong>Glycerol (food grade)</strong></td>
+            <td>Positive-tone switch &mdash; suppresses aggregation, enables fragmentation</td>
+            <td>No equivalent in conventional lithography</td>
+            <td>Pharmacy / Amazon</td>
+            <td>$12 / 500mL</td>
+            <td>Non-toxic. Skin-safe. Used in food and cosmetics.</td>
+          </tr>
+          <tr>
+            <td><strong>Distilled water</strong></td>
+            <td>Developer (dissolves unexposed resist)</td>
+            <td>TMAH, MF-319, MIBK:IPA</td>
+            <td>Grocery store</td>
+            <td>$2 / 4L</td>
+            <td>None.</td>
+          </tr>
+        </table>
+
+        <h2>Etching</h2>
+        <table class="inline-table">
+          <tr><th>Chemical</th><th>Role</th><th>Replaces</th><th>Source</th><th>Cost (CAD)</th><th>Safety</th></tr>
+          <tr>
+            <td><strong>White vinegar (5% acetic acid)</strong></td>
+            <td>Etches ZnO selectively. Does not attack egg white resist.</td>
+            <td>Dilute HCl, buffered HF</td>
+            <td>Grocery store</td>
+            <td>$2 / 1L</td>
+            <td>Food-safe. Mild odor.</td>
+          </tr>
+          <tr>
+            <td><strong>KOH (potassium hydroxide)</strong></td>
+            <td>Etches SiO<sub>2</sub> (slow, elevated temp). Anisotropic silicon etch for MEMS features.</td>
+            <td>Hydrofluoric acid (HF), BOE</td>
+            <td>Hardware store (drain cleaner, e.g., "Drano Crystal")</td>
+            <td>$8 / 500g</td>
+            <td>Caustic. Wear gloves and goggles. Causes burns on prolonged contact. Far safer than HF.</td>
+          </tr>
+          <tr>
+            <td><strong>Laser ablation (not a chemical)</strong></td>
+            <td>Patterns metal contacts by vaporization &mdash; no wet etch needed</td>
+            <td>FeCl<sub>3</sub>, aqua regia, HNO<sub>3</sub>/HCl metal etchants</td>
+            <td>N/A (uses the CNC laser at full power)</td>
+            <td>$0</td>
+            <td>Eye protection required. Fume extraction recommended for metal ablation.</td>
+          </tr>
+        </table>
+
+        <div class="docs-callout">
+          <strong>Discovery: vinegar etches ZnO.</strong> Zinc oxide dissolves readily in dilute acetic acid (vinegar) at room temperature, producing zinc acetate and water. This reaction is selective &mdash; vinegar does not attack crosslinked egg white, glass, or silicon. This means we can pattern ZnO channels using egg white resist and vinegar etch with no exotic chemicals.
+        </div>
+
+        <h2>Doping</h2>
+        <table class="inline-table">
+          <tr><th>Chemical</th><th>Role</th><th>Replaces</th><th>Source</th><th>Cost (CAD)</th><th>Safety</th></tr>
+          <tr>
+            <td><strong>Phosphoric acid (rust remover)</strong></td>
+            <td>n-type dopant source for silicon. Apply, laser-drive diffusion.</td>
+            <td>POCl<sub>3</sub> gas, ion implantation</td>
+            <td>Hardware store (Naval Jelly, Ospho, or similar phosphoric acid rust treatment)</td>
+            <td>$8&ndash;12 / bottle</td>
+            <td>Corrosive. Wear gloves. Much safer than POCl<sub>3</sub> gas.</td>
+          </tr>
+          <tr>
+            <td><strong>Boric acid</strong></td>
+            <td>p-type dopant source for silicon. Apply, laser-drive diffusion.</td>
+            <td>B<sub>2</sub>H<sub>6</sub> gas, boron trichloride</td>
+            <td>Pharmacy / hardware store (roach killer, antiseptic)</td>
+            <td>$5&ndash;8 / 100g</td>
+            <td>Low toxicity. Mild skin irritant. Keep away from food.</td>
+          </tr>
+        </table>
+
+        <h2>Semiconductors</h2>
+        <table class="inline-table">
+          <tr><th>Chemical</th><th>Role</th><th>Replaces</th><th>Source</th><th>Cost (CAD)</th><th>Safety</th></tr>
+          <tr>
+            <td><strong>Zinc acetate dihydrate</strong></td>
+            <td>Precursor for ZnO thin films (n-type semiconductor) via sol-gel spin coating</td>
+            <td>Sputtered ZnO, ALD-deposited films</td>
+            <td>Amazon</td>
+            <td>$12 / 100g</td>
+            <td>Mild irritant. Wear gloves. Low toxicity.</td>
+          </tr>
+          <tr>
+            <td><strong>Monoethanolamine (MEA)</strong></td>
+            <td>Stabilizer for zinc acetate sol-gel solution. Controls hydrolysis rate.</td>
+            <td>2-methoxyethanol (teratogenic)</td>
+            <td>Amazon</td>
+            <td>$15 / 100mL</td>
+            <td>Corrosive, amine odor. Use in ventilated area. Wear gloves.</td>
+          </tr>
+          <tr>
+            <td><strong>Copper gilding leaf</strong></td>
+            <td>Precursor for Cu<sub>2</sub>O (p-type semiconductor). Oxidize on hot plate.</td>
+            <td>Sputtered Cu<sub>2</sub>O, MOCVD</td>
+            <td>Amazon (art supply)</td>
+            <td>$12 / booklet</td>
+            <td>Non-toxic as leaf. Copper dust irritant if sanded.</td>
+          </tr>
+          <tr>
+            <td><strong>Bare silicon wafers (p-type, 2")</strong></td>
+            <td>Substrate for Si MOSFETs in Phase 2</td>
+            <td>N/A (same material, just cheaper source)</td>
+            <td>AliExpress</td>
+            <td>$15&ndash;25 / 5-pack</td>
+            <td>Non-toxic. Fragile &mdash; handle edges only.</td>
+          </tr>
+        </table>
+
+        <h2>Contacts &amp; Metals</h2>
+        <table class="inline-table">
+          <tr><th>Chemical</th><th>Role</th><th>Replaces</th><th>Source</th><th>Cost (CAD)</th><th>Safety</th></tr>
+          <tr>
+            <td><strong>Conductive silver paint</strong></td>
+            <td>Source/drain/gate contacts. Paint or dispense, laser-sinter for conductivity.</td>
+            <td>Thermal evaporation of Al/Au, sputtered metals</td>
+            <td>Amazon (MG Chemicals 842AR)</td>
+            <td>$20 / pen</td>
+            <td>Flammable solvent base. Use in ventilated area. Low toxicity when dry.</td>
+          </tr>
+          <tr>
+            <td><strong>Copper gilding leaf</strong></td>
+            <td>Thin copper film for contacts. Transfer to substrate, laser-pattern by ablation.</td>
+            <td>Sputtered or evaporated copper</td>
+            <td>Amazon (art supply)</td>
+            <td>$12 / booklet</td>
+            <td>Non-toxic.</td>
+          </tr>
+        </table>
+
+        <div class="docs-callout">
+          <strong>Laser ablation replaces metal etching.</strong> Instead of depositing metal everywhere and etching away the unwanted regions (requiring FeCl<sub>3</sub> or similar), we deposit metal selectively (silver paint) or pattern it by ablation (copper leaf). The 5W laser vaporizes thin metal films at full power, eliminating all metal etchants from the process.
+        </div>
+
+        <h2>Cleaning</h2>
+        <table class="inline-table">
+          <tr><th>Chemical</th><th>Role</th><th>Replaces</th><th>Source</th><th>Cost (CAD)</th><th>Safety</th></tr>
+          <tr>
+            <td><strong>Isopropyl alcohol (99%)</strong></td>
+            <td>Substrate degreasing. Removes oils and organic residue from glass slides.</td>
+            <td>Acetone, piranha solution</td>
+            <td>Pharmacy</td>
+            <td>$5 / 500mL</td>
+            <td>Flammable. Use in ventilated area. Low toxicity.</td>
+          </tr>
+          <tr>
+            <td><strong>Distilled water</strong></td>
+            <td>Final rinse after IPA cleaning. Development rinse. General purpose.</td>
+            <td>DI water (functionally identical)</td>
+            <td>Grocery store</td>
+            <td>$2 / 4L</td>
+            <td>None.</td>
+          </tr>
+        </table>
+
+        <h2>Staining &amp; Imaging</h2>
+        <table class="inline-table">
+          <tr><th>Chemical</th><th>Role</th><th>Replaces</th><th>Source</th><th>Cost (CAD)</th><th>Safety</th></tr>
+          <tr>
+            <td><strong>Iodine tincture (2%)</strong></td>
+            <td>Protein stain. Iodine binds to amylose/protein structures, producing brown color visible under microscope.</td>
+            <td>Fluorescent dyes, SEM imaging</td>
+            <td>Pharmacy (wound care aisle)</td>
+            <td>$5 / 30mL</td>
+            <td>Stains skin and surfaces brown. Mild irritant. Avoid ingestion.</td>
+          </tr>
+          <tr>
+            <td><strong>Methylene blue</strong></td>
+            <td>Alternate protein stain. Binds to negatively charged protein residues. Blue color, high contrast.</td>
+            <td>Fluorescent dyes, SEM imaging</td>
+            <td>Pet store / Amazon (aquarium treatment)</td>
+            <td>$8 / bottle</td>
+            <td>Stains everything blue. Mild irritant. Non-toxic at low concentration.</td>
+          </tr>
+        </table>
+
+        <h2>Total Chemical Cost</h2>
+
+        <div class="recipe-card">
+          <div class="recipe-meta">
+            <span class="recipe-tag">Phase 1</span>
+            <span class="recipe-tag">~$60 CAD</span>
+          </div>
+          <h3>Phase 1 Chemical Kit</h3>
+          <p>Eggs, riboflavin, glycerol, distilled water, coffee filters, iodine, methylene blue, isopropanol, pipettes, extra glass slides. Everything needed for the photoresist proof-of-concept.</p>
+        </div>
+
+        <div class="recipe-card">
+          <div class="recipe-meta">
+            <span class="recipe-tag">Phase 2</span>
+            <span class="recipe-tag">~$85 CAD additional</span>
+          </div>
+          <h3>Phase 2 Additions</h3>
+          <p>Silver paint, zinc acetate, MEA, copper leaf, silicon wafers, phosphoric acid, vinegar, boric acid, KOH, hot plate. Adds transistor fabrication capability.</p>
+        </div>
+
+        <div class="recipe-card">
+          <div class="recipe-meta">
+            <span class="recipe-tag">All Phases</span>
+            <span class="recipe-tag">~$145 CAD total</span>
+          </div>
+          <h3>Complete Chemical Inventory</h3>
+          <p>Every chemical across all four phases. Under $150 CAD for the complete set. No individual item exceeds $20. No controlled substances. No shipping restrictions.</p>
+        </div>
+
+        <h2>Safety Summary</h2>
+        <div class="docs-warning">
+          <strong>The most hazardous chemicals in this project are KOH (caustic) and monoethanolamine (corrosive, amine).</strong> Both require gloves and eye protection but are available at hardware stores without restriction. Compare this to conventional fabrication, which routinely uses hydrofluoric acid (lethal), piranha solution (explosive), and POCl<sub>3</sub> gas (toxic). The Albu chemical toolkit is safe for a well-ventilated home workspace with basic PPE (nitrile gloves, safety glasses).
+        </div>
+      </div>
+    </main>
+  </div>
+  <script src="/albu/docs/sidebar-loader.js"></script>
+</body>
+</html>
