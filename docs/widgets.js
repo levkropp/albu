@@ -41,11 +41,27 @@ function initSpinCoatingWidget(containerId) {
   const chart = document.getElementById('sc-chart');
   const chartCtx = chart.getContext('2d');
 
-  // Empirical fit: t ≈ A / sqrt(rpm), calibrated to paper data
-  // At 1000 RPM -> 900nm, 6000 RPM -> 100nm
-  // t = 28460 / rpm^0.82  (power law fit)
+  // Piecewise linear interpolation through paper data points (Jiang et al. 2017, Fig S11)
+  // Data: [RPM, thickness_nm]
+  const PAPER_DATA = [[500, 1100], [1000, 900], [2000, 450], [3000, 300], [4000, 200], [6000, 100], [8000, 70]];
+
   function calcThickness(rpm, dilution) {
-    const base = 28460 / Math.pow(rpm, 0.82);
+    let base;
+    if (rpm <= PAPER_DATA[0][0]) {
+      base = PAPER_DATA[0][1];
+    } else if (rpm >= PAPER_DATA[PAPER_DATA.length - 1][0]) {
+      base = PAPER_DATA[PAPER_DATA.length - 1][1];
+    } else {
+      for (let i = 0; i < PAPER_DATA.length - 1; i++) {
+        if (rpm >= PAPER_DATA[i][0] && rpm <= PAPER_DATA[i + 1][0]) {
+          const [r0, t0] = PAPER_DATA[i];
+          const [r1, t1] = PAPER_DATA[i + 1];
+          const frac = (rpm - r0) / (r1 - r0);
+          base = t0 + frac * (t1 - t0);
+          break;
+        }
+      }
+    }
     const factor = 1 / (1 + dilution * 0.8);
     return Math.round(base * factor);
   }
