@@ -1,0 +1,308 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Phase 1 Protocol - Albu</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../../style.css">
+  <link rel="stylesheet" href="../docs.css">
+</head>
+<body>
+  <nav>
+    <div class="nav-inner">
+      <a href="../../" class="nav-logo">
+        <svg class="logo-icon" viewBox="0 0 40 50" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <ellipse cx="20" cy="22" rx="14" ry="18" fill="#2563eb"/>
+        </svg>
+        <span class="logo-text">Albu</span>
+      </a>
+      <div class="nav-links">
+        <a href="../../#about">About</a>
+        <a href="../../#phase-1">Phase 1</a>
+        <a href="../" class="nav-active">Documentation</a>
+        <a href="https://github.com/levkropp/albu" class="nav-gh">GitHub</a>
+      </div>
+    </div>
+  </nav>
+
+  <div class="docs-layout">
+    <aside class="docs-sidebar">
+      <div class="sidebar-section">
+        <div class="sidebar-heading">Getting Started</div>
+        <a href="../" class="sidebar-link">Overview</a>
+        <a href="../equipment/" class="sidebar-link">Equipment List</a>
+        <a href="./" class="sidebar-link active">Phase 1 Protocol</a>
+      </div>
+      <div class="sidebar-section">
+        <div class="sidebar-heading">Phase 1 Steps</div>
+        <a href="#resist-prep" class="sidebar-link">1. Preparing the Resist</a>
+        <a href="#spin-coating" class="sidebar-link">2. Spin Coating</a>
+        <a href="#exposure" class="sidebar-link">3. Laser Exposure</a>
+        <a href="#development" class="sidebar-link">4. Water Development</a>
+        <a href="#staining" class="sidebar-link">5. Staining &amp; Imaging</a>
+        <a href="#resolution" class="sidebar-link">6. Resolution Testing</a>
+      </div>
+    </aside>
+
+    <main class="docs-main">
+      <div class="docs-content">
+        <h1>Phase 1: Complete Protocol</h1>
+        <p class="docs-lead">Step-by-step instructions for proving egg white photoresist at 450nm. Follow these in order. Each step includes the exact recipe, expected results, and troubleshooting.</p>
+
+        <div class="docs-callout">
+          <strong>Before you start:</strong> Ensure your CNC 3018 is assembled with the laser mounted and focused, your spin coater is calibrated to known RPM settings, and you have all consumables on hand. Wear laser safety goggles whenever the laser is powered.
+        </div>
+
+        <h2 id="resist-prep">Step 1: Preparing Egg White Resist</h2>
+
+        <div class="recipe-card">
+          <div class="recipe-meta">
+            <span class="recipe-tag">Negative Tone</span>
+            <span class="recipe-tag">~30 min prep</span>
+          </div>
+          <h3>Negative Tone Resist (start here)</h3>
+          <p>This produces a resist where exposed areas become insoluble. Simpler than positive tone &mdash; no glycerol, no precuring step.</p>
+        </div>
+
+        <h3>Materials</h3>
+        <ul class="docs-list">
+          <li>1 chicken egg (any grade, room temperature)</li>
+          <li>Coffee filter</li>
+          <li>Clean glass jar or beaker</li>
+          <li>Mason jar + hand vacuum pump (for degassing)</li>
+          <li>Riboflavin (vitamin B2) tablet, 100mg</li>
+          <li>Plastic pipette</li>
+        </ul>
+
+        <h3>Procedure</h3>
+        <ol class="docs-list">
+          <li><strong>Separate the egg.</strong> Crack the egg and cleanly separate the white from the yolk. Any yolk contamination will degrade the resist. Collect the white in a clean glass jar. Yield: ~20mL per egg.</li>
+          <li><strong>Filter.</strong> Pour the egg white through a coffee filter into a second clean jar. Let it drip through by gravity &mdash; do not squeeze. This removes the thick viscous chalazae and gel-like ovomucin layer. The paper (Figure S2) shows that unfiltered albumen gives poor patterns. Takes 5&ndash;10 minutes.</li>
+          <li><strong>Degas and partially dehydrate.</strong> Pour the filtered albumen into the mason jar. Connect the hand vacuum pump and pump until bubbles stop rising aggressively (~5 minutes). Continue pumping more gently until you observe a slight cloudiness at the edges of the liquid &mdash; this is protein "phasing out" and indicates sufficient dehydration. Stop here.
+            <br><br>
+            <em>Alternative if you have no vacuum pump:</em> Let the jar sit covered in the fridge for 24 hours. Skim any foam from the surface before use.
+          </li>
+          <li><strong>Add photosensitizer.</strong> Crush one 100mg riboflavin (B2) tablet into a fine powder. Add to the filtered albumen. Stir gently for 2&ndash;3 minutes until dissolved. The liquid will take on a slight yellow tint. Target concentration: ~1&ndash;5 mg/mL. Don't worry about exact dosing &mdash; you'll optimize via the exposure dose matrix.
+            <br><br>
+            <em>Why riboflavin:</em> The original paper used 254nm UV. Our laser is 450nm. Riboflavin has a strong absorption peak at 445&ndash;450nm and acts as a Type II photosensitizer, generating singlet oxygen that crosslinks proteins. It's naturally present in egg white in trace amounts; we're boosting the concentration.
+          </li>
+          <li><strong>Store.</strong> Cap the jar and refrigerate. The resist is stable for approximately 1 week. Label with the date. One egg yields enough resist for ~65 slides.</li>
+        </ol>
+
+        <div class="recipe-card">
+          <div class="recipe-meta">
+            <span class="recipe-tag">Positive Tone</span>
+            <span class="recipe-tag">Same prep + glycerol</span>
+          </div>
+          <h3>Positive Tone Resist (attempt after negative works)</h3>
+          <p>In positive tone, exposed areas become soluble and wash away. The key additive is glycerol at a 10:1 ratio.</p>
+        </div>
+
+        <p>Follow the same procedure as negative tone, then:</p>
+        <ol class="docs-list">
+          <li>Measure 10mL of filtered, degassed, riboflavin-doped albumen.</li>
+          <li>Add 1mL of food-grade glycerol (10:1 volume ratio, albumen:glycerol).</li>
+          <li>Mix gently to avoid introducing bubbles.</li>
+          <li>The glycerol inhibits protein aggregation and promotes chain fragmentation under exposure. Higher glycerol ratios weaken substrate adhesion (paper Figure S6). Lower ratios fail to prevent aggregation. 10:1 is the sweet spot.</li>
+        </ol>
+
+        <div class="docs-warning">
+          <strong>Critical:</strong> The glycerol ratio matters. More than 1:10 = poor adhesion, film peels off during development. Less than 0.5:10 = reverts to negative tone behavior. Stick to 1:10 initially.
+        </div>
+
+        <h2 id="spin-coating">Step 2: Spin Coating</h2>
+
+        <h3>Materials</h3>
+        <ul class="docs-list">
+          <li>Prepared egg white resist (from Step 1)</li>
+          <li>Glass microscope slides (clean)</li>
+          <li>Isopropyl alcohol 99%</li>
+          <li>Spin coater (calibrated)</li>
+          <li>Plastic pipettes</li>
+        </ul>
+
+        <h3>Procedure</h3>
+        <ol class="docs-list">
+          <li><strong>Clean the substrate.</strong> Wipe the glass slide with isopropyl alcohol using a lint-free wipe or clean paper towel. Allow to air dry completely (~30 seconds). A clean surface is essential for uniform coating.</li>
+          <li><strong>Mount on spin coater.</strong> Place the slide on the spin coater chuck. Secure with double-sided tape (center only) or vacuum if your coater has it. Verify the slide is centered and level.</li>
+          <li><strong>Dispense resist.</strong> Using a plastic pipette, deposit approximately 300&mu;L (~6 drops) of egg white resist onto the center of the slide. Avoid touching the pipette tip to the slide surface.</li>
+          <li><strong>Spin.</strong> Start the spin coater at your target RPM. Hold for 30 seconds.
+            <br><br>
+            For the initial experiments, spin coat 5 slides at different speeds to map the thickness:
+            <table class="inline-table" style="margin-top: 12px;">
+              <tr><th>Slide</th><th>Speed</th><th>Expected Thickness</th><th>Notes</th></tr>
+              <tr><td>A</td><td>1000 RPM</td><td>~900nm</td><td>Thick, easy to see, most forgiving</td></tr>
+              <tr><td>B</td><td>2000 RPM</td><td>~450nm</td><td>Standard for gate dielectric (Phase 2)</td></tr>
+              <tr><td>C</td><td>3000 RPM</td><td>~300nm</td><td>Standard for photoresist</td></tr>
+              <tr><td>D</td><td>4000 RPM</td><td>~200nm</td><td>Thin</td></tr>
+              <tr><td>E</td><td>6000 RPM</td><td>~100nm</td><td>Thinnest achievable</td></tr>
+            </table>
+          </li>
+          <li><strong>Dry.</strong> Let the coated slide air dry at room temperature for 5 minutes, or place on a hot plate at 40&deg;C for 2 minutes. The film should be smooth, mostly transparent, with a possible faint color from the riboflavin.</li>
+        </ol>
+
+        <p><strong>How to verify uniformity:</strong> Tilt the slide under a light source. Thin-film interference colors (rainbow tint) indicate a thin, somewhat uniform film. Consistent color across the surface means good uniformity. Splotchy or streaked areas indicate a problem with the spin coater balance or resist viscosity.</p>
+
+        <h2 id="exposure">Step 3: Laser Exposure</h2>
+
+        <div class="docs-warning">
+          <strong>Safety:</strong> Always wear OD6+ laser safety goggles when the laser is powered. Never look directly at the laser spot, even with goggles. Ensure the CNC enclosure shields stray reflections.
+        </div>
+
+        <h3>Exposure Dose Matrix</h3>
+        <p>This is the most critical experiment in Phase 1. You're finding the combination of laser power and scan speed that properly crosslinks (negative tone) or fragments (positive tone) the egg white at 450nm.</p>
+
+        <h3>G-code Setup</h3>
+        <p>In LaserGRBL or LightBurn, create a test pattern: 6 horizontal lines, each 5mm long, spaced 2mm apart vertically. Create 6 copies of this pattern, one for each power level.</p>
+
+        <pre><code>; Example G-code for one slide at 60% power
+; Lines at 6 different speeds
+
+G90 G21 ; Absolute mode, millimeters
+M3 S600  ; Laser on at 60% (S0-S1000 scale)
+
+; Line 1: 50 mm/min (slowest, highest dose)
+G1 X0 Y0 F50
+G1 X5 Y0
+
+; Line 2: 100 mm/min
+G0 X0 Y2
+G1 X5 Y2 F100
+
+; Line 3: 200 mm/min
+G0 X0 Y4
+G1 X5 Y4 F200
+
+; Line 4: 500 mm/min
+G0 X0 Y6
+G1 X5 Y6 F500
+
+; Line 5: 1000 mm/min
+G0 X0 Y8
+G1 X5 Y8 F1000
+
+; Line 6: 2000 mm/min (fastest, lowest dose)
+G0 X0 Y10
+G1 X5 Y10 F2000
+
+M5 ; Laser off</code></pre>
+
+        <h3>Test Matrix</h3>
+        <table class="inline-table">
+          <tr>
+            <th></th><th>S100 (10%)</th><th>S200 (20%)</th><th>S400 (40%)</th><th>S600 (60%)</th><th>S800 (80%)</th><th>S1000 (100%)</th>
+          </tr>
+          <tr><td><strong>50 mm/min</strong></td><td>Slide 1</td><td>Slide 2</td><td>Slide 3</td><td>Slide 4</td><td>Slide 5</td><td>Slide 6</td></tr>
+          <tr><td><strong>100 mm/min</strong></td><td colspan="6" style="text-align:center">Each slide has all 6 speeds</td></tr>
+          <tr><td><strong>200 mm/min</strong></td><td colspan="6"></td></tr>
+          <tr><td><strong>500 mm/min</strong></td><td colspan="6"></td></tr>
+          <tr><td><strong>1000 mm/min</strong></td><td colspan="6"></td></tr>
+          <tr><td><strong>2000 mm/min</strong></td><td colspan="6"></td></tr>
+        </table>
+        <p>This gives you <strong>36 unique exposure conditions</strong> across 6 slides. Use slides coated at 3000 RPM (~300nm thickness) for consistency.</p>
+
+        <h2 id="development">Step 4: Water Development</h2>
+
+        <ol class="docs-list">
+          <li>Fill a shallow dish (petri dish or small plate) with room-temperature distilled water.</li>
+          <li>Gently immerse the exposed slide, film side up.</li>
+          <li>Wait 30 seconds. Gently swirl the dish every 10 seconds.</li>
+          <li>Remove the slide. Rinse gently with fresh distilled water from a squeeze bottle.</li>
+          <li>Air dry, or gently blow dry with canned air (hold the can upright to avoid propellant spray).</li>
+        </ol>
+
+        <h3>What to expect</h3>
+        <p><strong>Negative tone (no glycerol):</strong> The laser-exposed lines should remain on the slide. Unexposed areas should have washed away. The remaining lines are crosslinked protein &mdash; water-insoluble.</p>
+        <p><strong>Positive tone (with glycerol):</strong> The laser-exposed lines should have washed away. Unexposed areas remain. The exposed protein was fragmented into water-soluble fragments.</p>
+
+        <h3>Troubleshooting</h3>
+        <table class="inline-table">
+          <tr><th>Observation</th><th>Likely Cause</th><th>Fix</th></tr>
+          <tr><td>Nothing remains after development</td><td>Exposure dose too low (negative) or too high (positive)</td><td>Increase power or decrease speed (negative) / decrease power (positive)</td></tr>
+          <tr><td>Everything remains, nothing washes away</td><td>Exposure dose too high (negative) / resist too thick</td><td>Decrease power or increase speed</td></tr>
+          <tr><td>Lines are there but edges are ragged/burned</td><td>Power too high, charring the protein</td><td>Reduce power, increase speed</td></tr>
+          <tr><td>Film peels off substrate entirely</td><td>Poor adhesion &mdash; surface not clean, or glycerol ratio too high</td><td>Clean substrate more thoroughly, reduce glycerol ratio</td></tr>
+          <tr><td>Pattern is blurry/smeared</td><td>Film still wet during development handling</td><td>Be more gentle during rinse. Ensure film is dry before handling.</td></tr>
+        </table>
+
+        <h2 id="staining">Step 5: Staining and Imaging</h2>
+
+        <p>The remaining egg white film is mostly transparent on glass. Staining makes the patterns visible under the microscope.</p>
+
+        <h3>Iodine stain (primary method)</h3>
+        <ol class="docs-list">
+          <li>Prepare stain: 3&ndash;5 drops of 2% iodine tincture in 50mL distilled water in a shallow dish.</li>
+          <li>Immerse the developed slide for 30 seconds.</li>
+          <li>Remove and rinse gently with distilled water.</li>
+          <li>Air dry.</li>
+          <li>The remaining protein stains yellow-brown. Glass remains clear.</li>
+        </ol>
+
+        <h3>Methylene blue stain (alternative)</h3>
+        <ol class="docs-list">
+          <li>Prepare stain: 1 drop of methylene blue solution (aquarium treatment concentration) in 50mL distilled water.</li>
+          <li>Immerse for 30 seconds. Rinse. Dry.</li>
+          <li>Protein stains blue. Glass remains clear.</li>
+        </ol>
+
+        <h3>Imaging</h3>
+        <ol class="docs-list">
+          <li>Place the stained slide on the microscope stage.</li>
+          <li>Start at the lowest magnification (4x objective, 100x total) to find your patterns.</li>
+          <li>Switch to 10x objective (250x total) for detailed inspection.</li>
+          <li>Use the phone adapter to photograph through the eyepiece. Align the phone camera with the eyepiece, hold steady, and capture.</li>
+          <li>Document: which power/speed combinations produced clean lines? Which failed? Measure line widths if possible using the eyepiece reticle or by comparison to a known dimension on the slide.</li>
+        </ol>
+
+        <h2 id="resolution">Step 6: Resolution Test</h2>
+
+        <p>Using the optimal exposure parameters identified in Steps 3&ndash;5, create a resolution test pattern.</p>
+
+        <h3>Test Pattern Design</h3>
+        <p>Program the CNC to draw parallel lines at decreasing widths and spacings:</p>
+
+        <pre><code>Resolution test pattern:
+
+Group 1: 500&mu;m lines, 500&mu;m gaps (5 line pairs)
+Group 2: 200&mu;m lines, 200&mu;m gaps (5 line pairs)
+Group 3: 100&mu;m lines, 100&mu;m gaps (5 line pairs)
+Group 4:  50&mu;m lines,  50&mu;m gaps (5 line pairs)
+Group 5:  25&mu;m lines,  25&mu;m gaps (5 line pairs)
+
+Also include:
+- Isolated squares (500&mu;m, 200&mu;m, 100&mu;m)
+- The text "ALBU" at ~300&mu;m character height
+- A cross-shaped alignment mark (for Phase 2 practice)</code></pre>
+
+        <h3>Expected Results</h3>
+        <table class="inline-table">
+          <tr><th>Feature Size</th><th>Expected Outcome</th><th>Limiting Factor</th></tr>
+          <tr><td>500 &mu;m</td><td>Clean, well-defined</td><td>Nothing</td></tr>
+          <tr><td>200 &mu;m</td><td>Clean, well-defined</td><td>Nothing</td></tr>
+          <tr><td>100 &mu;m</td><td>Resolved, some edge roughness</td><td>Laser spot size (100&ndash;150&mu;m)</td></tr>
+          <tr><td>50 &mu;m</td><td>Partially resolved or merged</td><td>CNC positioning + spot size</td></tr>
+          <tr><td>25 &mu;m</td><td>Likely unresolved</td><td>Below machine capability</td></tr>
+        </table>
+
+        <h3>Success Criteria</h3>
+        <p><strong>Phase 1 is successful if:</strong></p>
+        <ul class="docs-list">
+          <li>You can produce visible, stained egg white patterns on glass after water development</li>
+          <li>The patterns correspond to the laser-written design (not random artifacts)</li>
+          <li>You achieve resolved features at &le;100&mu;m</li>
+          <li>Both positive and negative tone modes work (or at minimum, negative tone works)</li>
+        </ul>
+
+        <p>Document everything: photos, exposure parameters, development times, stain method, any failures and what caused them. This data feeds directly into Phase 2 process optimization.</p>
+
+        <div class="docs-callout">
+          <strong>What's next:</strong> Once Phase 1 succeeds, Phase 2 begins immediately. The first transistor (ZnO TFT on glass) uses the same spin coater, the same laser, and the same egg white &mdash; now as a gate dielectric instead of a photoresist. The transition is seamless.
+        </div>
+      </div>
+    </main>
+  </div>
+</body>
+</html>

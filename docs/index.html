@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Documentation - Albu</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../style.css">
+  <link rel="stylesheet" href="docs.css">
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><ellipse cx='50' cy='45' rx='30' ry='38' fill='%232563eb'/></svg>">
+</head>
+<body>
+  <nav>
+    <div class="nav-inner">
+      <a href="../" class="nav-logo">
+        <svg class="logo-icon" viewBox="0 0 40 50" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <ellipse cx="20" cy="22" rx="14" ry="18" fill="#2563eb"/>
+        </svg>
+        <span class="logo-text">Albu</span>
+      </a>
+      <div class="nav-links">
+        <a href="../#about">About</a>
+        <a href="../#phase-1">Phase 1</a>
+        <a href="./" class="nav-active">Documentation</a>
+        <a href="https://github.com/levkropp/albu" class="nav-gh">GitHub</a>
+      </div>
+    </div>
+  </nav>
+
+  <div class="docs-layout">
+    <aside class="docs-sidebar">
+      <div class="sidebar-section">
+        <div class="sidebar-heading">Getting Started</div>
+        <a href="./" class="sidebar-link active">Overview</a>
+        <a href="equipment/" class="sidebar-link">Equipment List</a>
+        <a href="phase-1/" class="sidebar-link">Phase 1 Protocol</a>
+      </div>
+      <div class="sidebar-section">
+        <div class="sidebar-heading">Science</div>
+        <a href="science/" class="sidebar-link">How Egg White Resist Works</a>
+        <a href="science/wavelength.html" class="sidebar-link">450nm Wavelength Strategy</a>
+        <a href="science/chemicals.html" class="sidebar-link">Grocery Store Chemical Toolkit</a>
+      </div>
+      <div class="sidebar-section">
+        <div class="sidebar-heading">Equipment</div>
+        <a href="equipment/cnc-laser.html" class="sidebar-link">CNC 3018 + Laser Setup</a>
+        <a href="equipment/spin-coater.html" class="sidebar-link">3D Printed Spin Coater</a>
+        <a href="equipment/microscope.html" class="sidebar-link">Microscope Configuration</a>
+      </div>
+      <div class="sidebar-section">
+        <div class="sidebar-heading">Process Recipes</div>
+        <a href="phase-1/resist-prep.html" class="sidebar-link">Preparing Egg White Resist</a>
+        <a href="phase-1/spin-coating.html" class="sidebar-link">Spin Coating Protocol</a>
+        <a href="phase-1/exposure.html" class="sidebar-link">Laser Exposure Parameters</a>
+        <a href="phase-1/development.html" class="sidebar-link">Water Development</a>
+        <a href="phase-1/staining.html" class="sidebar-link">Staining &amp; Imaging</a>
+      </div>
+      <div class="sidebar-section">
+        <div class="sidebar-heading">Future Phases</div>
+        <a href="#" class="sidebar-link sidebar-disabled">Phase 2: Transistors</a>
+        <a href="#" class="sidebar-link sidebar-disabled">Phase 3: Chip Printer</a>
+        <a href="#" class="sidebar-link sidebar-disabled">Phase 4: SERV RISC-V</a>
+      </div>
+    </aside>
+
+    <main class="docs-main">
+      <div class="docs-content">
+        <h1>Albu Documentation</h1>
+        <p class="docs-lead">Everything you need to replicate our work. Every process recipe, equipment spec, and experiment result is documented here.</p>
+
+        <div class="docs-callout">
+          <strong>Work in progress.</strong> Phase 1 is actively underway. Documentation is being written as we build and experiment. Pages marked as disabled in the sidebar are planned but not yet written.
+        </div>
+
+        <h2>Quick Start</h2>
+        <p>To replicate Phase 1 (proving egg white photoresist), you need:</p>
+
+        <ol class="docs-list">
+          <li><strong>A CNC machine with a laser</strong> &mdash; we use the Genmitsu CNC 3018-PRO with their 5W 450nm laser module. Total: $346 CAD.</li>
+          <li><strong>A spin coater</strong> &mdash; 3D printed, ~$30 in parts. Any BLDC motor + PWM controller that reaches 6000 RPM.</li>
+          <li><strong>A microscope</strong> &mdash; anything with 100x+ magnification. We use the BEBANG YW-3006 ($90 CAD).</li>
+          <li><strong>Safety goggles</strong> &mdash; OD4+ at 450nm minimum. We use FreeMascot OD6+ ($44 CAD).</li>
+          <li><strong>Consumables</strong> &mdash; eggs, glycerol, riboflavin tablets, iodine tincture, distilled water, coffee filters, isopropanol, glass slides. ~$60 CAD from grocery store and pharmacy.</li>
+        </ol>
+
+        <p>Total cost to replicate Phase 1: <strong>~$570 CAD / ~$420 USD</strong></p>
+
+        <h2>Project Principles</h2>
+
+        <div class="principles">
+          <div class="principle">
+            <h3>Open by default</h3>
+            <p>Every recipe, parameter, failure, and success is published. No trade secrets. The goal is to make semiconductor fabrication accessible, not to gatekeep it.</p>
+          </div>
+          <div class="principle">
+            <h3>Grocery store supply chain</h3>
+            <p>If it's not available at a grocery store, pharmacy, hardware store, or Amazon, we find an alternative. No specialty lab suppliers. No used equipment required.</p>
+          </div>
+          <div class="principle">
+            <h3>No HF, no toxic solvents</h3>
+            <p>Hydrofluoric acid is the biggest barrier to home semiconductor fabrication. We replace it with KOH (drain cleaner) and laser ablation. All development uses water.</p>
+          </div>
+          <div class="principle">
+            <h3>Document failures equally</h3>
+            <p>A failed experiment with good data is as valuable as a successful one. We document what didn't work and why, so others don't repeat our mistakes.</p>
+          </div>
+        </div>
+
+        <h2>Documentation Structure</h2>
+        <table class="docs-nav-table">
+          <tbody>
+            <tr>
+              <td><strong><a href="equipment/">Equipment</a></strong></td>
+              <td>Bill of materials, build instructions for the spin coater, CNC laser setup, microscope configuration</td>
+            </tr>
+            <tr>
+              <td><strong><a href="science/">Science</a></strong></td>
+              <td>How egg white photoresist works, the 450nm wavelength strategy, the grocery store chemical toolkit</td>
+            </tr>
+            <tr>
+              <td><strong><a href="phase-1/">Phase 1 Protocol</a></strong></td>
+              <td>Step-by-step resist preparation, spin coating, exposure, development, staining, and resolution testing</td>
+            </tr>
+          </tbody>
+        </table>
+
+        <h2>Key References</h2>
+        <ol class="docs-refs">
+          <li>Jiang, B. et al. (2017). "Water-Based Photo- and Electron-Beam Lithography Using Egg White as a Resist." <em>Advanced Materials Interfaces</em>, 4, 1601223.</li>
+          <li>Chang, J.W. et al. (2011). "High-k Dielectric Gate Insulators from Albumen for Low-Voltage Organic Thin-Film Transistors." <em>Advanced Materials</em>, 23, 4077.</li>
+          <li>Irimia-Vladu, M. et al. (2012). "Green and biodegradable electronics." <em>Chemical Society Reviews</em>, 43, 588.</li>
+        </ol>
+      </div>
+    </main>
+  </div>
+</body>
+</html>

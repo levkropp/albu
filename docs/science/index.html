@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>How Egg White Resist Works - Albu</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../../style.css">
+  <link rel="stylesheet" href="../docs.css">
+</head>
+<body>
+  <nav>
+    <div class="nav-inner">
+      <a href="../../" class="nav-logo">
+        <svg class="logo-icon" viewBox="0 0 40 50" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <ellipse cx="20" cy="22" rx="14" ry="18" fill="#2563eb"/>
+        </svg>
+        <span class="logo-text">Albu</span>
+      </a>
+      <div class="nav-links">
+        <a href="../../#about">About</a>
+        <a href="../../#phase-1">Phase 1</a>
+        <a href="../" class="nav-active">Documentation</a>
+        <a href="https://github.com/levkropp/albu" class="nav-gh">GitHub</a>
+      </div>
+    </div>
+  </nav>
+
+  <div class="docs-layout">
+    <aside class="docs-sidebar">
+      <div class="sidebar-section">
+        <div class="sidebar-heading">Getting Started</div>
+        <a href="../" class="sidebar-link">Overview</a>
+        <a href="../equipment/" class="sidebar-link">Equipment List</a>
+        <a href="../phase-1/" class="sidebar-link">Phase 1 Protocol</a>
+      </div>
+      <div class="sidebar-section">
+        <div class="sidebar-heading">Science</div>
+        <a href="./" class="sidebar-link active">How Egg White Resist Works</a>
+        <a href="wavelength.html" class="sidebar-link">450nm Wavelength Strategy</a>
+        <a href="chemicals.html" class="sidebar-link">Grocery Store Chemical Toolkit</a>
+      </div>
+    </aside>
+
+    <main class="docs-main">
+      <div class="docs-content">
+        <h1>How Egg White Resist Works</h1>
+        <p class="docs-lead">The protein chemistry behind using chicken egg white as a photoresist for micro/nanofabrication.</p>
+
+        <h2>Background</h2>
+        <p>Egg white (albumen) is approximately 90% water and 10% protein by weight. The dominant protein is <strong>ovalbumin</strong> (~62% of total protein), a globular protein that undergoes structural changes upon exposure to UV or electron-beam radiation.</p>
+        <p>This property was first systematically exploited for lithography by Jiang et al. (2017), who demonstrated both positive and negative tone patterning at sub-micron resolution using egg white as a resist material.</p>
+
+        <h2>Negative Tone: Protein Aggregation</h2>
+        <p>When globular proteins in egg white are exposed to energetic radiation (UV, electron beam, or in our case, 450nm laser via riboflavin photosensitization), they undergo <strong>denaturation and aggregation</strong>:</p>
+        <ol class="docs-list">
+          <li><strong>Unfolding:</strong> The radiation disrupts the native globular conformation, exposing hydrophobic core regions.</li>
+          <li><strong>Beta-sheet formation:</strong> Unfolded proteins reorganize into intermolecular beta-sheet structures, driven by hydrogen bonding between exposed backbone amide groups.</li>
+          <li><strong>Crosslinking:</strong> Disulfide bonds form between cysteine residues on adjacent protein chains. Hydrophobic interactions and electrostatic forces further stabilize the aggregate.</li>
+          <li><strong>Insolubility:</strong> The resulting aggregated protein network is water-insoluble. The exposed beta-sheet structure is "water-inaccessible."</li>
+        </ol>
+        <p>After exposure, rinsing with water removes the unexposed (still-soluble) protein, leaving behind the crosslinked pattern. This is <strong>negative tone</strong> behavior: exposed regions remain.</p>
+
+        <h2>Positive Tone: Protein Fragmentation</h2>
+        <p>Adding glycerol to the albumen (10:1 v/v ratio) switches the resist to positive tone. Glycerol has three effects:</p>
+        <ol class="docs-list">
+          <li><strong>Lubrication:</strong> Glycerol's hydroxyl groups form hydrogen bonds with protein chains, partially replacing native interprotein interactions. This weakens protein-protein attractions.</li>
+          <li><strong>Stabilization:</strong> Glycerol increases the thermodynamic stability of the native (folded) protein conformation through preferential hydration, reducing the tendency to aggregate.</li>
+          <li><strong>Inhibition of assembly:</strong> Glycerol slows the formation of beta-sheet fibrillar structures that would otherwise lock proteins into an insoluble aggregate.</li>
+        </ol>
+        <p>With aggregation suppressed, the dominant radiation effect becomes <strong>chain fragmentation</strong> (peptide bond scission). The fragmented proteins are small, water-soluble species that wash away during development. Unexposed regions (where protein remains intact and glycerol-stabilized) stay on the substrate.</p>
+        <p>A two-step exposure is used for positive tone:</p>
+        <ol class="docs-list">
+          <li><strong>Low-intensity pre-cure:</strong> A gentle, uniform exposure initiates mild aggregation across the entire film, securing it to the substrate. Without this step, the water development would strip the entire film.</li>
+          <li><strong>High-intensity patterned exposure:</strong> Through a photomask or by laser direct-write, the high-dose exposure fragments the protein in the exposed regions. These regions wash away in water.</li>
+        </ol>
+
+        <h2>Why Egg White Works as a Dielectric</h2>
+        <p>Crosslinked egg white is not just a resist &mdash; it's also a functional gate dielectric (Chang et al. 2011). After crosslinking:</p>
+        <ul class="docs-list">
+          <li><strong>Dielectric constant &kappa; &approx; 5&ndash;6</strong> (higher than SiO<sub>2</sub> at 3.9)</li>
+          <li><strong>Breakdown field:</strong> ~2&ndash;4 MV/cm (sufficient for transistors operating at 5&ndash;10V)</li>
+          <li><strong>Low leakage current:</strong> The hydrophobic beta-sheet network resists ionic conduction</li>
+          <li><strong>Smooth surface:</strong> ~5nm RMS roughness after crosslinking</li>
+        </ul>
+        <p>This dual functionality (resist + dielectric) means the same material and the same deposition process serves two purposes in our transistor fabrication flow.</p>
+
+        <h2>Film Thickness Control</h2>
+        <p>Egg white film thickness follows the standard spin-coating relationship: faster spin = thinner film. From the paper (Figure S11):</p>
+        <table class="inline-table">
+          <tr><th>Spin Speed (RPM)</th><th>Thickness (nm)</th><th>Typical Use</th></tr>
+          <tr><td>1000</td><td>~900</td><td>Thick resist, easy to see</td></tr>
+          <tr><td>2000</td><td>~450</td><td>Gate dielectric for TFTs</td></tr>
+          <tr><td>3000</td><td>~300</td><td>Standard resist thickness</td></tr>
+          <tr><td>4000</td><td>~200</td><td>Thin resist</td></tr>
+          <tr><td>6000</td><td>~100</td><td>Minimum achievable thickness</td></tr>
+        </table>
+        <p>Diluting the albumen with water before spin-coating can produce even thinner films. This has not been characterized in the literature but is worth exploring for ultra-thin gate dielectrics.</p>
+
+        <h2>Key Advantages Over Conventional Resists</h2>
+        <table class="inline-table">
+          <tr><th>Property</th><th>Egg White</th><th>PMMA</th><th>Silk Fibroin</th></tr>
+          <tr><td>Cost per mL</td><td>$0.0037</td><td>$1.49</td><td>$12.75</td></tr>
+          <tr><td>Solvent</td><td>Water (cast and develop)</td><td>Chlorobenzene / MIBK</td><td>Water (cast) / LiBr (process)</td></tr>
+          <tr><td>Toxicity</td><td>None (food grade)</td><td>Moderate (organic solvents)</td><td>Low</td></tr>
+          <tr><td>Dual tone</td><td>Yes (glycerol switches)</td><td>Yes (dose-dependent)</td><td>Yes</td></tr>
+          <tr><td>Also a dielectric</td><td>Yes (&kappa; &approx; 5&ndash;6)</td><td>No</td><td>Partially</td></tr>
+          <tr><td>Source</td><td>Grocery store</td><td>Chemical supplier</td><td>Specialty supplier</td></tr>
+        </table>
+
+        <h2>References</h2>
+        <ol class="docs-refs">
+          <li>Jiang, B. et al. (2017). "Water-Based Photo- and Electron-Beam Lithography Using Egg White as a Resist." <em>Adv. Mater. Interfaces</em>, 4, 1601223.</li>
+          <li>Chang, J.W. et al. (2011). "High-k Dielectric Gate Insulators from Albumen." <em>Adv. Mater.</em>, 23, 4077.</li>
+          <li>Irimia-Vladu, M. et al. (2014). "Green and biodegradable electronics." <em>Chem. Soc. Rev.</em>, 43, 588.</li>
+          <li>Wong, Y.C. et al. (1996). "UV sensitivity of egg white proteins." <em>Poultry Sci.</em>, 75, 803.</li>
+        </ol>
+      </div>
+    </main>
+  </div>
+</body>
+</html>
