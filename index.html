@@ -3,37 +3,62 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Albu - Open Source Home Semiconductor Fabrication</title>
+  <title>Albu - Open Source Home Semiconductor Fabrication | KOSL</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="style.css">
-  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><ellipse cx='50' cy='45' rx='30' ry='38' fill='%232563eb'/></svg>">
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect x='15' y='15' width='70' height='70' rx='2' fill='none' stroke='%23434e64' stroke-width='4' transform='rotate(0 50 50)'/><circle cx='50' cy='50' r='28' fill='none' stroke='%23434e64' stroke-width='3.5'/><rect x='25' y='25' width='50' height='50' rx='1' fill='none' stroke='%23434e64' stroke-width='3' transform='rotate(45 50 50)'/><circle cx='50' cy='50' r='15' fill='none' stroke='%23434e64' stroke-width='2.5'/><rect x='37' y='37' width='26' height='26' rx='1' fill='none' stroke='%23434e64' stroke-width='2'/><circle cx='50' cy='50' r='4' fill='%23434e64'/></svg>">
 </head>
 <body>
   <nav>
     <div class="nav-inner">
       <a href="/" class="nav-logo">
-        <svg class="logo-icon" viewBox="0 0 40 50" fill="none" xmlns="http://www.w3.org/2000/svg">
-          <ellipse cx="20" cy="22" rx="14" ry="18" fill="#2563eb"/>
+        <!-- KOSL nested square-circle motif mark -->
+        <svg class="nav-logo-mark" viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <rect x="10" y="10" width="80" height="80" rx="2" stroke="#434e64" stroke-width="5"/>
+          <circle cx="50" cy="50" r="32" stroke="#434e64" stroke-width="4.5"/>
+          <rect x="22" y="22" width="56" height="56" rx="1" stroke="#434e64" stroke-width="4" transform="rotate(45 50 50)"/>
+          <circle cx="50" cy="50" r="17" stroke="#434e64" stroke-width="3.5"/>
+          <rect x="36" y="36" width="28" height="28" rx="1" stroke="#434e64" stroke-width="3"/>
+          <circle cx="50" cy="50" r="5" fill="#434e64"/>
         </svg>
-        <span class="logo-text">Albu</span>
+        <div>
+          <div class="nav-logo-kosl">KOSL</div>
+          <div class="nav-logo-albu">Albu</div>
+        </div>
       </a>
       <div class="nav-links">
         <a href="#about">About</a>
         <a href="#phase-1">Phase 1</a>
-        <a href="docs/">Documentation</a>
+        <a href="docs/">Docs</a>
         <a href="https://github.com/levkropp/albu" class="nav-gh">GitHub</a>
       </div>
     </div>
   </nav>
 
   <header class="hero">
+    <canvas id="hero-canvas"></canvas>
     <div class="hero-inner">
-      <div class="hero-badge">Open Source</div>
-      <svg class="hero-logo" viewBox="0 0 120 150" fill="none" xmlns="http://www.w3.org/2000/svg">
-        <ellipse cx="60" cy="65" rx="42" ry="54" fill="#2563eb"/>
-      </svg>
+      <div class="hero-badge">Open Source Hardware</div>
+      <div class="hero-logo-group">
+        <!-- Albu mark: outlined egg oval with nested geometry inside -->
+        <svg class="hero-mark" viewBox="0 0 100 120" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <!-- Egg oval outline -->
+          <ellipse cx="50" cy="56" rx="34" ry="44" stroke="#434e64" stroke-width="3" fill="none"/>
+          <!-- Inner circle -->
+          <circle cx="50" cy="56" r="22" stroke="#434e64" stroke-width="2" fill="none"/>
+          <!-- Inner square rotated -->
+          <rect x="38" y="44" width="24" height="24" rx="1" stroke="#434e64" stroke-width="2" fill="none" transform="rotate(45 50 56)"/>
+          <!-- Inner circle 2 -->
+          <circle cx="50" cy="56" r="10" stroke="#434e64" stroke-width="1.5" fill="none"/>
+          <!-- Innermost square -->
+          <rect x="44" y="50" width="12" height="12" rx="0.5" stroke="#434e64" stroke-width="1.5" fill="none"/>
+          <!-- Center dot -->
+          <circle cx="50" cy="56" r="2.5" fill="#434e64"/>
+        </svg>
+        <div class="hero-kosl">Kropp Olsha Semiconductor Lithography</div>
+      </div>
       <h1>Albu</h1>
       <p class="hero-subtitle">Open source home semiconductor fabrication<br>using egg white photoresist and grocery store chemicals.</p>
       <div class="hero-actions">
@@ -51,21 +76,21 @@
       <div class="grid-3">
         <div class="card">
           <div class="card-icon">
-            <svg viewBox="0 0 24 24" fill="none" stroke="#2563eb" stroke-width="2"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2z"/><path d="M8 12l2 2 4-4"/></svg>
+            <svg viewBox="0 0 44 44" fill="none"><rect x="5" y="5" width="34" height="34" rx="2" stroke="#434e64" stroke-width="2"/><circle cx="22" cy="22" r="12" stroke="#434e64" stroke-width="1.5"/><rect x="14" y="14" width="16" height="16" rx="1" stroke="#434e64" stroke-width="1.5" transform="rotate(45 22 22)"/><circle cx="22" cy="22" r="3" fill="#434e64"/></svg>
           </div>
           <h3>No Toxic Chemicals</h3>
           <p>No HF. No organic solvents. No specialty photoresists. Our process uses egg whites, vinegar, rust remover, and drain cleaner. Everything from the grocery store, pharmacy, and hardware store.</p>
         </div>
         <div class="card">
           <div class="card-icon">
-            <svg viewBox="0 0 24 24" fill="none" stroke="#2563eb" stroke-width="2"><path d="M12 2L2 7l10 5 10-5-10-5z"/><path d="M2 17l10 5 10-5"/><path d="M2 12l10 5 10-5"/></svg>
+            <svg viewBox="0 0 44 44" fill="none"><circle cx="22" cy="22" r="17" stroke="#434e64" stroke-width="2"/><rect x="10" y="10" width="24" height="24" rx="1" stroke="#434e64" stroke-width="1.5" transform="rotate(45 22 22)"/><circle cx="22" cy="22" r="8" stroke="#434e64" stroke-width="1.5"/><rect x="17" y="17" width="10" height="10" rx="1" stroke="#434e64" stroke-width="1.5"/><circle cx="22" cy="22" r="2" fill="#434e64"/></svg>
           </div>
           <h3>No Cleanroom</h3>
           <p>No vacuum chambers. No tube furnaces. No ion implanters. A 5W laser does the doping. Egg white is the gate dielectric. Silver paint is the metal layer. Built on a desk.</p>
         </div>
         <div class="card">
           <div class="card-icon">
-            <svg viewBox="0 0 24 24" fill="none" stroke="#2563eb" stroke-width="2"><path d="M18 8h1a4 4 0 010 8h-1"/><path d="M2 8h16v9a4 4 0 01-4 4H6a4 4 0 01-4-4V8z"/><path d="M6 1v3"/><path d="M10 1v3"/><path d="M14 1v3"/></svg>
+            <svg viewBox="0 0 44 44" fill="none"><rect x="3" y="3" width="38" height="38" rx="2" stroke="#434e64" stroke-width="2" transform="rotate(0 22 22)"/><circle cx="22" cy="22" r="15" stroke="#434e64" stroke-width="1.5"/><rect x="8" y="8" width="28" height="28" rx="1" stroke="#434e64" stroke-width="1.5" transform="rotate(45 22 22)"/><circle cx="22" cy="22" r="6" stroke="#434e64" stroke-width="1.5"/><circle cx="22" cy="22" r="2" fill="#434e64"/></svg>
           </div>
           <h3>Fully Open</h3>
           <p>Every process recipe, equipment design, experiment result, and failure is documented here. No patents. No paywalls. If we can make a transistor from eggs, so can you.</p>
@@ -122,84 +147,19 @@
             </tr>
           </thead>
           <tbody>
-            <tr>
-              <td>Photoresist</td>
-              <td>PMMA, SU-8 (toxic solvents)</td>
-              <td>Egg white + riboflavin</td>
-              <td>Grocery store</td>
-            </tr>
-            <tr>
-              <td>Developer</td>
-              <td>Organic solvents (MF-319, acetone)</td>
-              <td>Distilled water</td>
-              <td>Grocery store</td>
-            </tr>
-            <tr>
-              <td>Gate dielectric</td>
-              <td>Thermal SiO<sub>2</sub> (1000&deg;C furnace)</td>
-              <td>Crosslinked egg white</td>
-              <td>Grocery store</td>
-            </tr>
-            <tr>
-              <td>Metal patterning</td>
-              <td>Chemical etching (HF, HNO<sub>3</sub>)</td>
-              <td>Laser direct ablation</td>
-              <td>No chemicals</td>
-            </tr>
-            <tr>
-              <td>Semiconductor (n-type)</td>
-              <td>CVD / sputtering (vacuum)</td>
-              <td>ZnO sol-gel from zinc acetate</td>
-              <td>Amazon ($12)</td>
-            </tr>
-            <tr>
-              <td>Semiconductor (p-type)</td>
-              <td>CVD / sputtering (vacuum)</td>
-              <td>Cu<sub>2</sub>O from oxidized copper</td>
-              <td>Art supply store</td>
-            </tr>
-            <tr>
-              <td>SiO<sub>2</sub> etching</td>
-              <td>HF (extremely dangerous)</td>
-              <td>Hot KOH</td>
-              <td>Hardware store (drain cleaner)</td>
-            </tr>
-            <tr>
-              <td>ZnO etching</td>
-              <td>Dilute HCl</td>
-              <td>White vinegar</td>
-              <td>Grocery store</td>
-            </tr>
-            <tr>
-              <td>Copper etching</td>
-              <td>Ferric chloride</td>
-              <td>Vinegar + hydrogen peroxide + salt</td>
-              <td>Grocery store + pharmacy</td>
-            </tr>
-            <tr>
-              <td>Doping (n-type)</td>
-              <td>Ion implantation ($M equipment)</td>
-              <td>Laser doping with phosphoric acid</td>
-              <td>Hardware store (rust remover)</td>
-            </tr>
-            <tr>
-              <td>Doping (p-type)</td>
-              <td>Ion implantation ($M equipment)</td>
-              <td>Boric acid diffusion</td>
-              <td>Pharmacy (roach killer)</td>
-            </tr>
-            <tr>
-              <td>Resist stripping</td>
-              <td>Piranha solution (H<sub>2</sub>SO<sub>4</sub> + H<sub>2</sub>O<sub>2</sub>)</td>
-              <td>Hot water or meat tenderizer</td>
-              <td>Grocery store</td>
-            </tr>
-            <tr>
-              <td>Metal contacts</td>
-              <td>Vacuum evaporation / sputtering</td>
-              <td>Conductive silver paint</td>
-              <td>Amazon ($20)</td>
-            </tr>
+            <tr><td>Photoresist</td><td>PMMA, SU-8 (toxic solvents)</td><td>Egg white + riboflavin</td><td>Grocery store</td></tr>
+            <tr><td>Developer</td><td>Organic solvents (MF-319, acetone)</td><td>Distilled water</td><td>Grocery store</td></tr>
+            <tr><td>Gate dielectric</td><td>Thermal SiO<sub>2</sub> (1000&deg;C furnace)</td><td>Crosslinked egg white</td><td>Grocery store</td></tr>
+            <tr><td>Metal patterning</td><td>Chemical etching (HF, HNO<sub>3</sub>)</td><td>Laser direct ablation</td><td>No chemicals</td></tr>
+            <tr><td>Semiconductor (n-type)</td><td>CVD / sputtering (vacuum)</td><td>ZnO sol-gel from zinc acetate</td><td>Amazon ($12)</td></tr>
+            <tr><td>Semiconductor (p-type)</td><td>CVD / sputtering (vacuum)</td><td>Cu<sub>2</sub>O from oxidized copper</td><td>Art supply store</td></tr>
+            <tr><td>SiO<sub>2</sub> etching</td><td>HF (extremely dangerous)</td><td>Hot KOH</td><td>Hardware store (drain cleaner)</td></tr>
+            <tr><td>ZnO etching</td><td>Dilute HCl</td><td>White vinegar</td><td>Grocery store</td></tr>
+            <tr><td>Copper etching</td><td>Ferric chloride</td><td>Vinegar + hydrogen peroxide + salt</td><td>Grocery store + pharmacy</td></tr>
+            <tr><td>Doping (n-type)</td><td>Ion implantation ($M equipment)</td><td>Laser doping with phosphoric acid</td><td>Hardware store (rust remover)</td></tr>
+            <tr><td>Doping (p-type)</td><td>Ion implantation ($M equipment)</td><td>Boric acid diffusion</td><td>Pharmacy (roach killer)</td></tr>
+            <tr><td>Resist stripping</td><td>Piranha solution (H<sub>2</sub>SO<sub>4</sub> + H<sub>2</sub>O<sub>2</sub>)</td><td>Hot water or meat tenderizer</td><td>Grocery store</td></tr>
+            <tr><td>Metal contacts</td><td>Vacuum evaporation / sputtering</td><td>Conductive silver paint</td><td>Amazon ($20)</td></tr>
           </tbody>
         </table>
       </div>
@@ -226,27 +186,27 @@
         <div class="equip-card">
           <div class="equip-price">$117</div>
           <h4>Genmitsu 5W 450nm Laser</h4>
-          <p>5000mW optical power, 0.1&times;0.15mm compressed spot. Does double duty: low power for resist exposure, full power for metal ablation in Phase 2.</p>
+          <p>5000mW optical power, 0.1&times;0.15mm compressed spot. Low power for resist exposure, full power for metal ablation in Phase 2.</p>
         </div>
         <div class="equip-card">
           <div class="equip-price">$90</div>
           <h4>BEBANG Compound Microscope</h4>
-          <p>100&ndash;2000&times; magnification with phone adapter for documentation. 40&times; objective will be repurposed as Machine 2 laser focusing lens.</p>
+          <p>100&ndash;2000&times; magnification with phone adapter. 40&times; objective repurposed as Machine 2 laser focusing lens.</p>
         </div>
         <div class="equip-card">
           <div class="equip-price">$44</div>
           <h4>OD6+ Laser Safety Goggles</h4>
-          <p>FreeMascot OD6+ protection at 190&ndash;550nm. Attenuates the 450nm laser by 1,000,000&times;. Non-negotiable safety equipment.</p>
+          <p>FreeMascot OD6+ protection at 190&ndash;550nm. Attenuates the 450nm laser by 1,000,000&times;.</p>
         </div>
         <div class="equip-card">
           <div class="equip-price">~$30</div>
           <h4>3D Printed Spin Coater</h4>
-          <p>BLDC motor + ESC + 3D printed chuck. Calibrated from 1000&ndash;6000 RPM for egg white film thickness from 100&ndash;900nm.</p>
+          <p>BLDC motor + ESC + 3D printed chuck. 1000&ndash;6000 RPM for 100&ndash;900nm films.</p>
         </div>
         <div class="equip-card">
           <div class="equip-price">~$15</div>
           <h4>Vacuum Degasser</h4>
-          <p>Mason jar + hand vacuum pump. Removes dissolved gas from filtered albumen and partially dehydrates the resist.</p>
+          <p>Mason jar + hand vacuum pump. Removes dissolved gas and partially dehydrates the resist.</p>
         </div>
       </div>
 
@@ -287,58 +247,44 @@
             <div class="step-detail">Keeps 1 week refrigerated. One egg yields ~20mL = ~65 slides.</div>
           </div>
         </div>
-
         <div class="step">
           <div class="step-num">2</div>
           <div class="step-content">
             <h3>Spin Coat on Glass</h3>
             <p>Clean glass slide with isopropanol. Place on spin coater. Pipette ~300&mu;L albumen onto center. Spin at target RPM for 30 seconds.</p>
-            <div class="step-detail">
-              <table class="inline-table">
-                <tr><th>Spin Speed</th><th>Film Thickness</th></tr>
-                <tr><td>1000 RPM</td><td>~900nm</td></tr>
-                <tr><td>2000 RPM</td><td>~450nm</td></tr>
-                <tr><td>3000 RPM</td><td>~300nm</td></tr>
-                <tr><td>6000 RPM</td><td>~100nm</td></tr>
-              </table>
-              <em>Source: Jiang et al. 2017, Figure S11</em>
-            </div>
+            <div class="step-detail">1000 RPM &rarr; ~900nm &nbsp;|&nbsp; 3000 RPM &rarr; ~300nm &nbsp;|&nbsp; 6000 RPM &rarr; ~100nm. Source: Jiang et al. 2017, Figure S11.</div>
           </div>
         </div>
-
         <div class="step">
           <div class="step-num">3</div>
           <div class="step-content">
             <h3>Exposure Dose Matrix</h3>
-            <p>The critical experiment. Program CNC to draw lines at varying laser power (20&ndash;100%) and scan speed (50&ndash;2000 mm/min). This maps the exposure parameter space to find the optimal crosslinking dose at 450nm.</p>
-            <div class="step-detail">6 slides &times; 6 lines each = 36 exposure conditions tested. Riboflavin absorbs at 445&ndash;450nm, mediating energy transfer to protein crosslinking.</div>
+            <p>Program CNC to draw lines at varying laser power (20&ndash;100%) and scan speed (50&ndash;2000 mm/min). This maps the exposure parameter space to find the optimal crosslinking dose at 450nm.</p>
+            <div class="step-detail">6 slides &times; 6 lines each = 36 exposure conditions. Riboflavin absorbs at 445&ndash;450nm, mediating energy transfer to protein crosslinking.</div>
           </div>
         </div>
-
         <div class="step">
           <div class="step-num">4</div>
           <div class="step-content">
             <h3>Water Development</h3>
             <p>Immerse exposed slide in distilled water for 30&ndash;60 seconds. Gently agitate. Rinse with fresh distilled water. Air dry.</p>
-            <div class="step-detail">Negative tone: exposed lines remain (crosslinked). Positive tone: exposed lines wash away (fragmented). If nothing happens, exposure dose is wrong &mdash; adjust and repeat.</div>
+            <div class="step-detail">Negative: exposed lines remain (crosslinked). Positive: exposed lines wash away (fragmented).</div>
           </div>
         </div>
-
         <div class="step">
           <div class="step-num">5</div>
           <div class="step-content">
             <h3>Stain and Image</h3>
-            <p>Dip developed slide in dilute iodine (3 drops tincture in 50mL water) for 30 seconds. Rinse gently. The remaining protein stains yellow-brown against clear glass. Image under microscope at 100&ndash;250&times;.</p>
-            <div class="step-detail">Alternative stain: methylene blue (1 drop in 50mL water). Protein stains blue. Phone adapter captures photos through eyepiece for documentation.</div>
+            <p>Dip in dilute iodine (3 drops in 50mL water) for 30 seconds. Rinse gently. Protein stains yellow-brown on clear glass. Image under microscope at 100&ndash;250&times;.</p>
+            <div class="step-detail">Alternative: methylene blue (1 drop in 50mL). Phone adapter captures photos through eyepiece.</div>
           </div>
         </div>
-
         <div class="step">
           <div class="step-num">6</div>
           <div class="step-content">
             <h3>Resolution Test</h3>
-            <p>Using optimal exposure parameters, pattern lines at 500&mu;m, 200&mu;m, 100&mu;m, 50&mu;m, and 25&mu;m widths. Develop, stain, and measure feature sizes under microscope.</p>
-            <div class="step-detail">Expected: clean features at 100&ndash;200&mu;m. The CNC 3018's positioning accuracy (~50&ndash;100&mu;m) and laser spot (100&ndash;150&mu;m) set the resolution floor, not the resist.</div>
+            <p>Pattern lines at 500, 200, 100, 50, 25&mu;m. Develop, stain, and measure. Expected: clean features at &le;100&mu;m. CNC accuracy sets the floor, not the resist.</p>
+            <div class="step-detail">Include: isolated squares, "ALBU" text, alignment cross marks for Phase 2 practice.</div>
           </div>
         </div>
       </div>
@@ -360,7 +306,6 @@
             <div class="roadmap-budget">Budget: $570 including consumables</div>
           </div>
         </div>
-
         <div class="roadmap-item">
           <div class="roadmap-marker"></div>
           <div class="roadmap-content">
@@ -370,7 +315,6 @@
             <div class="roadmap-budget">Budget: ~$350 additional</div>
           </div>
         </div>
-
         <div class="roadmap-item">
           <div class="roadmap-marker"></div>
           <div class="roadmap-content">
@@ -380,7 +324,6 @@
             <div class="roadmap-budget">Budget: $3&ndash;5k</div>
           </div>
         </div>
-
         <div class="roadmap-item">
           <div class="roadmap-marker"></div>
           <div class="roadmap-content">
@@ -416,11 +359,17 @@
     <div class="container">
       <div class="footer-inner">
         <div class="footer-logo">
-          <svg class="logo-icon" viewBox="0 0 40 50" fill="none" xmlns="http://www.w3.org/2000/svg">
-            <ellipse cx="20" cy="22" rx="14" ry="18" fill="#2563eb"/>
+          <svg class="nav-logo-mark" viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <rect x="10" y="10" width="80" height="80" rx="2" stroke="#434e64" stroke-width="5"/>
+            <circle cx="50" cy="50" r="32" stroke="#434e64" stroke-width="4.5"/>
+            <rect x="22" y="22" width="56" height="56" rx="1" stroke="#434e64" stroke-width="4" transform="rotate(45 50 50)"/>
+            <circle cx="50" cy="50" r="17" stroke="#434e64" stroke-width="3.5"/>
+            <rect x="36" y="36" width="28" height="28" rx="1" stroke="#434e64" stroke-width="3"/>
+            <circle cx="50" cy="50" r="5" fill="#434e64"/>
           </svg>
-          <span class="logo-text">Albu</span>
+          <span class="nav-logo-albu" style="color:#434e64">Albu</span>
         </div>
+        <div class="footer-parent">A KOSL Project &mdash; Kropp Olsha Semiconductor Lithography</div>
         <p class="footer-text">Open source home semiconductor fabrication.<br>No patents. No paywalls. Just eggs and ambition.</p>
         <div class="footer-links">
           <a href="docs/">Documentation</a>
@@ -429,5 +378,7 @@
       </div>
     </div>
   </footer>
+
+  <script src="hero-animation.js"></script>
 </body>
 </html>
