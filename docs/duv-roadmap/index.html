@@ -1,0 +1,377 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>DUV Roadmap: Schwarzschild Stepper - Albu Docs</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../../style.css">
+  <link rel="stylesheet" href="../docs.css">
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' rx='12' fill='%23434e64'/><rect x='15' y='15' width='70' height='70' rx='2' fill='none' stroke='white' stroke-width='4'/><circle cx='50' cy='50' r='28' fill='none' stroke='white' stroke-width='3.5'/><rect x='25' y='25' width='50' height='50' rx='1' fill='none' stroke='white' stroke-width='3' transform='rotate(45 50 50)'/><circle cx='50' cy='50' r='15' fill='none' stroke='white' stroke-width='2.5'/><rect x='37' y='37' width='26' height='26' rx='1' fill='none' stroke='white' stroke-width='2'/><circle cx='50' cy='50' r='4' fill='white'/></svg>">
+</head>
+<body>
+  <nav>
+    <div class="nav-inner">
+      <a href="/albu/" class="nav-logo">
+        <svg class="nav-logo-mark" viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <rect x="10" y="10" width="80" height="80" rx="2" stroke="#434e64" stroke-width="5"/>
+          <circle cx="50" cy="50" r="32" stroke="#434e64" stroke-width="4.5"/>
+          <rect x="22" y="22" width="56" height="56" rx="1" stroke="#434e64" stroke-width="4" transform="rotate(45 50 50)"/>
+          <circle cx="50" cy="50" r="17" stroke="#434e64" stroke-width="3.5"/>
+          <rect x="36" y="36" width="28" height="28" rx="1" stroke="#434e64" stroke-width="3"/>
+          <circle cx="50" cy="50" r="5" fill="#434e64"/>
+        </svg>
+        <div>
+          <div style="font-size:11px;font-weight:700;color:#434e64;letter-spacing:0.12em">KOSL</div>
+          <div style="font-size:20px;font-weight:700;color:#434e64">Albu</div>
+        </div>
+      </a>
+      <div class="nav-links">
+        <a href="/albu/#about">About</a>
+        <a href="/albu/#phase-1">Phase 1</a>
+        <a href="/albu/docs/" class="nav-active">Documentation</a>
+        <a href="https://github.com/levkropp/albu" class="nav-gh">GitHub</a>
+      </div>
+    </div>
+  </nav>
+  <div class="docs-layout">
+    <aside class="docs-sidebar" data-active="duv-roadmap"></aside>
+    <main class="docs-main">
+      <div class="docs-content">
+        <h1>DUV Roadmap: The Schwarzschild Stepper</h1>
+        <p class="docs-lead">A Schwarzschild reflective objective + surplus KrF excimer laser = 500nm features at 1/100th the cost of a conventional DUV stepper. This page documents the long-term roadmap for KOSL's DUV lithography capability.</p>
+
+        <div class="docs-callout">
+          <strong>This is a future roadmap.</strong> The DUV stepper depends on completing Phases 1&ndash;4 (the Albu process) first. The KOSL machine at 10&ndash;50&mu;m writes the photomasks that the DUV stepper reduces to 500nm. Bootstrap.
+        </div>
+
+        <!-- ============================================================ -->
+        <!-- 1. The Key Insight: Reflective Optics                        -->
+        <!-- ============================================================ -->
+        <h2 id="reflective-optics">The Key Insight: Reflective Optics</h2>
+
+        <p>Production DUV steppers&mdash;the machines ASML, Nikon, and Canon sell for $5&ndash;50M&mdash;use <strong>20&ndash;30 fused silica lens elements</strong> in their projection optics. They need that many because they are trying to achieve NA=0.7 over a 26&times;33mm exposure field using a single optical material (fused silica is the only glass that transmits well at 248nm). Chromatic aberration, field curvature, distortion, coma, and astigmatism must all be corrected simultaneously, and with only one refractive index to work with, you need a <em>lot</em> of corrective surfaces. Each element must be polished to sub-nanometer surface figure. The lens column alone costs millions.</p>
+
+        <p>But there is another way. <strong>Schwarzschild reflective objectives</strong> use two spherical mirrors&mdash;one concave, one convex&mdash;in a concentric arrangement. Mirrors have <strong>zero chromatic aberration</strong> at any wavelength, because reflection does not depend on refractive index. A two-mirror Schwarzschild design also corrects spherical aberration and coma by geometry. The result is a diffraction-limited objective that works from deep UV through infrared, with just two optical surfaces instead of thirty.</p>
+
+        <p>These are not exotic lab curiosities. <strong>Thorlabs sells Schwarzschild reflective objectives off the shelf</strong> for $2&ndash;5K:</p>
+        <ul class="docs-list">
+          <li><strong>15x magnification, NA=0.3</strong>, designed for 200nm&ndash;20&mu;m wavelength range</li>
+          <li><strong>40x magnification, NA=0.5</strong>, for higher resolution at smaller field</li>
+          <li>Standard microscope thread mount, integrates with commercial stages</li>
+        </ul>
+
+        <p>At 248nm (KrF excimer) with NA=0.3, the Rayleigh resolution limit is:</p>
+        <pre><code>R = k1 * &lambda; / NA
+R = 0.6 * 248nm / 0.3
+R &asymp; 500nm
+
+With optical proximity correction (OPC):
+R = 0.4 * 248nm / 0.3
+R &asymp; 330nm</code></pre>
+
+        <p>The field of view is small&mdash;roughly <strong>0.5&ndash;1mm diameter</strong>&mdash;compared to the 26&times;33mm field of a production stepper. But that is what step-and-repeat is for: expose one field, move the stage, expose the next. A 10&times;10mm die takes 100&ndash;400 shots at ~1mm field. At 1 shot per second, that is under 7 minutes per die. Slower than a production scanner, but perfectly adequate for prototyping and small-batch fabrication.</p>
+
+        <p>This is not a new idea. <strong>Bell Labs used Schwarzschild objectives for early EUV lithography research</strong> in the 1980s and 1990s. Kinoshita et al. demonstrated 50nm features with a Schwarzschild reflector at 13nm wavelength. The concept is proven&mdash;it just was never commercialized as a lithography product because the semiconductor industry scaled toward high-throughput scanners with enormous fields. For a research lab or small fab printing a few dozen dies, the Schwarzschild approach is ideal.</p>
+
+        <!-- ============================================================ -->
+        <!-- 2. System Architecture                                        -->
+        <!-- ============================================================ -->
+        <h2 id="system-architecture">System Architecture</h2>
+
+        <p>The full DUV stepper is a straightforward optical system with six major components:</p>
+
+        <pre><code>KrF Excimer Laser (248nm, surplus $5-15K)
+    &rarr; Beam Homogenizer (fly's eye or rod integrator, $1-2K)
+    &rarr; Condenser Lens (fused silica singlet, $500)
+    &rarr; Chrome-on-Quartz Mask (made by KOSL machine or purchased)
+    &rarr; Schwarzschild Reflective Objective, 15x, NA=0.3 ($3-5K)
+    &rarr; Wafer on Precision XY Stage ($10-50K)
+    &rarr; Alignment Camera
+
+Resolution:     350-500nm
+Field:          0.5-1mm (step and repeat)
+Reduction:      15:1
+Dose:           ~50-200 mJ/cm&sup2; (resist dependent)
+Throughput:     ~2-10 dies/hour (10x10mm die)</code></pre>
+
+        <h3>Component Details</h3>
+        <ul class="docs-list">
+          <li><strong>KrF Excimer Laser (248nm):</strong> Surplus units from decommissioned industrial systems are available for $5&ndash;15K on eBay and surplus equipment dealers. Lambda Physik and Cymer models are common. These produce 10&ndash;200mJ per pulse at 100&ndash;500Hz, far more energy than needed for resist exposure. Key maintenance: gas refills (Kr/F&sub2;/Ne mix) every few thousand hours.</li>
+          <li><strong>Beam Homogenizer:</strong> The raw excimer beam has a non-uniform "top hat with hot spots" profile. A fly's-eye lens array or rod integrator homogenizes the beam to uniform intensity across the mask field. Critical for uniform exposure dose. Can be fabricated from commercial microlens arrays ($500&ndash;2K).</li>
+          <li><strong>Condenser:</strong> A single fused silica plano-convex lens images the homogenized beam onto the mask plane. At 248nm, fused silica (Corning 7980 or equivalent) transmits &gt;90%. Off-the-shelf from Edmund Optics or Thorlabs.</li>
+          <li><strong>Photomask:</strong> Chrome-on-quartz, the industry standard. At 15:1 reduction, a 500nm wafer feature requires only a <strong>7.5&mu;m feature on the mask</strong>. The KOSL 10MT5000 Auto writes 10&mu;m features&mdash;it can bootstrap its own DUV masks. For finer mask features, electron-beam mask writing services are available ($500&ndash;2K per mask).</li>
+          <li><strong>Schwarzschild Objective:</strong> The Thorlabs LMM-15X-UVV (15x, NA=0.3) or similar. Mounts with standard RMS or M26 threads. The objective simultaneously demagnifies (15:1) and focuses the mask pattern onto the wafer.</li>
+          <li><strong>Precision XY Stage:</strong> This is the most variable-cost component. A $10K stage from Thorlabs or Newport provides 1&mu;m positioning accuracy with 50&times;50mm travel&mdash;adequate for 500nm lithography. A $50K air-bearing stage with interferometric feedback provides sub-100nm positioning for tighter overlay requirements.</li>
+        </ul>
+
+        <div class="docs-callout">
+          <strong>The bootstrap loop:</strong> 15:1 reduction means a 500nm wafer feature needs 7.5&mu;m on the mask. The KOSL 10MT5000 Auto writes 10&mu;m features. It can write its own DUV masks. The DUV stepper then prints 500nm features on wafers. Those wafers can be used to build better control electronics for the next generation of KOSL machines. This is a self-reinforcing capability ladder.
+        </div>
+
+        <!-- ============================================================ -->
+        <!-- 3. Transistor Density at 500nm                                -->
+        <!-- ============================================================ -->
+        <h2 id="transistor-density">Transistor Density at 500nm</h2>
+
+        <p>At 500nm minimum feature size with 2&ndash;3 metal layers, the achievable transistor densities are:</p>
+
+        <table class="inline-table">
+          <tr><th>Type</th><th>Density</th><th>Notes</th></tr>
+          <tr><td><strong>Logic (placed &amp; routed)</strong></td><td>~20,000 transistors/mm&sup2;</td><td>Standard-cell automated layout with routing overhead</td></tr>
+          <tr><td><strong>SRAM (6T with peripherals)</strong></td><td>~0.9 KB/mm&sup2;</td><td>6-transistor cell, sense amps, row/column decoders included</td></tr>
+          <tr><td><strong>Mask ROM</strong></td><td>~25 KB/mm&sup2;</td><td>Single-transistor cell, via-programmed, much denser than SRAM</td></tr>
+        </table>
+
+        <p>These numbers come from actual 0.5&mu;m-era datasheets and die photos. Logic density includes routing channels, power rails, and standard-cell overhead&mdash;not just raw gate count. SRAM density includes the peripheral circuits (decoders, sense amplifiers, I/O) that a real memory block requires. These are conservative, realistic estimates for what you can actually build.</p>
+
+        <!-- ============================================================ -->
+        <!-- 4. What You Can Build                                         -->
+        <!-- ============================================================ -->
+        <h2 id="what-you-can-build">What You Can Build</h2>
+
+        <p>The die size determines what you can fit. Here are three tiers of increasing ambition:</p>
+
+        <table class="inline-table">
+          <tr><th>Die Size</th><th>Transistors</th><th>What Fits</th><th>Comparable Commercial Chip</th></tr>
+          <tr>
+            <td><strong>5&times;5mm</strong><br>(25 mm&sup2;)</td>
+            <td>~250K&ndash;500K</td>
+            <td>RISC-V SoC with 4KB SRAM, CAN bus controller, UART, SPI, 10-bit ADC, GPIO. A complete automotive-grade microcontroller on a single die.</td>
+            <td>Comparable to an STM32F0-class MCU or a Z80 computer-on-chip with peripherals</td>
+          </tr>
+          <tr>
+            <td><strong>10&times;10mm</strong><br>(100 mm&sup2;)</td>
+            <td>~1&ndash;2M</td>
+            <td>Full 32-bit RV32IMC SoC (Ibex-class core) with 64KB SRAM, DMA, interrupt controller, timer array, multiple UARTs/SPIs. A capable application processor.</td>
+            <td>Equivalent to Intel 486DX in transistor count and capability</td>
+          </tr>
+          <tr>
+            <td><strong>20&times;20mm</strong><br>(400 mm&sup2;)</td>
+            <td>~4&ndash;8M</td>
+            <td>64-bit RISC-V (Rocket Chip or BOOM) with L1 instruction and data caches, MMU, FPU. Can run Linux. Multi-core configurations possible.</td>
+            <td>Pentium-class (3.3M transistors in 163 mm&sup2; at the same node)</td>
+          </tr>
+        </table>
+
+        <p>The 5&times;5mm die is the sweet spot for early production: it fits within the Schwarzschild objective's field with minimal stepping, yield is high (small die = fewer defects), and the resulting chip is genuinely useful. An open-source RISC-V automotive MCU fabricated domestically on a $200K tool is a compelling product.</p>
+
+        <!-- ============================================================ -->
+        <!-- 5. The Automotive Opportunity                                  -->
+        <!-- ============================================================ -->
+        <h2 id="automotive-opportunity">The Automotive Opportunity</h2>
+
+        <p>The global chip shortage of 2020&ndash;2023 was not a leading-edge problem. TSMC's 5nm and 3nm lines kept running. The shortage was overwhelmingly concentrated in <strong>mature nodes: 40nm, 90nm, 130nm, 180nm, and 350&ndash;500nm</strong>. These are the nodes that produce automotive MCUs, power management ICs, sensor interfaces, and industrial controllers&mdash;the chips that every car, appliance, and factory needs dozens of.</p>
+
+        <p>The root cause was structural:</p>
+        <ul class="docs-list">
+          <li><strong>Fab capacity at mature nodes is concentrated in a few facilities</strong>, mostly in Taiwan, Japan, and China. When demand surged post-COVID, there was no spare capacity to absorb it.</li>
+          <li><strong>No one is building new fabs for 500nm.</strong> The economics of a $1&ndash;5B fab don't work for $0.50 chips. Existing capacity slowly shrinks as old fabs are repurposed or decommissioned.</li>
+          <li><strong>Automotive qualification cycles are 2&ndash;5 years.</strong> You can't just move an automotive MCU to a new fab or new node&mdash;it must be requalified through AEC-Q100, and the automakers won't accept it without years of reliability data on the new process.</li>
+        </ul>
+
+        <p>Automotive MCUs at 500nm are <strong>still manufactured and sold today</strong>. NXP, Infineon, Renesas, and Microchip all have active product lines on 350&ndash;500nm processes. These are not legacy parts being phased out&mdash;they are current-production, actively designed chips. The automotive industry will need 500nm-class chips for decades.</p>
+
+        <h3>The Case for Domestic Fabrication</h3>
+        <p>An open-source, domestically fabricable automotive MCU addresses a real supply chain vulnerability:</p>
+        <ul class="docs-list">
+          <li><strong>Design:</strong> Open-source RISC-V core (e.g., SERV, PicoRV32, or Ibex) + open-source CAN controller + open-source ADC. Full RTL available, no IP licensing fees.</li>
+          <li><strong>Fabrication:</strong> KOSL Schwarzschild stepper + open-source process. Any university lab, community fab, or small company can set up a line.</li>
+          <li><strong>Qualification:</strong> Start with non-safety-critical applications (body electronics, infotainment, seat controllers) where AEC-Q100 qualification is simpler.</li>
+          <li><strong>Scale:</strong> A single stepper running two shifts can produce ~500 wafers/month. At 100 dies per 150mm wafer, that's 50,000 MCUs/month&mdash;enough for a regional automotive supplier.</li>
+        </ul>
+
+        <div class="docs-warning">
+          <strong>Funding angle:</strong> This is a defensible national security and supply chain resilience argument. The CHIPS Act, NSF, and DoD all have funding programs for domestic semiconductor capability. A $200K DUV stepper that can produce automotive MCUs is exactly the kind of distributed manufacturing capability these programs aim to create. The grant practically writes itself: open-source chip design + open-source fabrication tool + domestic manufacturing = supply chain resilience.
+        </div>
+
+        <!-- ============================================================ -->
+        <!-- 6. Specific Designs at 500nm                                  -->
+        <!-- ============================================================ -->
+        <h2 id="specific-designs">Specific Designs at 500nm</h2>
+
+        <p>These are real, open-source, synthesizable HDL designs that can be fabricated at 500nm. Transistor counts and area estimates assume 0.5&mu;m standard-cell CMOS with 2&ndash;3 metal layers.</p>
+
+        <table class="inline-table">
+          <tr><th>Design</th><th>Transistors</th><th>Area</th><th>Notes</th></tr>
+          <tr>
+            <td><strong>SERV RISC-V</strong></td>
+            <td>~8,400</td>
+            <td>0.4 mm&sup2;</td>
+            <td>World's smallest RISC-V. Bit-serial execution. Trivially tiny at 500nm. Could fit hundreds on a die.</td>
+          </tr>
+          <tr>
+            <td><strong>PicoRV32 SoC</strong></td>
+            <td>~30K</td>
+            <td>1.5 mm&sup2;</td>
+            <td>Popular, well-tested RV32IMC. Used in hundreds of FPGA projects. Includes multiplier, IRQ, memory interface.</td>
+          </tr>
+          <tr>
+            <td><strong>Z80 (TV80)</strong></td>
+            <td>~20K</td>
+            <td>1.0 mm&sup2;</td>
+            <td>Open-source Z80 compatible core. Run CP/M, play Zork. The nostalgia chip.</td>
+          </tr>
+          <tr>
+            <td><strong>Ibex (lowRISC)</strong></td>
+            <td>~120K</td>
+            <td>6 mm&sup2;</td>
+            <td>Google/lowRISC production-quality RV32IMC. Pipeline, branch predictor, debug support. The serious option.</td>
+          </tr>
+          <tr>
+            <td><strong>ARM7TDMI-class</strong></td>
+            <td>~72K</td>
+            <td>~3.5 mm&sup2;</td>
+            <td>The core architecture that launched smartphones (original iPhone was ARM11, evolved from ARM7). Open clones exist.</td>
+          </tr>
+          <tr>
+            <td><strong>CAN 2.0B controller</strong></td>
+            <td>~100K</td>
+            <td>4 mm&sup2;</td>
+            <td>Full CAN bus controller with message filtering. Every car on the road uses CAN. Open-source implementations available.</td>
+          </tr>
+          <tr>
+            <td><strong>Open automotive MCU</strong></td>
+            <td>~165K</td>
+            <td>~23 mm&sup2; (5&times;5 die)</td>
+            <td>RISC-V core + CAN 2.0B + 10-bit ADC + 2KB SRAM + UART + GPIO. Complete automotive microcontroller.</td>
+          </tr>
+        </table>
+
+        <p>All of these designs are available on GitHub under permissive licenses (Apache 2.0, MIT, or BSD). They can be synthesized with open-source EDA tools (Yosys + OpenROAD) targeting a 500nm standard-cell library. The KOSL project aims to provide that standard-cell library as part of the open-source process design kit (PDK).</p>
+
+        <!-- ============================================================ -->
+        <!-- 7. Budget                                                      -->
+        <!-- ============================================================ -->
+        <h2 id="budget">Budget</h2>
+
+        <p>Three tiers of DUV capability, from minimal to full fab line:</p>
+
+        <table class="inline-table">
+          <tr><th>Tier</th><th>System</th><th>Resolution</th><th>Cost</th></tr>
+          <tr>
+            <td><strong>Contact/Proximity DUV</strong></td>
+            <td>KrF excimer laser + mask placed directly on wafer (contact) or with 10&ndash;50&mu;m gap (proximity). No projection optics. Simplest possible DUV system.</td>
+            <td>500nm &ndash; 1&mu;m</td>
+            <td>$15&ndash;30K</td>
+          </tr>
+          <tr>
+            <td><strong>Schwarzschild Stepper</strong></td>
+            <td>KrF laser + beam homogenizer + condenser + chrome-on-quartz mask + Schwarzschild reflective objective (15x, NA=0.3) + precision XY stage + alignment camera. The core KOSL DUV product.</td>
+            <td>350&ndash;500nm</td>
+            <td>$50&ndash;150K</td>
+          </tr>
+          <tr>
+            <td><strong>Full DUV Fab Line</strong></td>
+            <td>Schwarzschild stepper + ion implanter + LPCVD/PECVD + RIE/ICP etch + wet benches + spin coaters + metrology (profilometer, 4-point probe, optical microscope) + cleanroom (Class 1000 min). Everything needed for CMOS fabrication.</td>
+            <td>500nm CMOS</td>
+            <td>$1&ndash;10M</td>
+          </tr>
+        </table>
+
+        <h3>Cost Breakdown: Schwarzschild Stepper</h3>
+        <table class="inline-table">
+          <tr><th>Component</th><th>Source</th><th>Cost</th></tr>
+          <tr><td>KrF excimer laser (248nm, surplus)</td><td>eBay, surplus dealers</td><td>$5&ndash;15K</td></tr>
+          <tr><td>Beam homogenizer (fly's eye array)</td><td>Edmund Optics, custom</td><td>$1&ndash;2K</td></tr>
+          <tr><td>Fused silica condenser lens</td><td>Thorlabs, Edmund</td><td>$300&ndash;500</td></tr>
+          <tr><td>Schwarzschild objective (15x, NA=0.3)</td><td>Thorlabs LMM-15X-UVV</td><td>$3&ndash;5K</td></tr>
+          <tr><td>Precision XY stage (1&mu;m accuracy)</td><td>Thorlabs, Newport, surplus</td><td>$10&ndash;50K</td></tr>
+          <tr><td>Alignment camera + optics</td><td>FLIR/Allied Vision + tube lens</td><td>$2&ndash;5K</td></tr>
+          <tr><td>Optical bench / vibration isolation</td><td>Thorlabs breadboard + legs</td><td>$2&ndash;5K</td></tr>
+          <tr><td>Control electronics + software</td><td>Custom (open-source)</td><td>$1&ndash;3K</td></tr>
+          <tr><td>Enclosure, safety interlocks, gas handling</td><td>Custom</td><td>$2&ndash;5K</td></tr>
+          <tr><td><strong>Total</strong></td><td></td><td><strong>$26&ndash;90K</strong></td></tr>
+        </table>
+
+        <p>The wide range reflects stage quality. A $10K manual micrometer stage gets you 500nm resolution with manual alignment. A $50K air-bearing stage with encoders enables automated step-and-repeat with sub-micron overlay. Start cheap, upgrade as needed.</p>
+
+        <!-- ============================================================ -->
+        <!-- 8. The KOSL DUV Product Vision                                -->
+        <!-- ============================================================ -->
+        <h2 id="product-vision">The KOSL DUV Product Vision</h2>
+
+        <p>The Schwarzschild stepper is not just a research tool&mdash;it is a <strong>product</strong>.</p>
+
+        <h3>Target Price: $200&ndash;300K</h3>
+        <p>This is approximately one-third the cost of a used ASML PAS 5500 (the cheapest used DUV stepper on the market, typically $500K&ndash;1M for a working unit). But unlike a used ASML:</p>
+        <ul class="docs-list">
+          <li><strong>No export controls.</strong> The Schwarzschild stepper uses commercially available components. No ITAR, no EAR, no Wassenaar restrictions. Ship it anywhere.</li>
+          <li><strong>No vendor lock-in.</strong> Open-source design, open-source control software, standard components. The customer can maintain and modify it themselves.</li>
+          <li><strong>No cleanroom required for the tool itself.</strong> The stepper operates in ambient atmosphere (the wafer processing needs cleanroom conditions, but the stepper does not need a massive subfab).</li>
+          <li><strong>Footprint:</strong> Fits on a single optical table (~1.2m &times; 2.4m). An ASML PAS 5500 needs a dedicated room with raised floor and vibration isolation.</li>
+        </ul>
+
+        <h3>Target Customers</h3>
+        <ul class="docs-list">
+          <li><strong>Universities:</strong> Teaching labs, research groups in MEMS, photonics, microfluidics, analog IC design. Most universities cannot afford or maintain a used ASML. A $200K stepper with open-source documentation changes the equation.</li>
+          <li><strong>Community fabs / makerspaces:</strong> The semiconductor equivalent of a community workshop. Groups like SkyWater's open-source PDK community, Libre Silicon, and university cleanrooms.</li>
+          <li><strong>Small companies:</strong> Startups doing custom ASIC prototyping, MEMS sensors, photonic devices, or specialized analog circuits where 500nm is adequate and fast turnaround matters more than density.</li>
+          <li><strong>Government / defense labs:</strong> Secure, domestic, trusted fabrication of radiation-hardened or tamper-evident ICs. No foreign supply chain dependencies.</li>
+        </ul>
+
+        <h3>Naming Convention</h3>
+        <p>KOSL DUV product names follow the pattern:</p>
+        <pre><code>KOSL [resolution]NM[transistor_capacity] DUV
+
+Examples:
+  KOSL 500NM250K DUV   &mdash; 500nm resolution, 250K transistor capability (5&times;5mm die)
+  KOSL 500NM1M DUV     &mdash; 500nm resolution, 1M transistor capability (10&times;10mm die)
+  KOSL 350NM4M DUV     &mdash; 350nm resolution (with OPC), 4M transistors (20&times;20mm die)</code></pre>
+
+        <p>The transistor capacity in the name indicates the maximum single-die complexity the stage travel and alignment system can support. Resolution is the minimum half-pitch the objective and illumination can achieve.</p>
+
+        <!-- ============================================================ -->
+        <!-- 9. Historical Context                                         -->
+        <!-- ============================================================ -->
+        <h2 id="historical-context">Historical Context</h2>
+
+        <p>500nm (0.5&mu;m) is not a retro technology node. It is the node that built the computing infrastructure of the 1990s. Here is what the semiconductor industry produced at this exact feature size:</p>
+
+        <table class="inline-table">
+          <tr><th>Chip</th><th>Year</th><th>Transistors</th><th>Die Size</th><th>Notes</th></tr>
+          <tr>
+            <td><strong>Intel Pentium (P54C)</strong></td>
+            <td>1994</td>
+            <td>3.3M</td>
+            <td>163 mm&sup2;</td>
+            <td>Ran Windows 95. Superscalar, dual-pipeline, 64-bit data bus. The chip that brought the internet to desktops.</td>
+          </tr>
+          <tr>
+            <td><strong>PowerPC 603</strong></td>
+            <td>1993</td>
+            <td>1.6M</td>
+            <td>85 mm&sup2;</td>
+            <td>First PowerPC chip in Macintosh computers. Apple/IBM/Motorola AIM alliance. Powered Macs until the Intel transition.</td>
+          </tr>
+          <tr>
+            <td><strong>ARM7TDMI</strong></td>
+            <td>1994</td>
+            <td>72K (core)</td>
+            <td>tiny</td>
+            <td>The most licensed processor architecture in history. Powered the Game Boy Advance, iPod, and thousands of embedded systems. Still in production today.</td>
+          </tr>
+          <tr>
+            <td><strong>MIPS R4600</strong></td>
+            <td>1994</td>
+            <td>1.35M</td>
+            <td>77 mm&sup2;</td>
+            <td>Low-cost 64-bit MIPS processor. Powered SGI Indy workstations. Used in early Cisco routers.</td>
+          </tr>
+        </table>
+
+        <p><strong>500nm is not retro. It's the node that built the computing infrastructure of the 1990s.</strong> With modern open-source HDL and synthesis tools, we can design chips <em>more</em> capable than those originals. The 1990s designers worked with proprietary, expensive EDA tools on Sun workstations. Today, Yosys + OpenROAD + Verilator run on a laptop and produce results that rival commercial synthesis. The RTL for a Pentium-class processor is available on GitHub. The only missing piece was the fabrication tool.</p>
+
+        <p>That is what the Schwarzschild stepper provides: <strong>the last mile from design to silicon</strong>, at a price point accessible to universities, startups, and community fabs. Not 3nm. Not 7nm. The node where most of the world's useful chips are still made. The node that matters.</p>
+
+        <div class="docs-callout">
+          <strong>The path from here:</strong> Phase 1 (egg white photoresist) &rarr; Phase 2 (first transistor) &rarr; Phase 3 (patterning with KOSL machine at 10&mu;m) &rarr; Phase 4 (integrated circuits) &rarr; DUV stepper (500nm). Each phase builds on the last. Each phase produces something useful. The DUV stepper is the destination, but every waypoint is a real product.
+        </div>
+      </div>
+    </main>
+  </div>
+  <script src="/albu/docs/sidebar-loader.js"></script>
+</body>
+</html>
